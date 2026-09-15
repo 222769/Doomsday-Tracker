@@ -1,0 +1,373 @@
+/* styles.css — mobile-first layout, shared across all pages */
+
+:root {
+  --bg: #0f1220;
+  --bg-elevated: #171b30;
+  --border: #2a2f4a;
+  --text: #eef0f7;
+  --text-dim: #9aa0c0;
+  --accent: #f59e0b;
+  --accent-dim: #7c5a17;
+  --good: #34d399;
+  --danger: #f87171;
+  --radius: 12px;
+  --max-width: 640px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  padding-bottom: 2.5rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ---------- header / nav ---------- */
+
+header.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+}
+
+header.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand img {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+nav.site-nav {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+nav.site-nav a {
+  color: var(--text-dim);
+  text-decoration: none;
+}
+
+nav.site-nav a[aria-current="page"] {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- countdown ---------- */
+
+.countdown {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.countdown h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.countdown-grid div {
+  display: flex;
+  flex-direction: column;
+}
+
+.countdown-grid strong {
+  font-size: 1.6rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.countdown-grid span {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- stats bar ---------- */
+
+.stats {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stats-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.stats-bar-fill {
+  height: 100%;
+  background: var(--good);
+  width: 0%;
+  transition: width 0.2s ease;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1rem;
+  font-size: 0.85rem;
+}
+
+.stats-grid dt {
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stats-grid dd {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+/* ---------- controls ---------- */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.segmented button {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.segmented button.active {
+  background: var(--accent);
+  color: #1a1300;
+  font-weight: 600;
+}
+
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-toggle input {
+  accent-color: var(--accent);
+}
+
+.spacer {
+  flex: 1;
+}
+
+button.reset-btn {
+  background: none;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+button.reset-btn.confirming {
+  background: var(--danger);
+  color: #2a0a0a;
+  font-weight: 600;
+}
+
+/* ---------- checklist ---------- */
+
+ul.item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+li.item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+li.item label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.85rem;
+  cursor: pointer;
+}
+
+li.item input[type="checkbox"] {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  accent-color: var(--good);
+  cursor: pointer;
+}
+
+.item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.item-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+li.item.watched .item-title {
+  text-decoration: line-through;
+  color: var(--text-dim);
+}
+
+.item-type {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.item-meta {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 0.2rem;
+}
+
+.item-stop-point {
+  font-size: 0.78rem;
+  color: var(--accent);
+  margin-top: 0.25rem;
+}
+
+.item-order {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  min-width: 1.5rem;
+  text-align: right;
+  padding-top: 0.1rem;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 2rem 1rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+/* ---------- generic content pages ---------- */
+
+main.content h1 {
+  font-size: 1.4rem;
+}
+
+main.content h2 {
+  font-size: 1.1rem;
+  margin-top: 1.75rem;
+}
+
+main.content p {
+  color: var(--text-dim);
+}
+
+footer.site-footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  margin-top: 2rem;
+}
+
+/* ---------- small screens get a touch more breathing room ---------- */
+
+@media (min-width: 480px) {
+  .countdown-grid strong {
+    font-size: 1.9rem;
+  }
+}

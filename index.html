@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Watch Tracker</title>
+  <meta name="description" content="Track your progress through the Continuum Saga watch order — release order or timeline order, offline-friendly." />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0f1220" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <img src="icons/icon-192.png" alt="" />
+        Watch Tracker
+      </a>
+      <nav class="site-nav">
+        <a href="index.html" aria-current="page">Checklist</a>
+        <a href="about.html">About</a>
+        <a href="faq.html">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="countdown" aria-label="Countdown to Continuum Day">
+      <h2>Countdown to Continuum Day</h2>
+      <div class="countdown-grid">
+        <div><strong id="cdDays">0</strong><span>Days</span></div>
+        <div><strong id="cdHours">00</strong><span>Hours</span></div>
+        <div><strong id="cdMinutes">00</strong><span>Mins</span></div>
+        <div><strong id="cdSeconds">00</strong><span>Secs</span></div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Progress stats">
+      <div class="stats-bar">
+        <div class="stats-bar-fill" id="progressFill"></div>
+      </div>
+      <dl class="stats-grid">
+        <div>
+          <dt>Complete</dt>
+          <dd id="statPercent">0%</dd>
+        </div>
+        <div>
+          <dt>Watched</dt>
+          <dd id="statCount">0 / 0</dd>
+        </div>
+        <div>
+          <dt>Time left</dt>
+          <dd id="statHoursLeft">0 hr</dd>
+        </div>
+        <div>
+          <dt>Pace needed</dt>
+          <dd id="statPace">0 hr/wk</dd>
+        </div>
+      </dl>
+    </section>
+
+    <div class="controls">
+      <div class="segmented" role="group" aria-label="Sort order">
+        <button id="sortRelease" class="active" type="button">Release order</button>
+        <button id="sortTimeline" type="button">Timeline order</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <label class="filter-toggle">
+        <input type="checkbox" id="hideWatched" />
+        Hide watched
+      </label>
+      <label class="filter-toggle">
+        <input type="checkbox" id="moviesOnly" />
+        Movies only
+      </label>
+      <div class="spacer"></div>
+      <button class="reset-btn" id="resetBtn" type="button">Reset progress</button>
+    </div>
+
+    <ul class="item-list" id="itemList"></ul>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Watch Tracker is an independent, fan-made checklist. Not affiliated with any studio.</p>
+    </div>
+  </footer>
+
+  <script src="pwa.js" defer></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ — Watch Tracker</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="theme-color" content="#0f1220" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">
+        <img src="icons/icon-192.png" alt="" />
+        Watch Tracker
+      </a>
+      <nav class="site-nav">
+        <a href="index.html">Checklist</a>
+        <a href="about.html">About</a>
+        <a href="faq.html" aria-current="page">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap content">
+    <h1>Frequently asked questions</h1>
+
+    <h2>Where is my progress saved?</h2>
+    <p>
+      In your browser's local storage, on this device only. Clearing your
+      browser data, using a different browser, or switching devices will
+      reset the checklist.
+    </p>
+
+    <h2>What's the difference between release order and timeline order?</h2>
+    <p>
+      Release order is the order titles actually came out. Timeline order is
+      the in-universe chronological order. Use the toggle above the checklist
+      to switch between them at any time.
+    </p>
+
+    <h2>What does a "stop point" mean?</h2>
+    <p>
+      A few shows only have a portion of their run listed as required
+      viewing. When an item has a stop point, it's shown right under the
+      title — for example, "watch through S1E4 only."
+    </p>
+
+    <h2>Can I use this offline?</h2>
+    <p>
+      Yes. Watch Tracker is an installable app (PWA). After your first visit,
+      the app shell is cached so it keeps working without a connection, and
+      your checked-off progress is read from local storage either way.
+    </p>
+
+    <h2>How do I add my own list?</h2>
+    <p>
+      The whole checklist comes from a single <code>data.js</code> file. If
+      you're comfortable editing a bit of JavaScript, you can swap in your
+      own titles, order numbers, and runtimes.
+    </p>
+
+    <h2>Is this affiliated with any studio?</h2>
+    <p>
+      No. Watch Tracker is an independent, fan-made project with original
+      sample content, built purely as a personal watch-order tool.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Watch Tracker is an independent, fan-made checklist. Not affiliated with any studio.</p>
+    </div>
+  </footer>
+
+  <script src="pwa.js" defer></script>
+</body>
+</html>
