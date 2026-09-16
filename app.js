@@ -8,8 +8,8 @@ import { items } from "./data.js";
 // ---------------------------------------------------------------------
 
 // Hardcoded target date for the countdown — swap this for your own.
-// "Continuum Day": the fictional in-story release date the saga builds to.
-const TARGET_DATE = new Date("2027-05-07T00:00:00");
+// "Doomsday": the release date every title on this list builds up to.
+const TARGET_DATE = new Date("2026-12-18T00:00:00");
 
 const STORAGE_KEY = "watchTracker.watchedIds.v1";
 

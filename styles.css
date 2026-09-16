@@ -90,6 +90,14 @@ nav.site-nav a[aria-current="page"] {
   font-weight: 600;
 }
 
+/* ---------- tagline ---------- */
+
+.tagline {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
 /* ---------- countdown ---------- */
 
 .countdown {
