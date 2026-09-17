@@ -84,6 +84,35 @@ function getVisibleItems() {
 }
 
 // ---------------------------------------------------------------------
+// Thumbnail tiles
+// ---------------------------------------------------------------------
+// No real poster art is used (licensing real movie/show poster images
+// would carry meaningful copyright risk for a fan project). Instead each
+// item gets a deterministic gradient tile + monogram, generated purely
+// from its title — same input always produces the same tile, no images
+// fetched, works fully offline.
+
+const THUMB_STOPWORDS = new Set(["the", "of", "and", "a", "an", "in", "to"]);
+
+function getInitials(title) {
+  const words = title
+    .split(/\s+/)
+    .map((w) => w.replace(/[^A-Za-z]/g, ""))
+    .filter((w) => w && !THUMB_STOPWORDS.has(w.toLowerCase()));
+  if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return "??";
+}
+
+function hashHue(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) >>> 0;
+  }
+  return hash % 360;
+}
+
+// ---------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------
 
@@ -119,6 +148,12 @@ function renderList() {
     checkbox.setAttribute("aria-label", `Mark "${item.title}" as watched`);
     checkbox.addEventListener("change", () => toggleWatched(item.id));
 
+    const thumb = document.createElement("div");
+    thumb.className = "item-thumb";
+    thumb.style.setProperty("--hue", String(hashHue(item.id)));
+    thumb.textContent = getInitials(item.title);
+    thumb.setAttribute("aria-hidden", "true");
+
     const body = document.createElement("div");
     body.className = "item-body";
 
@@ -149,7 +184,7 @@ function renderList() {
       body.appendChild(stop);
     }
 
-    label.append(orderBadge, checkbox, body);
+    label.append(orderBadge, checkbox, thumb, body);
     li.appendChild(label);
     listEl.appendChild(li);
   }
