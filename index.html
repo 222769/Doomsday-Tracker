@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/favicon-32.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-  <meta name="theme-color" content="#0f1220" />
+  <meta name="theme-color" content="#0a0807" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -25,6 +25,7 @@
       </nav>
     </div>
   </header>
+  <div class="hazard-stripe" aria-hidden="true"></div>
 
   <main class="wrap">
     <p class="tagline">
@@ -34,7 +35,7 @@
     </p>
 
     <section class="countdown" aria-label="Countdown to Doomsday">
-      <h2>Countdown to Doomsday</h2>
+      <h2><span class="status-dot pulse" aria-hidden="true"></span>Countdown to Doomsday</h2>
       <div class="countdown-grid">
         <div><strong id="cdDays">0</strong><span>Days</span></div>
         <div><strong id="cdHours">00</strong><span>Hours</span></div>
@@ -90,6 +91,7 @@
     <ul class="item-list" id="itemList"></ul>
   </main>
 
+  <div class="hazard-stripe" aria-hidden="true"></div>
   <footer class="site-footer">
     <div class="wrap">
       <p>Watch Tracker is an independent, fan-made checklist. Not affiliated with any studio.</p>
