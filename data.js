@@ -1,20 +1,32 @@
 // data.js
 // The real watch order: every mainline Marvel Cinematic Universe movie and
-// series, plus the Disney+ "side story" shows, plus the non-MCU "guest"
-// tier — Fox's X-Men series and the Raimi/Webb Spider-Man films — that
-// Avengers: Doomsday is reportedly pulling back in via the multiverse.
-// Covers everything from X-Men (2000) through Avengers: Doomsday
-// (Dec 18, 2026).
+// series, the Disney+ "side story" shows, the pre-Disney+ "Netflix corner"
+// (Daredevil, Jessica Jones, The Punisher) that Daredevil: Born Again
+// directly continues, plus the non-MCU "guest" tier — Fox's X-Men series
+// and the Raimi/Webb Spider-Man films — that Avengers: Doomsday is
+// reportedly pulling back in via the multiverse. Covers everything from
+// X-Men (2000) through Avengers: Doomsday (Dec 18, 2026).
 //
 // This is an independent, fan-made list — not an official Marvel Studios,
-// Disney, Fox, or Sony publication. Release dates and runtimes are drawn
-// from public sources; timelineOrder reflects the commonly cited
+// Disney, Netflix, Fox, or Sony publication. Release dates and runtimes are
+// drawn from public sources; timelineOrder reflects the commonly cited
 // fan-consensus in-universe chronology (not an official numbered canon —
-// Marvel has never published one). The guest-tier films belong to their
-// own separate continuities (the Fox-verse, the Raimi-verse, the
-// Webb-verse); timelineOrder places each block at the point it's pulled
-// into the main story via a multiverse crossover, not as a literal claim
-// that they share Earth-616's timeline.
+// Marvel has never published one).
+//
+// releaseOrder is grouped by tier rather than strictly interleaved by
+// real-world date: the mainline MCU/Disney+ track (1-57), then the guest
+// tier (58-75), then the Netflix corner (76-81) — so, for example, the
+// Netflix corner's 2015 premiere doesn't get interleaved into the middle
+// of the mainline track. The guest-tier films belong to their own
+// separate continuities (the Fox-verse, the Raimi-verse, the Webb-verse);
+// timelineOrder places each block at the point it's pulled into the main
+// story via a multiverse crossover, not as a literal claim that they share
+// Earth-616's timeline. The Netflix corner *is* Earth-616 continuity, but
+// for timelineOrder it's likewise placed as one block right before
+// Daredevil: Born Again — the point it's actually relevant to watch —
+// rather than scattered across 2015-2019 mid-list; if you'd rather slot
+// it in strictly by date, that's a one-line change to each item's
+// timelineOrder below.
 //
 // Shape of each item:
 //   id             - unique string, used as the localStorage key (for movies)
@@ -36,47 +48,47 @@
 //   stopPoint      - optional string, e.g. "watch through S1E4 only"
 
 export const items = [
-  { id: "x-men", title: "X-Men", type: "movie", releaseOrder: 54, timelineOrder: 50, runtimeMinutes: 104, notes: "Opens Fox's original X-Men series — folded into the multiverse alongside Deadpool & Wolverine and, reportedly, Doomsday itself." },
-  { id: "spider-man-2002", title: "Spider-Man", type: "movie", releaseOrder: 55, timelineOrder: 33, runtimeMinutes: 121, notes: "Opens Sam Raimi's trilogy — this Peter Parker reappears via No Way Home's multiverse crossover." },
-  { id: "x2-x-men-united", title: "X2: X-Men United", type: "movie", releaseOrder: 56, timelineOrder: 51, runtimeMinutes: 134 },
-  { id: "spider-man-2-2004", title: "Spider-Man 2", type: "movie", releaseOrder: 57, timelineOrder: 34, runtimeMinutes: 127 },
-  { id: "x-men-last-stand", title: "X-Men: The Last Stand", type: "movie", releaseOrder: 58, timelineOrder: 52, runtimeMinutes: 104 },
-  { id: "spider-man-3-2007", title: "Spider-Man 3", type: "movie", releaseOrder: 59, timelineOrder: 35, runtimeMinutes: 139 },
+  { id: "x-men", title: "X-Men", type: "movie", releaseOrder: 58, timelineOrder: 50, runtimeMinutes: 104, notes: "Opens Fox's original X-Men series — folded into the multiverse alongside Deadpool & Wolverine and, reportedly, Doomsday itself." },
+  { id: "spider-man-2002", title: "Spider-Man", type: "movie", releaseOrder: 59, timelineOrder: 33, runtimeMinutes: 121, notes: "Opens Sam Raimi's trilogy — this Peter Parker reappears via No Way Home's multiverse crossover." },
+  { id: "x2-x-men-united", title: "X2: X-Men United", type: "movie", releaseOrder: 60, timelineOrder: 51, runtimeMinutes: 134 },
+  { id: "spider-man-2-2004", title: "Spider-Man 2", type: "movie", releaseOrder: 61, timelineOrder: 34, runtimeMinutes: 127 },
+  { id: "x-men-last-stand", title: "X-Men: The Last Stand", type: "movie", releaseOrder: 62, timelineOrder: 52, runtimeMinutes: 104 },
+  { id: "spider-man-3-2007", title: "Spider-Man 3", type: "movie", releaseOrder: 63, timelineOrder: 35, runtimeMinutes: 139 },
   { id: "iron-man", title: "Iron Man", type: "movie", releaseOrder: 1, timelineOrder: 3, runtimeMinutes: 126 },
   { id: "incredible-hulk", title: "The Incredible Hulk", type: "movie", releaseOrder: 2, timelineOrder: 5, runtimeMinutes: 112, notes: "Often skipped today — Mark Ruffalo replaces Edward Norton as Banner from here on." },
-  { id: "x-men-origins-wolverine", title: "X-Men Origins: Wolverine", type: "movie", releaseOrder: 60, timelineOrder: 53, runtimeMinutes: 107 },
+  { id: "x-men-origins-wolverine", title: "X-Men Origins: Wolverine", type: "movie", releaseOrder: 64, timelineOrder: 53, runtimeMinutes: 107 },
   { id: "iron-man-2", title: "Iron Man 2", type: "movie", releaseOrder: 3, timelineOrder: 4, runtimeMinutes: 124 },
   { id: "thor", title: "Thor", type: "movie", releaseOrder: 4, timelineOrder: 6, runtimeMinutes: 115 },
-  { id: "x-men-first-class", title: "X-Men: First Class", type: "movie", releaseOrder: 61, timelineOrder: 54, runtimeMinutes: 131 },
+  { id: "x-men-first-class", title: "X-Men: First Class", type: "movie", releaseOrder: 65, timelineOrder: 54, runtimeMinutes: 131 },
   { id: "captain-america-first-avenger", title: "Captain America: The First Avenger", type: "movie", releaseOrder: 5, timelineOrder: 1, runtimeMinutes: 124 },
   { id: "the-avengers", title: "The Avengers", type: "movie", releaseOrder: 6, timelineOrder: 7, runtimeMinutes: 143 },
-  { id: "amazing-spider-man", title: "The Amazing Spider-Man", type: "movie", releaseOrder: 62, timelineOrder: 36, runtimeMinutes: 136, notes: "Begins the Andrew Garfield era — also folded in by No Way Home." },
+  { id: "amazing-spider-man", title: "The Amazing Spider-Man", type: "movie", releaseOrder: 66, timelineOrder: 36, runtimeMinutes: 136, notes: "Begins the Andrew Garfield era — also folded in by No Way Home." },
   { id: "iron-man-3", title: "Iron Man 3", type: "movie", releaseOrder: 7, timelineOrder: 9, runtimeMinutes: 130 },
-  { id: "the-wolverine", title: "The Wolverine", type: "movie", releaseOrder: 63, timelineOrder: 55, runtimeMinutes: 126 },
+  { id: "the-wolverine", title: "The Wolverine", type: "movie", releaseOrder: 67, timelineOrder: 55, runtimeMinutes: 126 },
   { id: "thor-dark-world", title: "Thor: The Dark World", type: "movie", releaseOrder: 8, timelineOrder: 8, runtimeMinutes: 112 },
   { id: "captain-america-winter-soldier", title: "Captain America: The Winter Soldier", type: "movie", releaseOrder: 9, timelineOrder: 10, runtimeMinutes: 136 },
-  { id: "amazing-spider-man-2", title: "The Amazing Spider-Man 2", type: "movie", releaseOrder: 64, timelineOrder: 37, runtimeMinutes: 142 },
-  { id: "x-men-days-of-future-past", title: "X-Men: Days of Future Past", type: "movie", releaseOrder: 65, timelineOrder: 56, runtimeMinutes: 132 },
+  { id: "amazing-spider-man-2", title: "The Amazing Spider-Man 2", type: "movie", releaseOrder: 68, timelineOrder: 37, runtimeMinutes: 142 },
+  { id: "x-men-days-of-future-past", title: "X-Men: Days of Future Past", type: "movie", releaseOrder: 69, timelineOrder: 56, runtimeMinutes: 132 },
   { id: "guardians-of-the-galaxy", title: "Guardians of the Galaxy", type: "movie", releaseOrder: 10, timelineOrder: 11, runtimeMinutes: 121 },
   { id: "avengers-age-of-ultron", title: "Avengers: Age of Ultron", type: "movie", releaseOrder: 11, timelineOrder: 13, runtimeMinutes: 141 },
   { id: "ant-man", title: "Ant-Man", type: "movie", releaseOrder: 12, timelineOrder: 14, runtimeMinutes: 117 },
-  { id: "deadpool", title: "Deadpool", type: "movie", releaseOrder: 66, timelineOrder: 57, runtimeMinutes: 108 },
+  { id: "deadpool", title: "Deadpool", type: "movie", releaseOrder: 70, timelineOrder: 57, runtimeMinutes: 108 },
   { id: "captain-america-civil-war", title: "Captain America: Civil War", type: "movie", releaseOrder: 13, timelineOrder: 15, runtimeMinutes: 147 },
-  { id: "x-men-apocalypse", title: "X-Men: Apocalypse", type: "movie", releaseOrder: 67, timelineOrder: 58, runtimeMinutes: 144 },
+  { id: "x-men-apocalypse", title: "X-Men: Apocalypse", type: "movie", releaseOrder: 71, timelineOrder: 58, runtimeMinutes: 144 },
   { id: "doctor-strange", title: "Doctor Strange", type: "movie", releaseOrder: 14, timelineOrder: 18, runtimeMinutes: 115 },
-  { id: "logan", title: "Logan", type: "movie", releaseOrder: 68, timelineOrder: 59, runtimeMinutes: 137 },
+  { id: "logan", title: "Logan", type: "movie", releaseOrder: 72, timelineOrder: 59, runtimeMinutes: 137 },
   { id: "guardians-of-the-galaxy-vol-2", title: "Guardians of the Galaxy Vol. 2", type: "movie", releaseOrder: 15, timelineOrder: 12, runtimeMinutes: 136 },
   { id: "spider-man-homecoming", title: "Spider-Man: Homecoming", type: "movie", releaseOrder: 16, timelineOrder: 17, runtimeMinutes: 133 },
   { id: "thor-ragnarok", title: "Thor: Ragnarok", type: "movie", releaseOrder: 17, timelineOrder: 20, runtimeMinutes: 130 },
   { id: "black-panther", title: "Black Panther", type: "movie", releaseOrder: 18, timelineOrder: 19, runtimeMinutes: 134 },
   { id: "avengers-infinity-war", title: "Avengers: Infinity War", type: "movie", releaseOrder: 19, timelineOrder: 21, runtimeMinutes: 149 },
-  { id: "deadpool-2", title: "Deadpool 2", type: "movie", releaseOrder: 69, timelineOrder: 60, runtimeMinutes: 119 },
+  { id: "deadpool-2", title: "Deadpool 2", type: "movie", releaseOrder: 73, timelineOrder: 60, runtimeMinutes: 119 },
   { id: "ant-man-and-the-wasp", title: "Ant-Man and the Wasp", type: "movie", releaseOrder: 20, timelineOrder: 22, runtimeMinutes: 118 },
   { id: "captain-marvel", title: "Captain Marvel", type: "movie", releaseOrder: 21, timelineOrder: 2, runtimeMinutes: 123, notes: "Set in 1995 — chronologically early despite its release date." },
   { id: "avengers-endgame", title: "Avengers: Endgame", type: "movie", releaseOrder: 22, timelineOrder: 23, runtimeMinutes: 181, notes: "The Infinity Saga payoff. Essential." },
-  { id: "dark-phoenix", title: "Dark Phoenix", type: "movie", releaseOrder: 70, timelineOrder: 61, runtimeMinutes: 113 },
+  { id: "dark-phoenix", title: "Dark Phoenix", type: "movie", releaseOrder: 74, timelineOrder: 61, runtimeMinutes: 113 },
   { id: "spider-man-far-from-home", title: "Spider-Man: Far From Home", type: "movie", releaseOrder: 23, timelineOrder: 28, runtimeMinutes: 129 },
-  { id: "the-new-mutants", title: "The New Mutants", type: "movie", releaseOrder: 71, timelineOrder: 62, runtimeMinutes: 94 },
+  { id: "the-new-mutants", title: "The New Mutants", type: "movie", releaseOrder: 75, timelineOrder: 62, runtimeMinutes: 94 },
   {
     id: "wandavision", title: "WandaVision", type: "show", releaseOrder: 24, timelineOrder: 26,
     notes: "Sets up Wanda's arc for Doctor Strange in the Multiverse of Madness.",
@@ -248,6 +260,120 @@ export const items = [
   },
   { id: "deadpool-and-wolverine", title: "Deadpool & Wolverine", type: "movie", releaseOrder: 45, timelineOrder: 63, runtimeMinutes: 128, notes: "Folds in Fox's X-Men-era multiverse — directly relevant to Doomsday's cast." },
   {
+    id: "daredevil-season-1", title: "Daredevil (Season 1)", type: "show", releaseOrder: 76, timelineOrder: 65,
+    notes: "The Netflix corner: Matt Murdock's origin as Daredevil, and Wilson Fisk's rise as Kingpin. Placed here as backstory for Daredevil: Born Again, though it originally aired in 2015.",
+    episodes: [
+      { id: "daredevil-season-1-e1", title: "Into the Ring", runtimeMinutes: 54 },
+      { id: "daredevil-season-1-e2", title: "Cut Man", runtimeMinutes: 54 },
+      { id: "daredevil-season-1-e3", title: "Rabbit in a Snowstorm", runtimeMinutes: 53 },
+      { id: "daredevil-season-1-e4", title: "In the Blood", runtimeMinutes: 49 },
+      { id: "daredevil-season-1-e5", title: "World on Fire", runtimeMinutes: 47 },
+      { id: "daredevil-season-1-e6", title: "Condemned", runtimeMinutes: 50 },
+      { id: "daredevil-season-1-e7", title: "Stick", runtimeMinutes: 50 },
+      { id: "daredevil-season-1-e8", title: "Shadows in the Glass", runtimeMinutes: 50 },
+      { id: "daredevil-season-1-e9", title: "Speak of the Devil", runtimeMinutes: 49 },
+      { id: "daredevil-season-1-e10", title: "Nelson v. Murdock", runtimeMinutes: 50 },
+      { id: "daredevil-season-1-e11", title: "The Path of the Righteous", runtimeMinutes: 49 },
+      { id: "daredevil-season-1-e12", title: "The Ones We Leave Behind", runtimeMinutes: 49 },
+      { id: "daredevil-season-1-e13", title: "Daredevil", runtimeMinutes: 61, spoiler: "Matt Murdock puts on the horned Daredevil suit for the first time and puts Wilson Fisk behind bars — the status quo Daredevil: Born Again opens by upending." },
+    ],
+  },
+  {
+    id: "jessica-jones-season-1", title: "Jessica Jones (Season 1)", type: "show", releaseOrder: 77, timelineOrder: 66,
+    notes: "Netflix corner. Jessica Jones' origin and her fight against Kilgrave — set in the same Hell's Kitchen as Daredevil.",
+    episodes: [
+      { id: "jessica-jones-season-1-e1", title: "AKA Ladies Night", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e2", title: "AKA Crush Syndrome", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e3", title: "AKA It's Called Whiskey", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e4", title: "AKA 99 Friends", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e5", title: "AKA The Sandwich Saved Me", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e6", title: "AKA You're a Winner!", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e7", title: "AKA Top Shelf Perverts", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e8", title: "AKA WWJD?", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e9", title: "AKA Sin Bin", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e10", title: "AKA 1,000 Cuts", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e11", title: "AKA I've Got the Blues", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e12", title: "AKA Take a Bloody Number", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-1-e13", title: "AKA Smile", runtimeMinutes: 54 },
+    ],
+  },
+  {
+    id: "daredevil-season-2", title: "Daredevil (Season 2)", type: "show", releaseOrder: 78, timelineOrder: 67,
+    notes: "Netflix corner. Introduces Frank Castle (the Punisher) and Elektra.",
+    episodes: [
+      { id: "daredevil-season-2-e1", title: "Bang", runtimeMinutes: 54 },
+      { id: "daredevil-season-2-e2", title: "Dogs to a Gunfight", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e3", title: "New York's Finest", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e4", title: "Penny and Dime", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e5", title: "Kinbaku", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e6", title: "Regrets Only", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e7", title: "Semper Fidelis", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e8", title: "Guilty as Sin", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e9", title: "Seven Minutes in Heaven", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e10", title: "The Man in the Box", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e11", title: ".380", runtimeMinutes: 49 },
+      { id: "daredevil-season-2-e12", title: "The Dark at the End of the Tunnel", runtimeMinutes: 50 },
+      { id: "daredevil-season-2-e13", title: "A Cold Day in Hell's Kitchen", runtimeMinutes: 56, spoiler: "Elektra is killed by the Hand's ninjas, and Frank Castle takes up the Punisher identity for good — setting up his own series." },
+    ],
+  },
+  {
+    id: "punisher-season-1", title: "The Punisher (Season 1)", type: "show", releaseOrder: 79, timelineOrder: 68,
+    notes: "Netflix corner. Frank Castle's own series, spun off from Daredevil Season 2.",
+    episodes: [
+      { id: "punisher-season-1-e1", title: "3AM", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e2", title: "Two Dead Men", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e3", title: "Kandahar", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e4", title: "Resupply", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e5", title: "Gunner", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e6", title: "The Judas Goat", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e7", title: "Crosshairs", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e8", title: "Cold Steel", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e9", title: "Front Toward Enemy", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e10", title: "Virtue of the Vicious", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e11", title: "Danger Close", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e12", title: "Home", runtimeMinutes: 52 },
+      { id: "punisher-season-1-e13", title: "Memento Mori", runtimeMinutes: 58 },
+    ],
+  },
+  {
+    id: "daredevil-season-3", title: "Daredevil (Season 3)", type: "show", releaseOrder: 80, timelineOrder: 69,
+    notes: "Netflix corner. Wilson Fisk works his way back to power from behind bars.",
+    episodes: [
+      { id: "daredevil-season-3-e1", title: "Resurrection", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e2", title: "Please", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e3", title: "No Good Deed", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e4", title: "Blindsided", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e5", title: "The Perfect Game", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e6", title: "The Devil You Know", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e7", title: "Aftermath", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e8", title: "Upstairs/Downstairs", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e9", title: "Revelations", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e10", title: "Karen", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e11", title: "Reunion", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e12", title: "One Last Shot", runtimeMinutes: 50 },
+      { id: "daredevil-season-3-e13", title: "A New Napkin", runtimeMinutes: 56, spoiler: "Wilson Fisk manipulates the FBI into freeing him and killing his handler, walking free with a plan to go legitimate — exactly the setup Daredevil: Born Again opens on years later." },
+    ],
+  },
+  {
+    id: "punisher-season-2", title: "The Punisher (Season 2)", type: "show", releaseOrder: 81, timelineOrder: 70,
+    notes: "Netflix corner. The last of this era before the story jumps to Daredevil: Born Again.",
+    episodes: [
+      { id: "punisher-season-2-e1", title: "Roadhouse Blues", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e2", title: "Fight or Flight", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e3", title: "Trouble the Water", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e4", title: "Scar Tissue", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e5", title: "One-Eyed Jacks", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e6", title: "Nakazat", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e7", title: "One Bad Day", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e8", title: "My Brother's Keeper", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e9", title: "Flustercluck", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e10", title: "The Dark Hearts of Men", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e11", title: "The Abyss", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e12", title: "Collision Course", runtimeMinutes: 52 },
+      { id: "punisher-season-2-e13", title: "The Whirlwind", runtimeMinutes: 58 },
+    ],
+  },
+  {
     id: "agatha-all-along", title: "Agatha All Along", type: "show", releaseOrder: 46, timelineOrder: 64,
     notes: "WandaVision spinoff following Agatha Harkness.",
     episodes: [
@@ -262,9 +388,8 @@ export const items = [
       { id: "agatha-all-along-e9", title: "Maiden Mother Crone", runtimeMinutes: 50, spoiler: "Agatha sacrifices herself for Billy Maximoff and returns as a ghost; Billy sets off to find his twin brother Tommy, last seen erased from reality in WandaVision." },
     ],
   },
-  { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 47, timelineOrder: 66, runtimeMinutes: 118 },
   {
-    id: "daredevil-born-again", title: "Daredevil: Born Again", type: "show", releaseOrder: 48, timelineOrder: 65,
+    id: "daredevil-born-again", title: "Daredevil: Born Again (Season 1)", type: "show", releaseOrder: 48, timelineOrder: 71,
     notes: "Wilson Fisk's rise sets up the political thread running through Thunderbolts*.",
     episodes: [
       { id: "daredevil-born-again-e1", title: "Heaven's Half Hour", runtimeMinutes: 52 },
@@ -275,12 +400,28 @@ export const items = [
       { id: "daredevil-born-again-e6", title: "Excessive Force", runtimeMinutes: 50 },
       { id: "daredevil-born-again-e7", title: "Art for Art's Sake", runtimeMinutes: 49 },
       { id: "daredevil-born-again-e8", title: "Isle of Joy", runtimeMinutes: 52 },
-      { id: "daredevil-born-again-e9", title: "Straight to Hell", runtimeMinutes: 54, spoiler: "Wilson Fisk uses his position as mayor to outlaw vigilantes and orders Matt Murdock killed on sight — the authoritarian backdrop that carries into Thunderbolts*." },
+      { id: "daredevil-born-again-e9", title: "Straight to Hell", runtimeMinutes: 54, spoiler: "Wilson Fisk uses his position as mayor to outlaw vigilantes and orders Matt Murdock killed on sight — the authoritarian backdrop that carries into Season 2 and Thunderbolts*." },
     ],
   },
-  { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 49, timelineOrder: 67, runtimeMinutes: 126 },
   {
-    id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 50, timelineOrder: 68,
+    id: "daredevil-born-again-season-2", title: "Daredevil: Born Again (Season 2)", type: "show", releaseOrder: 53, timelineOrder: 72,
+    notes: "Direct continuation of Season 1's cliffhanger.",
+    episodes: [
+      { id: "daredevil-born-again-season-2-e1", title: "The Northern Star", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e2", title: "Shoot the Moon", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e3", title: "The Scales & The Sword", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e4", title: "Gloves Off", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e5", title: "The Grand Design", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e6", title: "Requiem", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e7", title: "The Hateful Darkness", runtimeMinutes: 50 },
+      { id: "daredevil-born-again-season-2-e8", title: "The Southern Cross", runtimeMinutes: 54, spoiler: "The season closes with Fisk's grip on New York shaken but not broken, and Frank Castle drawn back into the fight — picked up directly by The Punisher: One Last Kill." },
+    ],
+  },
+  { id: "punisher-one-last-kill", title: "The Punisher: One Last Kill", type: "movie", releaseOrder: 54, timelineOrder: 73, runtimeMinutes: 51, notes: "A one-off special, not a full series — Frank Castle's last word on the Born Again Season 2 fallout." },
+  { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 47, timelineOrder: 74, runtimeMinutes: 118 },
+  { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 49, timelineOrder: 75, runtimeMinutes: 126 },
+  {
+    id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 50, timelineOrder: 76,
     notes: "Introduces Riri Williams ahead of her expected role in the wider saga.",
     episodes: [
       { id: "ironheart-e1", title: "Take Me Home", runtimeMinutes: 38 },
@@ -291,7 +432,35 @@ export const items = [
       { id: "ironheart-e6", title: "The Past Is the Past", runtimeMinutes: 42, spoiler: "Riri makes a literal deal with Mephisto — the MCU's first on-screen appearance of the demon — trading something of her own to bring Natalie back to life." },
     ],
   },
-  { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 51, timelineOrder: 69, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline." },
-  { id: "spider-man-brand-new-day", title: "Spider-Man: Brand New Day", type: "movie", releaseOrder: 52, timelineOrder: 70, runtimeMinutes: 145 },
-  { id: "avengers-doomsday", title: "Avengers: Doomsday", type: "movie", releaseOrder: 53, timelineOrder: 71, runtimeMinutes: 180, notes: "In theaters December 18, 2026. Runtime is an estimate — not yet officially confirmed." },
+  {
+    id: "wonder-man", title: "Wonder Man", type: "show", releaseOrder: 52, timelineOrder: 77,
+    notes: "Mostly self-contained Hollywood satire about a stuntman chasing the role of a retired superhero.",
+    episodes: [
+      { id: "wonder-man-e1", title: "Matinee", runtimeMinutes: 36 },
+      { id: "wonder-man-e2", title: "Self-Tape", runtimeMinutes: 34 },
+      { id: "wonder-man-e3", title: "Pacoima", runtimeMinutes: 34 },
+      { id: "wonder-man-e4", title: "Doorman", runtimeMinutes: 34 },
+      { id: "wonder-man-e5", title: "Found Footage", runtimeMinutes: 34 },
+      { id: "wonder-man-e6", title: "Call Back", runtimeMinutes: 34 },
+      { id: "wonder-man-e7", title: "Kathy Friedman", runtimeMinutes: 34 },
+      { id: "wonder-man-e8", title: "Yucca Valley", runtimeMinutes: 40 },
+    ],
+  },
+  { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 51, timelineOrder: 78, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline." },
+  { id: "spider-man-brand-new-day", title: "Spider-Man: Brand New Day", type: "movie", releaseOrder: 55, timelineOrder: 79, runtimeMinutes: 145 },
+  {
+    id: "visionquest", title: "VisionQuest", type: "show", releaseOrder: 56, timelineOrder: 80,
+    notes: "White Vision's search for his lost memories and humanity after WandaVision. Episode titles hadn't been announced as of this list's last update — shown as placeholders.",
+    episodes: [
+      { id: "visionquest-e1", title: "Episode 1", runtimeMinutes: 45 },
+      { id: "visionquest-e2", title: "Episode 2", runtimeMinutes: 45 },
+      { id: "visionquest-e3", title: "Episode 3", runtimeMinutes: 45 },
+      { id: "visionquest-e4", title: "Episode 4", runtimeMinutes: 45 },
+      { id: "visionquest-e5", title: "Episode 5", runtimeMinutes: 45 },
+      { id: "visionquest-e6", title: "Episode 6", runtimeMinutes: 45 },
+      { id: "visionquest-e7", title: "Episode 7", runtimeMinutes: 45 },
+      { id: "visionquest-e8", title: "Episode 8", runtimeMinutes: 45 },
+    ],
+  },
+  { id: "avengers-doomsday", title: "Avengers: Doomsday", type: "movie", releaseOrder: 57, timelineOrder: 81, runtimeMinutes: 180, notes: "In theaters December 18, 2026. Runtime is an estimate — not yet officially confirmed." },
 ];

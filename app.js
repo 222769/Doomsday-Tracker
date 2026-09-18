@@ -374,23 +374,24 @@ function renderAll() {
 // Event handlers
 // ---------------------------------------------------------------------
 
-function pushToSyncIfActive() {
+function pushDeltaIfActive(ids, watched) {
   if (activeSyncCode) {
-    sync.push(activeSyncCode, watchedIds).catch((err) => {
+    sync.pushDelta(activeSyncCode, ids, watched).catch((err) => {
       console.warn("Sync push failed:", err);
     });
   }
 }
 
 function toggleWatched(id) {
-  if (watchedIds.has(id)) {
-    watchedIds.delete(id);
-  } else {
+  const nowWatched = !watchedIds.has(id);
+  if (nowWatched) {
     watchedIds.add(id);
+  } else {
+    watchedIds.delete(id);
   }
   saveWatchedIds(watchedIds);
   renderAll();
-  pushToSyncIfActive();
+  pushDeltaIfActive([id], nowWatched);
 }
 
 // The show's own checkbox is a bulk action: check it to mark every
@@ -398,16 +399,17 @@ function toggleWatched(id) {
 // toggle independently via toggleWatched.
 function toggleShowBulk(item) {
   const shouldWatchAll = !isItemWatched(item);
-  for (const ep of item.episodes) {
+  const episodeIds = item.episodes.map((ep) => ep.id);
+  for (const id of episodeIds) {
     if (shouldWatchAll) {
-      watchedIds.add(ep.id);
+      watchedIds.add(id);
     } else {
-      watchedIds.delete(ep.id);
+      watchedIds.delete(id);
     }
   }
   saveWatchedIds(watchedIds);
   renderAll();
-  pushToSyncIfActive();
+  pushDeltaIfActive(episodeIds, shouldWatchAll);
 }
 
 function toggleExpand(itemId) {
@@ -472,9 +474,11 @@ resetBtn.addEventListener("click", () => {
   resetBtn.classList.remove("confirming");
   resetBtn.textContent = "Reset progress";
 
+  const previouslyWatched = [...watchedIds];
   watchedIds = new Set();
   saveWatchedIds(watchedIds);
   renderAll();
+  pushDeltaIfActive(previouslyWatched, false);
 });
 
 // ---------------------------------------------------------------------

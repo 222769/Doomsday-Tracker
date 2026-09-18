@@ -146,15 +146,23 @@ export const sync = {
     return snap.data().watchedIds || [];
   },
 
-  // Writes the device's current progress to an already-active code.
-  async push(code, watchedIds) {
-    const { db, doc, setDoc, serverTimestamp } = await withTimeout(
+  // Applies an incremental add/remove to the synced list rather than
+  // overwriting the whole array. This matters once two devices share a
+  // code: overwriting with each device's full local copy is a
+  // last-write-wins race — if both toggle something around the same
+  // moment, whichever write lands second silently erases the other's
+  // change. arrayUnion/arrayRemove are applied server-side as transforms
+  // on top of whatever the document currently holds, so two devices
+  // changing different ids at the same time both survive.
+  async pushDelta(code, ids, watched) {
+    if (!ids.length) return;
+    const { db, doc, updateDoc, arrayUnion, arrayRemove, serverTimestamp } = await withTimeout(
       loadFirestore(),
       "Connection timed out. Check your internet connection and try again."
     );
     await withTimeout(
-      setDoc(doc(db, "codes", code), {
-        watchedIds: [...watchedIds],
+      updateDoc(doc(db, "codes", code), {
+        watchedIds: watched ? arrayUnion(...ids) : arrayRemove(...ids),
         updatedAt: serverTimestamp(),
       }),
       "Connection timed out. Check your internet connection and try again."
