@@ -9,10 +9,10 @@
 // Until you replace the placeholders below, sync stays disabled and the
 // app works exactly as it did before — local-only, no network calls.
 export const firebaseConfig = {
-  apiKey: "REPLACE_WITH_YOUR_API_KEY",
-  authDomain: "REPLACE_WITH_YOUR_PROJECT.firebaseapp.com",
-  projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
-  storageBucket: "REPLACE_WITH_YOUR_PROJECT.appspot.com",
-  messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
-  appId: "REPLACE_WITH_YOUR_APP_ID",
+  apiKey: "AIzaSyAsAWug7vzHs2Ef3dJIsU1bDzrjuyOjy38",
+  authDomain: "watch-tracker-db16c.firebaseapp.com",
+  projectId: "watch-tracker-db16c",
+  storageBucket: "watch-tracker-db16c.firebasestorage.app",
+  messagingSenderId: "477463640495",
+  appId: "1:477463640495:web:07b77db630e442e5c6d75a",
 };
