@@ -4,13 +4,11 @@
 // network fallback that also updates the cache. Bump CACHE_NAME whenever
 // shell files change so old clients pick up the new version.
 
-const CACHE_NAME = "watch-tracker-v4";
+const CACHE_NAME = "watch-tracker-v5";
 
 const APP_SHELL = [
   "./",
   "index.html",
-  "about.html",
-  "faq.html",
   "styles.css",
   "app.js",
   "data.js",

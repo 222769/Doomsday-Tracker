@@ -75,13 +75,20 @@ const statHoursLeft = document.getElementById("statHoursLeft");
 const statPace = document.getElementById("statPace");
 const progressFill = document.getElementById("progressFill");
 
-const syncUnconfigured = document.getElementById("syncUnconfigured");
-const syncOffPanel = document.getElementById("syncOffPanel");
-const syncOnPanel = document.getElementById("syncOnPanel");
-const getCodeBtn = document.getElementById("getCodeBtn");
+const accountBtn = document.getElementById("accountBtn");
+const accountBtnLabel = document.getElementById("accountBtnLabel");
+const authModalOverlay = document.getElementById("authModalOverlay");
+const authModalClose = document.getElementById("authModalClose");
+const authModalUnsynced = document.getElementById("authModalUnsynced");
+const authModalSynced = document.getElementById("authModalSynced");
+const authTabRegister = document.getElementById("authTabRegister");
+const authTabSignin = document.getElementById("authTabSignin");
+const authPanelRegister = document.getElementById("authPanelRegister");
+const authPanelSignin = document.getElementById("authPanelSignin");
+const generateCodeBtn = document.getElementById("generateCodeBtn");
 const joinCodeInput = document.getElementById("joinCodeInput");
 const joinCodeBtn = document.getElementById("joinCodeBtn");
-const joinCodeError = document.getElementById("joinCodeError");
+const authModalError = document.getElementById("authModalError");
 const syncCodeDisplay = document.getElementById("syncCodeDisplay");
 const copyCodeBtn = document.getElementById("copyCodeBtn");
 const stopSyncBtn = document.getElementById("stopSyncBtn");
@@ -471,9 +478,9 @@ resetBtn.addEventListener("click", () => {
 });
 
 // ---------------------------------------------------------------------
-// Cross-device sync
+// Account (cross-device sync via a generated code — no email/password)
 // ---------------------------------------------------------------------
-// Optional, code-based, no accounts. Disabled entirely (UI hidden) unless
+// The header's Account button and its modal are hidden entirely unless
 // firebase-config.js has been filled in — see SYNC_SETUP.md.
 
 function applyRemoteWatchedIds(remoteIds) {
@@ -484,51 +491,87 @@ function applyRemoteWatchedIds(remoteIds) {
 
 function showSyncedState(code) {
   activeSyncCode = code;
-  syncCodeDisplay.textContent = code;
-  syncOffPanel.hidden = true;
-  syncOnPanel.hidden = false;
+  syncCodeDisplay.textContent = sync.formatCodeForDisplay(code);
+  authModalUnsynced.hidden = true;
+  authModalSynced.hidden = false;
+  accountBtn.classList.add("synced");
+  accountBtnLabel.textContent = "Synced";
 }
 
 function showUnsyncedState() {
   activeSyncCode = null;
-  syncOffPanel.hidden = false;
-  syncOnPanel.hidden = true;
+  authModalUnsynced.hidden = false;
+  authModalSynced.hidden = true;
   joinCodeInput.value = "";
-  joinCodeError.hidden = true;
+  authModalError.hidden = true;
+  accountBtn.classList.remove("synced");
+  accountBtnLabel.textContent = "Account";
+}
+
+function setAuthTab(tab) {
+  authTabRegister.classList.toggle("active", tab === "register");
+  authTabSignin.classList.toggle("active", tab === "signin");
+  authPanelRegister.hidden = tab !== "register";
+  authPanelSignin.hidden = tab !== "signin";
+  authModalError.hidden = true;
+}
+
+function openAuthModal() {
+  authModalOverlay.hidden = false;
+  if (!activeSyncCode) setAuthTab("register");
+}
+
+function closeAuthModal() {
+  authModalOverlay.hidden = true;
 }
 
 if (sync.isConfigured()) {
-  syncUnconfigured.hidden = true;
+  accountBtn.hidden = false;
 
-  getCodeBtn.addEventListener("click", async () => {
-    getCodeBtn.disabled = true;
-    getCodeBtn.textContent = "Getting code…";
+  accountBtn.addEventListener("click", openAuthModal);
+  authModalClose.addEventListener("click", closeAuthModal);
+  authModalOverlay.addEventListener("click", (e) => {
+    if (e.target === authModalOverlay) closeAuthModal();
+  });
+
+  authTabRegister.addEventListener("click", () => setAuthTab("register"));
+  authTabSignin.addEventListener("click", () => setAuthTab("signin"));
+
+  // Auto-space the code as "0000 0000 0000 0000" while typing.
+  joinCodeInput.addEventListener("input", () => {
+    const digits = joinCodeInput.value.replace(/[^0-9]/g, "").slice(0, 16);
+    joinCodeInput.value = digits.replace(/(.{4})/g, "$1 ").trim();
+  });
+
+  generateCodeBtn.addEventListener("click", async () => {
+    generateCodeBtn.disabled = true;
+    generateCodeBtn.textContent = "Generating…";
     try {
       const code = await sync.createCode(watchedIds);
       await sync.listen(code, applyRemoteWatchedIds);
       showSyncedState(code);
     } catch (err) {
-      console.warn("Could not create sync code:", err);
-      joinCodeError.textContent = "Couldn't create a code — check your connection and try again.";
-      joinCodeError.hidden = false;
+      console.warn("Could not create an access code:", err);
+      authModalError.textContent = "Couldn't create a code — check your connection and try again.";
+      authModalError.hidden = false;
     } finally {
-      getCodeBtn.disabled = false;
-      getCodeBtn.textContent = "Get a sync code";
+      generateCodeBtn.disabled = false;
+      generateCodeBtn.textContent = "Generate my code";
     }
   });
 
-  // Joining an existing code replaces local progress, so this uses the
-  // same arm-then-confirm pattern as Reset when there's anything to lose.
+  // Signing in replaces local progress, so this uses the same
+  // arm-then-confirm pattern as Reset when there's anything to lose.
   let joinArmed = false;
   let joinArmTimer = null;
 
   joinCodeBtn.addEventListener("click", async () => {
     const code = sync.normalizeCode(joinCodeInput.value);
-    joinCodeError.hidden = true;
+    authModalError.hidden = true;
 
     if (!code) {
-      joinCodeError.textContent = "Enter the 8-character code exactly as you received it.";
-      joinCodeError.hidden = false;
+      authModalError.textContent = "Enter the 16-digit code exactly as you received it.";
+      authModalError.hidden = false;
       return;
     }
 
@@ -537,7 +580,7 @@ if (sync.isConfigured()) {
       joinCodeBtn.textContent = "Tap again to replace progress";
       joinArmTimer = setTimeout(() => {
         joinArmed = false;
-        joinCodeBtn.textContent = "Sync";
+        joinCodeBtn.textContent = "Sign In";
       }, 4000);
       return;
     }
@@ -545,7 +588,7 @@ if (sync.isConfigured()) {
     clearTimeout(joinArmTimer);
     joinArmed = false;
     joinCodeBtn.disabled = true;
-    joinCodeBtn.textContent = "Syncing…";
+    joinCodeBtn.textContent = "Signing in…";
 
     try {
       const remoteIds = await sync.joinCode(code);
@@ -553,21 +596,21 @@ if (sync.isConfigured()) {
       await sync.listen(code, applyRemoteWatchedIds);
       showSyncedState(code);
     } catch (err) {
-      console.warn("Could not join sync code:", err);
-      joinCodeError.textContent = err.message || "Couldn't sync with that code.";
-      joinCodeError.hidden = false;
+      console.warn("Could not sign in:", err);
+      authModalError.textContent = err.message || "Couldn't sign in with that code.";
+      authModalError.hidden = false;
     } finally {
       joinCodeBtn.disabled = false;
-      joinCodeBtn.textContent = "Sync";
+      joinCodeBtn.textContent = "Sign In";
     }
   });
 
   copyCodeBtn.addEventListener("click", async () => {
     try {
-      await navigator.clipboard.writeText(activeSyncCode);
+      await navigator.clipboard.writeText(sync.formatCodeForDisplay(activeSyncCode));
       copyCodeBtn.textContent = "Copied!";
       setTimeout(() => {
-        copyCodeBtn.textContent = "Copy";
+        copyCodeBtn.textContent = "Copy code";
       }, 1500);
     } catch {
       // Clipboard API may be unavailable — the code is already shown on screen.
@@ -577,6 +620,7 @@ if (sync.isConfigured()) {
   stopSyncBtn.addEventListener("click", () => {
     sync.stop();
     showUnsyncedState();
+    setAuthTab("register");
   });
 
   // Resume syncing automatically if this device was mid-session.
@@ -584,9 +628,6 @@ if (sync.isConfigured()) {
   if (storedCode) {
     sync.listen(storedCode, applyRemoteWatchedIds).then(() => showSyncedState(storedCode));
   }
-} else {
-  syncUnconfigured.hidden = false;
-  syncOffPanel.hidden = true;
 }
 
 // ---------------------------------------------------------------------

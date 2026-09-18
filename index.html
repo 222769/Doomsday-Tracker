@@ -18,11 +18,10 @@
         <img src="icons/icon-192.png" alt="" />
         Watch Tracker
       </a>
-      <nav class="site-nav">
-        <a href="index.html" aria-current="page">Checklist</a>
-        <a href="about.html">About</a>
-        <a href="faq.html">FAQ</a>
-      </nav>
+      <button class="account-btn" id="accountBtn" type="button" hidden>
+        <span aria-hidden="true">🔑</span>
+        <span id="accountBtnLabel">Account</span>
+      </button>
     </div>
   </header>
   <div class="hazard-stripe" aria-hidden="true"></div>
@@ -68,30 +67,6 @@
       </dl>
     </section>
 
-    <section class="sync" id="syncSection" aria-label="Cross-device sync">
-      <p class="sync-note" id="syncUnconfigured" hidden>
-        Cross-device sync isn't set up on this copy of the app yet — see SYNC_SETUP.md.
-      </p>
-
-      <div id="syncOffPanel">
-        <button class="sync-btn" id="getCodeBtn" type="button">Get a sync code</button>
-        <div class="sync-join">
-          <input id="joinCodeInput" type="text" placeholder="Have a code? XXXX-XXXX" maxlength="9" autocapitalize="characters" autocomplete="off" />
-          <button class="sync-btn" id="joinCodeBtn" type="button">Sync</button>
-        </div>
-        <p class="sync-error" id="joinCodeError" hidden></p>
-      </div>
-
-      <div id="syncOnPanel" hidden>
-        <p class="sync-active">
-          <span class="status-dot pulse" aria-hidden="true"></span>
-          Synced · <strong id="syncCodeDisplay"></strong>
-          <button class="sync-inline-btn" id="copyCodeBtn" type="button">Copy</button>
-        </p>
-        <button class="sync-inline-btn" id="stopSyncBtn" type="button">Stop syncing</button>
-      </div>
-    </section>
-
     <div class="controls">
       <div class="segmented" role="group" aria-label="Sort order">
         <button id="sortRelease" class="active" type="button">Release order</button>
@@ -121,6 +96,56 @@
       <p>Watch Tracker is an independent, fan-made checklist. Not affiliated with any studio.</p>
     </div>
   </footer>
+
+  <div class="modal-overlay" id="authModalOverlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+      <button class="modal-close" id="authModalClose" type="button" aria-label="Close">✕</button>
+      <div class="modal-icon" aria-hidden="true">🎬</div>
+
+      <div id="authModalUnsynced">
+        <div class="segmented modal-tabs" role="group" aria-label="Register or sign in">
+          <button id="authTabRegister" class="active" type="button">Register</button>
+          <button id="authTabSignin" type="button">Sign In</button>
+        </div>
+
+        <div id="authPanelRegister">
+          <h2 id="authModalTitle">Create your access code</h2>
+          <p class="modal-subtitle">Get a 16-digit code to carry your progress to any device</p>
+          <p class="modal-hint">
+            No email, no password — just a random 16-digit code. That's your only login, so keep it somewhere safe.
+          </p>
+          <button class="modal-primary-btn" id="generateCodeBtn" type="button">Generate my code</button>
+        </div>
+
+        <div id="authPanelSignin" hidden>
+          <h2>Welcome back</h2>
+          <p class="modal-subtitle">Enter the 16-digit code from your other device</p>
+          <input
+            id="joinCodeInput"
+            class="modal-input"
+            type="text"
+            inputmode="numeric"
+            placeholder="0000 0000 0000 0000"
+            maxlength="19"
+            autocomplete="off"
+          />
+          <button class="modal-primary-btn" id="joinCodeBtn" type="button">Sign In</button>
+        </div>
+
+        <p class="modal-error" id="authModalError" hidden></p>
+      </div>
+
+      <div id="authModalSynced" hidden>
+        <h2>You're synced</h2>
+        <p class="modal-subtitle">Enter this code on another device to pick up here</p>
+        <p class="modal-code-display" id="syncCodeDisplay"></p>
+        <div class="modal-actions">
+          <button class="modal-secondary-btn" id="copyCodeBtn" type="button">Copy code</button>
+          <button class="modal-secondary-btn danger" id="stopSyncBtn" type="button">Sign out</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="pwa.js" defer></script>
   <script type="module" src="app.js"></script>

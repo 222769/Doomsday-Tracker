@@ -228,99 +228,207 @@ nav.site-nav a[aria-current="page"] {
   font-weight: 700;
 }
 
-/* ---------- cross-device sync ---------- */
+/* ---------- account button (header) ---------- */
 
-.sync {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-.sync-note {
-  margin: 0;
-  font-size: 0.82rem;
-  color: var(--text-dim);
-}
-
-#syncOffPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-/* an ID selector otherwise beats the UA [hidden] rule's specificity */
-#syncOffPanel[hidden] {
-  display: none;
-}
-
-.sync-btn {
+.account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: none;
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
   border-radius: 999px;
-  padding: 0.5rem 0.9rem;
-  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.82rem;
   cursor: pointer;
 }
 
-.sync-btn:disabled {
+/* a class selector otherwise ties the UA [hidden] rule's specificity and
+   can lose to it depending on stylesheet order — force the override */
+.account-btn[hidden] {
+  display: none;
+}
+
+.account-btn.synced {
+  border-color: var(--good);
+  color: var(--good);
+}
+
+/* ---------- account modal (register / sign in) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
+}
+
+/* a class selector otherwise ties the UA [hidden] rule's specificity and
+   can lose to it depending on stylesheet order — force the override */
+.modal-overlay[hidden] {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  .modal-overlay {
+    align-items: center;
+    padding: 1rem;
+  }
+}
+
+.modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 1.5rem 1.25rem 1.75rem;
+  text-align: center;
+}
+
+@media (min-width: 480px) {
+  .modal-card {
+    border-radius: var(--radius);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.modal-icon {
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+}
+
+.modal-subtitle {
+  margin: 0 0 1rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.modal-tabs {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.modal-tabs button {
+  flex: 1;
+}
+
+.modal-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: left;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.modal-input {
+  display: block;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+  color: var(--text);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin-bottom: 1rem;
+}
+
+.modal-input::placeholder {
+  color: var(--text-dim);
+  letter-spacing: normal;
+}
+
+.modal-primary-btn {
+  display: block;
+  width: 100%;
+  background: var(--accent);
+  border: none;
+  color: #1a0503;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.modal-primary-btn:disabled {
   opacity: 0.6;
   cursor: default;
 }
 
-.sync-join {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.sync-join input {
-  flex: 1;
-  min-width: 0;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.5rem 0.85rem;
-  color: var(--text);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-}
-
-.sync-join input::placeholder {
-  color: var(--text-dim);
-  text-transform: none;
-}
-
-.sync-error {
-  margin: 0;
-  font-size: 0.78rem;
+.modal-error {
+  margin: 0.85rem 0 0;
+  font-size: 0.8rem;
   color: var(--danger);
 }
 
-.sync-active {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0 0 0.6rem;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-}
-
-.sync-active strong {
-  color: var(--text);
+.modal-code-display {
+  font-size: 1.15rem;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  background: var(--bg);
+  border: 1px solid var(--good);
+  border-radius: 10px;
+  padding: 0.85rem;
+  margin: 0 0 1.25rem;
 }
 
-.sync-inline-btn {
+.modal-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.modal-secondary-btn {
+  flex: 1;
   background: none;
   border: 1px solid var(--border);
-  color: var(--text-dim);
+  color: var(--text);
   border-radius: 999px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.75rem;
+  padding: 0.6rem;
+  font-size: 0.85rem;
   cursor: pointer;
+}
+
+.modal-secondary-btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 /* ---------- controls ---------- */

@@ -1,4 +1,4 @@
-// sync.js — optional cross-device sync via a short code, no accounts.
+// sync.js — account-free cross-device sync via a generated 16-digit code.
 //
 // Backed by Firestore (see firebase-config.js / SYNC_SETUP.md). The
 // Firebase SDK is only fetched the first time a sync action actually runs
@@ -6,15 +6,21 @@
 // network request, so the app stays fully local/offline by default.
 //
 // Model: a synced checklist is one document at codes/{code} holding the
-// watched-item ids. "Get a code" writes the device's current progress as
-// a brand new document. "Enter a code" reads an existing document and
-// replaces local progress with it. After that, both sides push their own
-// changes and listen for the other's, so either device stays in sync.
+// watched-item ids. "Register" (createCode) writes the device's current
+// progress under a brand new 16-digit code — that code IS the account,
+// there's no separate username or password. "Sign in" (joinCode) reads an
+// existing document and replaces local progress with it. After that, both
+// sides push their own changes and listen for the other's, so either
+// device stays in sync.
+//
+// The canonical form of a code is a plain 16-digit string (no spaces) —
+// that's what's stored in localStorage and used as the Firestore document
+// id. formatCodeForDisplay adds spaces for on-screen display only.
 
 import { firebaseConfig } from "./firebase-config.js";
 
 const SYNC_CODE_KEY = "watchTracker.syncCode.v1";
-const CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0/O/1/I/L — easy to read and type back
+const CODE_LENGTH = 16;
 const FIREBASE_SDK_VERSION = "10.13.0";
 
 function isConfigured() {
@@ -22,17 +28,23 @@ function isConfigured() {
 }
 
 function generateCode() {
-  const bytes = new Uint8Array(8);
-  crypto.getRandomValues(bytes);
-  let raw = "";
-  for (const b of bytes) raw += CODE_ALPHABET[b % CODE_ALPHABET.length];
-  return raw.slice(0, 4) + "-" + raw.slice(4, 8);
+  const digits = new Uint32Array(CODE_LENGTH);
+  crypto.getRandomValues(digits);
+  let code = "";
+  for (const d of digits) code += String(d % 10);
+  return code;
 }
 
+// Accepts input with or without spaces/dashes; returns the canonical
+// 16-digit code, or null if it isn't a valid one.
 function normalizeCode(input) {
-  const cleaned = input.toUpperCase().replace(/[^A-Z0-9]/g, "");
-  if (cleaned.length !== 8) return null;
-  return cleaned.slice(0, 4) + "-" + cleaned.slice(4, 8);
+  const cleaned = input.replace(/[^0-9]/g, "");
+  if (cleaned.length !== CODE_LENGTH) return null;
+  return cleaned;
+}
+
+function formatCodeForDisplay(code) {
+  return code.replace(/(.{4})/g, "$1 ").trim();
 }
 
 // Lazily load the Firebase modules + initialize the app, once, on first use.
@@ -59,6 +71,7 @@ let activeUnsubscribe = null;
 export const sync = {
   isConfigured,
   normalizeCode,
+  formatCodeForDisplay,
 
   getStoredCode() {
     try {
