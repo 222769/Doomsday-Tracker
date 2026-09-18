@@ -139,9 +139,12 @@ function getUnwatchedMinutes(item) {
   return watchedIds.has(item.id) ? 0 : item.runtimeMinutes;
 }
 
-// Show ids currently expanded to reveal their episode list. View state
-// only — not persisted, resets on reload.
+// Show ids currently expanded to reveal their episode list, and episode
+// ids whose spoiler note has been revealed. Both are view state only —
+// not persisted, reset on reload — so a spoiler stays hidden by default
+// every time the page loads, never opt-out.
 const expandedShowIds = new Set();
+const revealedSpoilerIds = new Set();
 
 // ---------------------------------------------------------------------
 // Thumbnail tiles
@@ -299,6 +302,27 @@ function renderList() {
 
           epLabel.append(epCheckbox, epTitle, epRuntime);
           epLi.appendChild(epLabel);
+
+          // Same rule as the expand button: this button is a sibling of
+          // epLabel, never nested inside it.
+          if (ep.spoiler) {
+            const isRevealed = revealedSpoilerIds.has(ep.id);
+
+            const spoilerBtn = document.createElement("button");
+            spoilerBtn.type = "button";
+            spoilerBtn.className = "spoiler-toggle" + (isRevealed ? " revealed" : "");
+            spoilerBtn.textContent = isRevealed ? "▲ Hide spoiler" : "⚠ How this connects (spoiler)";
+            spoilerBtn.setAttribute("aria-expanded", String(isRevealed));
+            spoilerBtn.addEventListener("click", () => toggleSpoiler(ep.id));
+            epLi.appendChild(spoilerBtn);
+
+            if (isRevealed) {
+              const spoilerText = document.createElement("p");
+              spoilerText.className = "spoiler-text";
+              spoilerText.textContent = ep.spoiler;
+              epLi.appendChild(spoilerText);
+            }
+          }
           episodeList.appendChild(epLi);
         }
 
@@ -384,6 +408,15 @@ function toggleExpand(itemId) {
     expandedShowIds.delete(itemId);
   } else {
     expandedShowIds.add(itemId);
+  }
+  renderList();
+}
+
+function toggleSpoiler(episodeId) {
+  if (revealedSpoilerIds.has(episodeId)) {
+    revealedSpoilerIds.delete(episodeId);
+  } else {
+    revealedSpoilerIds.add(episodeId);
   }
   renderList();
 }

@@ -489,6 +489,32 @@ li.episode-item input[type="checkbox"] {
   flex-shrink: 0;
 }
 
+button.spoiler-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: var(--hazard);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.5rem 0.5rem 2.2rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+button.spoiler-toggle.revealed {
+  color: var(--text-dim);
+}
+
+.spoiler-text {
+  margin: 0 0.5rem 0.5rem 2.2rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--hazard);
+  border-radius: 8px;
+  background: rgba(255, 176, 32, 0.08);
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
 .item-thumb {
   width: 2.5rem;
   height: 2.5rem;

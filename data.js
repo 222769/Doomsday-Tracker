@@ -23,9 +23,15 @@
 //   releaseOrder   - integer, position in real-world release order
 //   timelineOrder  - integer, position in in-universe chronological order
 //   runtimeMinutes - movies only; total watch time in minutes
-//   episodes       - shows only; array of { id, title, runtimeMinutes } —
+//   episodes       - shows only; array of { id, title, runtimeMinutes, spoiler? } —
 //                    each episode id is its own localStorage key, so
-//                    progress is tracked per episode, not per show
+//                    progress is tracked per episode, not per show.
+//                    spoiler, where present, is a short note on how that
+//                    episode connects to the wider story — hidden behind
+//                    a tap-to-reveal warning in the UI, never shown by
+//                    default. Most episodes have none; only the ones with
+//                    a genuine connection (a reveal, a setup for another
+//                    title) carry one — this isn't a full recap.
 //   notes          - optional short blurb shown under the title
 //   stopPoint      - optional string, e.g. "watch through S1E4 only"
 
@@ -81,9 +87,9 @@ export const items = [
       { id: "wandavision-e4", title: "We Interrupt This Program", runtimeMinutes: 35 },
       { id: "wandavision-e5", title: "On a Very Special Episode...", runtimeMinutes: 41 },
       { id: "wandavision-e6", title: "All-New Halloween Spooktacular!", runtimeMinutes: 38 },
-      { id: "wandavision-e7", title: "Breaking the Fourth Wall", runtimeMinutes: 38 },
+      { id: "wandavision-e7", title: "Breaking the Fourth Wall", runtimeMinutes: 38, spoiler: "\"Agnes\" is revealed to be Agatha Harkness, a centuries-old witch who has been manipulating events from the start." },
       { id: "wandavision-e8", title: "Previously On", runtimeMinutes: 46 },
-      { id: "wandavision-e9", title: "The Series Finale", runtimeMinutes: 50 },
+      { id: "wandavision-e9", title: "The Series Finale", runtimeMinutes: 50, spoiler: "Wanda becomes the Scarlet Witch and takes the Darkhold — directly setting up Doctor Strange in the Multiverse of Madness." },
     ],
   },
   {
@@ -95,7 +101,7 @@ export const items = [
       { id: "falcon-and-winter-soldier-e3", title: "Power Broker", runtimeMinutes: 53 },
       { id: "falcon-and-winter-soldier-e4", title: "The Whole World is Watching", runtimeMinutes: 50 },
       { id: "falcon-and-winter-soldier-e5", title: "Truth", runtimeMinutes: 60 },
-      { id: "falcon-and-winter-soldier-e6", title: "One World, One People", runtimeMinutes: 50 },
+      { id: "falcon-and-winter-soldier-e6", title: "One World, One People", runtimeMinutes: 50, spoiler: "Sam Wilson becomes the new Captain America, and Sharon Carter is revealed to be the Power Broker — a thread that resurfaces in Captain America: Brave New World and Thunderbolts*." },
     ],
   },
   {
@@ -107,7 +113,7 @@ export const items = [
       { id: "loki-season-1-e3", title: "Lamentis", runtimeMinutes: 42 },
       { id: "loki-season-1-e4", title: "The Nexus Event", runtimeMinutes: 48 },
       { id: "loki-season-1-e5", title: "Journey into Mystery", runtimeMinutes: 49 },
-      { id: "loki-season-1-e6", title: "For All Time. Always.", runtimeMinutes: 46 },
+      { id: "loki-season-1-e6", title: "For All Time. Always.", runtimeMinutes: 46, spoiler: "Loki meets He Who Remains, a Kang variant, at the end of time — his death fractures the Sacred Timeline into the multiverse that Doctor Strange 2, Loki Season 2, and eventually Doomsday all deal with." },
     ],
   },
   { id: "black-widow", title: "Black Widow", type: "movie", releaseOrder: 27, timelineOrder: 16, runtimeMinutes: 134, notes: "A flashback set between Civil War and Infinity War." },
@@ -155,7 +161,7 @@ export const items = [
       { id: "hawkeye-e3", title: "Echoes", runtimeMinutes: 43 },
       { id: "hawkeye-e4", title: "Partners, Am I Right?", runtimeMinutes: 45 },
       { id: "hawkeye-e5", title: "Ronin", runtimeMinutes: 44 },
-      { id: "hawkeye-e6", title: "So This Is Christmas?", runtimeMinutes: 55 },
+      { id: "hawkeye-e6", title: "So This Is Christmas?", runtimeMinutes: 55, spoiler: "A post-credits scene reveals Wilson Fisk (Kingpin) survived being shot — setting up Echo and Daredevil: Born Again." },
     ],
   },
   { id: "spider-man-no-way-home", title: "Spider-Man: No Way Home", type: "movie", releaseOrder: 32, timelineOrder: 32, runtimeMinutes: 148, notes: "The multiverse crossover that pulls in the Raimi and Webb-era Spider-Men." },
@@ -181,7 +187,7 @@ export const items = [
       { id: "ms-marvel-e3", title: "Destined", runtimeMinutes: 37 },
       { id: "ms-marvel-e4", title: "Seeing Red", runtimeMinutes: 40 },
       { id: "ms-marvel-e5", title: "Time and Again", runtimeMinutes: 38 },
-      { id: "ms-marvel-e6", title: "No Normal", runtimeMinutes: 40 },
+      { id: "ms-marvel-e6", title: "No Normal", runtimeMinutes: 40, spoiler: "A post-credits scene ties Kamala Khan's powers to mutant genetics, not just her bangle — connecting her to the X-Men thread Doomsday is expected to bring into the MCU." },
     ],
   },
   { id: "thor-love-and-thunder", title: "Thor: Love and Thunder", type: "movie", releaseOrder: 36, timelineOrder: 41, runtimeMinutes: 119 },
@@ -197,7 +203,7 @@ export const items = [
       { id: "she-hulk-e6", title: "Just Jen", runtimeMinutes: 30 },
       { id: "she-hulk-e7", title: "The Retreat", runtimeMinutes: 35 },
       { id: "she-hulk-e8", title: "Ribbit and Rip It", runtimeMinutes: 36 },
-      { id: "she-hulk-e9", title: "Whose Show Is This?", runtimeMinutes: 38 },
+      { id: "she-hulk-e9", title: "Whose Show Is This?", runtimeMinutes: 38, spoiler: "Jennifer breaks the fourth wall to confront the show's writers directly, and Matt Murdock (Daredevil) appears as a legal favor — connecting to Daredevil: Born Again." },
     ],
   },
   { id: "black-panther-wakanda-forever", title: "Black Panther: Wakanda Forever", type: "movie", releaseOrder: 38, timelineOrder: 43, runtimeMinutes: 161 },
@@ -213,7 +219,7 @@ export const items = [
       { id: "secret-invasion-e3", title: "Betrayed", runtimeMinutes: 42 },
       { id: "secret-invasion-e4", title: "Beloved", runtimeMinutes: 38 },
       { id: "secret-invasion-e5", title: "Harvest", runtimeMinutes: 40 },
-      { id: "secret-invasion-e6", title: "Home", runtimeMinutes: 34 },
+      { id: "secret-invasion-e6", title: "Home", runtimeMinutes: 34, spoiler: "After a Skrull impersonating Rhodey is exposed, President Ritson declares all Skrulls enemies of the state — a xenophobic policy shift that ripples into later political plotlines." },
     ],
   },
   {
@@ -225,7 +231,7 @@ export const items = [
       { id: "loki-season-2-e3", title: "1893", runtimeMinutes: 55 },
       { id: "loki-season-2-e4", title: "Heart of the TVA", runtimeMinutes: 50 },
       { id: "loki-season-2-e5", title: "Science/Fiction", runtimeMinutes: 50 },
-      { id: "loki-season-2-e6", title: "Glorious Purpose", runtimeMinutes: 58 },
+      { id: "loki-season-2-e6", title: "Glorious Purpose", runtimeMinutes: 58, spoiler: "Loki chooses to hold every branched timeline together himself on the Temporal Loom, becoming \"the god of stories\" — the multiverse's fragile new stability going into Doomsday rests on this choice." },
     ],
   },
   { id: "the-marvels", title: "The Marvels", type: "movie", releaseOrder: 43, timelineOrder: 48, runtimeMinutes: 105 },
@@ -237,7 +243,7 @@ export const items = [
       { id: "echo-e2", title: "Lowak", runtimeMinutes: 39 },
       { id: "echo-e3", title: "Tuklo", runtimeMinutes: 42 },
       { id: "echo-e4", title: "Taloa", runtimeMinutes: 37 },
-      { id: "echo-e5", title: "Maya", runtimeMinutes: 34 },
+      { id: "echo-e5", title: "Maya", runtimeMinutes: 34, spoiler: "Wilson Fisk (Kingpin) survives Maya's attempt on his life and doubles down on his plans for New York — picked up directly in Daredevil: Born Again." },
     ],
   },
   { id: "deadpool-and-wolverine", title: "Deadpool & Wolverine", type: "movie", releaseOrder: 45, timelineOrder: 63, runtimeMinutes: 128, notes: "Folds in Fox's X-Men-era multiverse — directly relevant to Doomsday's cast." },
@@ -253,7 +259,7 @@ export const items = [
       { id: "agatha-all-along-e6", title: "Familiar by Thy Side", runtimeMinutes: 39 },
       { id: "agatha-all-along-e7", title: "Death's Hand in Mine", runtimeMinutes: 45 },
       { id: "agatha-all-along-e8", title: "Follow Me, My Friend / To Glory at the End", runtimeMinutes: 48 },
-      { id: "agatha-all-along-e9", title: "Maiden Mother Crone", runtimeMinutes: 50 },
+      { id: "agatha-all-along-e9", title: "Maiden Mother Crone", runtimeMinutes: 50, spoiler: "Agatha sacrifices herself for Billy Maximoff and returns as a ghost; Billy sets off to find his twin brother Tommy, last seen erased from reality in WandaVision." },
     ],
   },
   { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 47, timelineOrder: 66, runtimeMinutes: 118 },
@@ -269,7 +275,7 @@ export const items = [
       { id: "daredevil-born-again-e6", title: "Excessive Force", runtimeMinutes: 50 },
       { id: "daredevil-born-again-e7", title: "Art for Art's Sake", runtimeMinutes: 49 },
       { id: "daredevil-born-again-e8", title: "Isle of Joy", runtimeMinutes: 52 },
-      { id: "daredevil-born-again-e9", title: "Straight to Hell", runtimeMinutes: 54 },
+      { id: "daredevil-born-again-e9", title: "Straight to Hell", runtimeMinutes: 54, spoiler: "Wilson Fisk uses his position as mayor to outlaw vigilantes and orders Matt Murdock killed on sight — the authoritarian backdrop that carries into Thunderbolts*." },
     ],
   },
   { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 49, timelineOrder: 67, runtimeMinutes: 126 },
@@ -282,7 +288,7 @@ export const items = [
       { id: "ironheart-e3", title: "We in Danger, Girl", runtimeMinutes: 39 },
       { id: "ironheart-e4", title: "Bad Magic", runtimeMinutes: 36 },
       { id: "ironheart-e5", title: "Karma's a Glitch", runtimeMinutes: 38 },
-      { id: "ironheart-e6", title: "The Past Is the Past", runtimeMinutes: 42 },
+      { id: "ironheart-e6", title: "The Past Is the Past", runtimeMinutes: 42, spoiler: "Riri makes a literal deal with Mephisto — the MCU's first on-screen appearance of the demon — trading something of her own to bring Natalie back to life." },
     ],
   },
   { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 51, timelineOrder: 69, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline." },
