@@ -47,7 +47,27 @@ function formatCodeForDisplay(code) {
   return code.replace(/(.{4})/g, "$1 ").trim();
 }
 
+// Without this, a stalled connection (poor signal, a network that blocks
+// Firestore's long-lived channel, etc.) leaves the caller's promise
+// pending forever — no error, no success, just a spinner stuck on
+// "Signing in…"/"Generating…" with no way out. Race every one-shot
+// network call against a timeout so it always settles one way or another.
+const NETWORK_TIMEOUT_MS = 15000;
+
+function withTimeout(promise, message) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error(message)), NETWORK_TIMEOUT_MS);
+    }),
+  ]);
+}
+
 // Lazily load the Firebase modules + initialize the app, once, on first use.
+// If loading ever fails outright (not just times out — a genuine rejection,
+// e.g. the SDK import errors), the cached promise is cleared so the next
+// attempt starts fresh instead of every future call reusing that same
+// permanently-rejected promise until the page is reloaded.
 let firestorePromise = null;
 function loadFirestore() {
   if (!firestorePromise) {
@@ -61,7 +81,10 @@ function loadFirestore() {
       const app = initializeApp(firebaseConfig);
       const db = firestoreModule.getFirestore(app);
       return { db, ...firestoreModule };
-    })();
+    })().catch((err) => {
+      firestorePromise = null;
+      throw err;
+    });
   }
   return firestorePromise;
 }
@@ -83,12 +106,18 @@ export const sync = {
 
   // Publishes the device's current progress under a brand new code.
   async createCode(watchedIds) {
-    const { db, doc, setDoc, serverTimestamp } = await loadFirestore();
+    const { db, doc, setDoc, serverTimestamp } = await withTimeout(
+      loadFirestore(),
+      "Connection timed out. Check your internet connection and try again."
+    );
     const code = generateCode();
-    await setDoc(doc(db, "codes", code), {
-      watchedIds: [...watchedIds],
-      updatedAt: serverTimestamp(),
-    });
+    await withTimeout(
+      setDoc(doc(db, "codes", code), {
+        watchedIds: [...watchedIds],
+        updatedAt: serverTimestamp(),
+      }),
+      "Connection timed out. Check your internet connection and try again."
+    );
     try {
       localStorage.setItem(SYNC_CODE_KEY, code);
     } catch {
@@ -99,9 +128,15 @@ export const sync = {
 
   // Reads an existing code's progress. Throws if the code doesn't exist.
   async joinCode(code) {
-    const { db, doc, getDoc } = await loadFirestore();
+    const { db, doc, getDoc } = await withTimeout(
+      loadFirestore(),
+      "Connection timed out. Check your internet connection and try again."
+    );
     const ref = doc(db, "codes", code);
-    const snap = await getDoc(ref);
+    const snap = await withTimeout(
+      getDoc(ref),
+      "Connection timed out. Check your internet connection and try again."
+    );
     if (!snap.exists()) throw new Error("That code wasn't found.");
     try {
       localStorage.setItem(SYNC_CODE_KEY, code);
@@ -113,21 +148,39 @@ export const sync = {
 
   // Writes the device's current progress to an already-active code.
   async push(code, watchedIds) {
-    const { db, doc, setDoc, serverTimestamp } = await loadFirestore();
-    await setDoc(doc(db, "codes", code), {
-      watchedIds: [...watchedIds],
-      updatedAt: serverTimestamp(),
-    });
+    const { db, doc, setDoc, serverTimestamp } = await withTimeout(
+      loadFirestore(),
+      "Connection timed out. Check your internet connection and try again."
+    );
+    await withTimeout(
+      setDoc(doc(db, "codes", code), {
+        watchedIds: [...watchedIds],
+        updatedAt: serverTimestamp(),
+      }),
+      "Connection timed out. Check your internet connection and try again."
+    );
   },
 
   // Subscribes to live updates for a code; onChange fires with the latest
-  // watched-id array whenever any device (including this one) writes.
+  // watched-id array whenever any device (including this one) writes. A
+  // live subscription has no natural "timeout" (it's meant to sit open
+  // indefinitely), but a connection error at least gets logged instead of
+  // failing silently forever.
   async listen(code, onChange) {
-    const { db, doc, onSnapshot } = await loadFirestore();
+    const { db, doc, onSnapshot } = await withTimeout(
+      loadFirestore(),
+      "Connection timed out. Check your internet connection and try again."
+    );
     if (activeUnsubscribe) activeUnsubscribe();
-    activeUnsubscribe = onSnapshot(doc(db, "codes", code), (snap) => {
-      if (snap.exists()) onChange(snap.data().watchedIds || []);
-    });
+    activeUnsubscribe = onSnapshot(
+      doc(db, "codes", code),
+      (snap) => {
+        if (snap.exists()) onChange(snap.data().watchedIds || []);
+      },
+      (err) => {
+        console.warn("Sync listener error:", err);
+      }
+    );
   },
 
   // Disconnects and forgets the stored code. Local progress is left as-is.
