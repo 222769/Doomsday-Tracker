@@ -15,18 +15,19 @@
 //
 // releaseOrder is grouped by tier rather than strictly interleaved by
 // real-world date: the mainline MCU/Disney+ track (1-57), then the guest
-// tier (58-75), then the Netflix corner (76-81) — so, for example, the
-// Netflix corner's 2015 premiere doesn't get interleaved into the middle
-// of the mainline track. The guest-tier films belong to their own
-// separate continuities (the Fox-verse, the Raimi-verse, the Webb-verse);
-// timelineOrder places each block at the point it's pulled into the main
-// story via a multiverse crossover, not as a literal claim that they share
-// Earth-616's timeline. The Netflix corner *is* Earth-616 continuity, but
-// for timelineOrder it's likewise placed as one block right before
-// Daredevil: Born Again — the point it's actually relevant to watch —
-// rather than scattered across 2015-2019 mid-list; if you'd rather slot
-// it in strictly by date, that's a one-line change to each item's
-// timelineOrder below.
+// tier (58-75), then the Netflix corner (76-81), then the optional side
+// quests (82-95) — so, for example, the Netflix corner's 2015 premiere
+// doesn't get interleaved into the middle of the mainline track. The
+// guest-tier films belong to their own separate continuities (the
+// Fox-verse, the Raimi-verse, the Webb-verse); timelineOrder places each
+// block at the point it's pulled into the main story via a multiverse
+// crossover, not as a literal claim that they share Earth-616's timeline.
+// The Netflix corner and the optional side quests *are* Earth-616
+// continuity, but for timelineOrder they're likewise placed as
+// contiguous blocks right before Daredevil: Born Again — the point
+// they're actually relevant to watch — rather than scattered across
+// 2013-2020 mid-list; if you'd rather slot them in strictly by date,
+// that's a one-line change to each item's timelineOrder below.
 //
 // Shape of each item:
 //   id             - unique string, used as the localStorage key (for movies)
@@ -46,6 +47,11 @@
 //                    title) carry one — this isn't a full recap.
 //   notes          - optional short blurb shown under the title
 //   stopPoint      - optional string, e.g. "watch through S1E4 only"
+//   optional       - true for "side quest" content (Agents of S.H.I.E.L.D.,
+//                    Luke Cage, Iron Fist, The Defenders, Jessica Jones
+//                    Seasons 2-3) that doesn't feed into Doomsday directly.
+//                    Hidden from the list and excluded from the stats bar
+//                    unless the "Include optional side quests" switch is on.
 
 export const items = [
   { id: "x-men", title: "X-Men", type: "movie", releaseOrder: 58, timelineOrder: 50, runtimeMinutes: 104, notes: "Opens Fox's original X-Men series — folded into the multiverse alongside Deadpool & Wolverine and, reportedly, Doomsday itself." },
@@ -374,6 +380,309 @@ export const items = [
     ],
   },
   {
+    id: "agents-of-shield-season-1", title: "Agents of S.H.I.E.L.D. (Season 1)", type: "show", releaseOrder: 82, timelineOrder: 71, optional: true,
+    notes: "Optional side quest. Agents of S.H.I.E.L.D. runs alongside nearly the entire MCU timeline (2013-2020) rather than one clean block — shown here as one contiguous chunk for simplicity.",
+    episodes: [
+      { id: "agents-of-shield-season-1-e1", title: "Pilot", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e2", title: "0-8-4", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e3", title: "The Asset", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e4", title: "Eye Spy", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e5", title: "Girl in the Flower Dress", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e6", title: "FZZT", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e7", title: "The Hub", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e8", title: "The Well", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e9", title: "Repairs", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e10", title: "The Bridge", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e11", title: "The Magical Place", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e12", title: "Seeds", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e13", title: "T.R.A.C.K.S.", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e14", title: "T.A.H.I.T.I.", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e15", title: "Yes Men", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e16", title: "End of the Beginning", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e17", title: "Turn, Turn, Turn", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e18", title: "Providence", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e19", title: "The Only Light in the Darkness", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e20", title: "Nothing Personal", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e21", title: "Ragtag", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-1-e22", title: "Beginning of the End", runtimeMinutes: 43 },
+    ],
+  },
+  {
+    id: "agents-of-shield-season-2", title: "Agents of S.H.I.E.L.D. (Season 2)", type: "show", releaseOrder: 83, timelineOrder: 72, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "agents-of-shield-season-2-e1", title: "Shadows", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e2", title: "Heavy Is the Head", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e3", title: "Making Friends and Influencing People", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e4", title: "Face My Enemy", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e5", title: "A Hen in the Wolf House", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e6", title: "A Fractured House", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e7", title: "The Writing on the Wall", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e8", title: "The Things We Bury", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e9", title: "...Ye Who Enter Here", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e10", title: "What They Become", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e11", title: "Aftershocks", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e12", title: "Who You Really Are", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e13", title: "One of Us", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e14", title: "Love in the Time of Hydra", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e15", title: "One Door Closes", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e16", title: "Afterlife", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e17", title: "Melinda", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e18", title: "The Frenemy of My Enemy", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e19", title: "The Dirty Half Dozen", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e20", title: "Scars", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e21", title: "S.O.S., Part 1", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-2-e22", title: "S.O.S., Part 2", runtimeMinutes: 43 },
+    ],
+  },
+  {
+    id: "agents-of-shield-season-3", title: "Agents of S.H.I.E.L.D. (Season 3)", type: "show", releaseOrder: 84, timelineOrder: 73, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "agents-of-shield-season-3-e1", title: "Laws of Nature", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e2", title: "Purpose in the Machine", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e3", title: "A Wanted (Inhu)man", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e4", title: "Devils You Know", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e5", title: "4,722 Hours", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e6", title: "Among Us Hide...", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e7", title: "Chaos Theory", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e8", title: "Many Heads, One Tale", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e9", title: "Closure", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e10", title: "Maveth", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e11", title: "Bouncing Back", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e12", title: "The Inside Man", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e13", title: "Parting Shot", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e14", title: "Watchdogs", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e15", title: "Spacetime", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e16", title: "Paradise Lost", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e17", title: "The Team", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e18", title: "The Singularity", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e19", title: "Failed Experiments", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e20", title: "Emancipation", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e21", title: "Absolution", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-3-e22", title: "Ascension", runtimeMinutes: 43 },
+    ],
+  },
+  {
+    id: "agents-of-shield-season-4", title: "Agents of S.H.I.E.L.D. (Season 4)", type: "show", releaseOrder: 85, timelineOrder: 74, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "agents-of-shield-season-4-e1", title: "The Ghost", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e2", title: "Meet the New Boss", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e3", title: "Uprising", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e4", title: "Let Me Stand Next to Your Fire", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e5", title: "Lockup", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e6", title: "The Good Samaritan", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e7", title: "Deals with Our Devils", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e8", title: "The Laws of Inferno Dynamics", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e9", title: "Broken Promises", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e10", title: "The Patriot", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e11", title: "Wake Up", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e12", title: "Hot Potato Soup", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e13", title: "BOOM", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e14", title: "The Man Behind the Shield", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e15", title: "Self Control", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e16", title: "What If...", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e17", title: "Identity and Change", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e18", title: "No Regrets", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e19", title: "All the Madame's Men", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e20", title: "Farewell, Cruel World!", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e21", title: "The Return", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-4-e22", title: "World's End", runtimeMinutes: 43 },
+    ],
+  },
+  {
+    id: "luke-cage-season-1", title: "Luke Cage (Season 1)", type: "show", releaseOrder: 86, timelineOrder: 75, optional: true,
+    notes: "Optional side quest. Spins out of Jessica Jones Season 1.",
+    episodes: [
+      { id: "luke-cage-season-1-e1", title: "Moment of Truth", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e2", title: "Code of the Streets", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e3", title: "Who's Gonna Take the Weight?", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e4", title: "Step in the Arena", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e5", title: "Just to Get a Rep", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e6", title: "Suckas Need Bodyguards", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e7", title: "Manifest", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e8", title: "Blowin' Up the Spot", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e9", title: "DWYCK", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e10", title: "Take It Personal", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e11", title: "Now You're Mine", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e12", title: "Soliloquy of Chaos", runtimeMinutes: 50 },
+      { id: "luke-cage-season-1-e13", title: "You Know My Steez", runtimeMinutes: 55 },
+    ],
+  },
+  {
+    id: "iron-fist-season-1", title: "Iron Fist (Season 1)", type: "show", releaseOrder: 87, timelineOrder: 76, optional: true,
+    notes: "Optional side quest. Introduces Danny Rand ahead of The Defenders.",
+    episodes: [
+      { id: "iron-fist-season-1-e1", title: "Snow Gives Way", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e2", title: "Shadow Hawk Takes Flight", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e3", title: "Rolling Thunder Cannon Punch", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e4", title: "Eight Diagram Dragon Palm", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e5", title: "Under Leaf Pluck Lotus", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e6", title: "Immortal Emerges from Cave", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e7", title: "Felling Tree with Roots", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e8", title: "The Blessing of Many Fractures", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e9", title: "The Mistress of All Agonies", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e10", title: "Black Tiger Steals Heart", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e11", title: "Lead Horse Back to Stable", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e12", title: "Bar the Big Boss", runtimeMinutes: 50 },
+      { id: "iron-fist-season-1-e13", title: "Dragon Plays with Fire", runtimeMinutes: 54 },
+    ],
+  },
+  {
+    id: "the-defenders", title: "The Defenders", type: "show", releaseOrder: 88, timelineOrder: 77, optional: true,
+    notes: "Optional side quest. Daredevil, Jessica Jones, Luke Cage, and Iron Fist team up against the Hand.",
+    episodes: [
+      { id: "the-defenders-e1", title: "The H Word", runtimeMinutes: 48 },
+      { id: "the-defenders-e2", title: "Mean Right Hook", runtimeMinutes: 48 },
+      { id: "the-defenders-e3", title: "Worst Behavior", runtimeMinutes: 48 },
+      { id: "the-defenders-e4", title: "Royal Dragon", runtimeMinutes: 48 },
+      { id: "the-defenders-e5", title: "Take Shelter", runtimeMinutes: 48 },
+      { id: "the-defenders-e6", title: "Ashes, Ashes", runtimeMinutes: 48 },
+      { id: "the-defenders-e7", title: "Fish in the Jailhouse", runtimeMinutes: 48 },
+      { id: "the-defenders-e8", title: "The Defenders", runtimeMinutes: 54 },
+    ],
+  },
+  {
+    id: "agents-of-shield-season-5", title: "Agents of S.H.I.E.L.D. (Season 5)", type: "show", releaseOrder: 89, timelineOrder: 78, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "agents-of-shield-season-5-e1", title: "Orientation, Part 1", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e2", title: "Orientation, Part 2", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e3", title: "A Life Spent", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e4", title: "A Life Earned", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e5", title: "Rewind", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e6", title: "Fun & Games", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e7", title: "Together or Not at All", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e8", title: "The Last Day", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e9", title: "Best Laid Plans", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e10", title: "Past Life", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e11", title: "All the Comforts of Home", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e12", title: "The Real Deal", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e13", title: "Principia", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e14", title: "The Devil Complex", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e15", title: "Rise and Shine", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e16", title: "Inside Voices", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e17", title: "The Honeymoon", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e18", title: "All Roads Lead...", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e19", title: "Option Two", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e20", title: "The One Who Will Save Us All", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e21", title: "The Force of Gravity", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-5-e22", title: "The End", runtimeMinutes: 43 },
+    ],
+  },
+  {
+    id: "jessica-jones-season-2", title: "Jessica Jones (Season 2)", type: "show", releaseOrder: 90, timelineOrder: 79, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "jessica-jones-season-2-e1", title: "AKA Start at the Beginning", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e2", title: "AKA Freak Accident", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e3", title: "AKA Sole Survivor", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e4", title: "AKA God Help the Hobo", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e5", title: "AKA The Octopus", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e6", title: "AKA Facetime", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e7", title: "AKA I Want Your Cray Cray", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e8", title: "AKA Ain't We Got Fun", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e9", title: "AKA Shark in the Bathtub, Monster in the Bed", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e10", title: "AKA Pork Chop", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e11", title: "AKA Three Lives and Counting", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e12", title: "AKA Pray for My Patsy", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-2-e13", title: "AKA Playland", runtimeMinutes: 54 },
+    ],
+  },
+  {
+    id: "luke-cage-season-2", title: "Luke Cage (Season 2)", type: "show", releaseOrder: 91, timelineOrder: 80, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "luke-cage-season-2-e1", title: "Soul Brother #1", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e2", title: "Straighten It Out", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e3", title: "Wig Out", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e4", title: "I Get Physical", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e5", title: "All Souled Out", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e6", title: "The Basement", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e7", title: "On and On", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e8", title: "If It Ain't Rough, It Ain't Right", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e9", title: "For Pete's Sake", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e10", title: "The Main Ingredient", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e11", title: "The Creator", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e12", title: "Can't Front on Me", runtimeMinutes: 50 },
+      { id: "luke-cage-season-2-e13", title: "They Reminisce Over You", runtimeMinutes: 55 },
+    ],
+  },
+  {
+    id: "iron-fist-season-2", title: "Iron Fist (Season 2)", type: "show", releaseOrder: 92, timelineOrder: 81, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "iron-fist-season-2-e1", title: "The Fury of Iron Fist", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e2", title: "The City's Not for Burning", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e3", title: "This Deadly Secret...", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e4", title: "Target: Iron Fist", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e5", title: "Heart of the Dragon", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e6", title: "The Dragon Dies at Dawn", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e7", title: "Morning of the Mindstorm", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e8", title: "Citadel on the Edge of Vengeance", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e9", title: "War Without End", runtimeMinutes: 50 },
+      { id: "iron-fist-season-2-e10", title: "A Duel of Iron", runtimeMinutes: 54 },
+    ],
+  },
+  {
+    id: "agents-of-shield-season-6", title: "Agents of S.H.I.E.L.D. (Season 6)", type: "show", releaseOrder: 93, timelineOrder: 82, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "agents-of-shield-season-6-e1", title: "Missing Pieces", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e2", title: "Window of Opportunity", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e3", title: "Fear and Loathing on the Planet of Kitson", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e4", title: "Code Yellow", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e5", title: "The Other Thing", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e6", title: "Inescapable", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e7", title: "Toldja", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e8", title: "Collision Course (Part I)", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e9", title: "Collision Course (Part II)", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e10", title: "Leap", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e11", title: "From the Ashes", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e12", title: "The Sign", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-6-e13", title: "New Life", runtimeMinutes: 43 },
+    ],
+  },
+  {
+    id: "jessica-jones-season-3", title: "Jessica Jones (Season 3)", type: "show", releaseOrder: 94, timelineOrder: 83, optional: true,
+    notes: "Optional side quest.",
+    episodes: [
+      { id: "jessica-jones-season-3-e1", title: "A.K.A. The Perfect Burger", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e2", title: "A.K.A. You're Welcome", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e3", title: "A.K.A. I Have No Spleen", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e4", title: "A.K.A. Customer Service Is Standing By", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e5", title: "A.K.A. I Wish", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e6", title: "A.K.A. Sorry Face", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e7", title: "A.K.A. The Double Half-Wappinger", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e8", title: "A.K.A. Camera Friendly", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e9", title: "A.K.A. I Did Something Today", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e10", title: "A.K.A. Hero Pants", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e11", title: "A.K.A. Hellcat", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e12", title: "A.K.A. A Lotta Worms", runtimeMinutes: 48 },
+      { id: "jessica-jones-season-3-e13", title: "A.K.A. Everything", runtimeMinutes: 54 },
+    ],
+  },
+  {
+    id: "agents-of-shield-season-7", title: "Agents of S.H.I.E.L.D. (Season 7)", type: "show", releaseOrder: 95, timelineOrder: 84, optional: true,
+    notes: "Optional side quest. The last of this era before the story jumps to Daredevil: Born Again.",
+    episodes: [
+      { id: "agents-of-shield-season-7-e1", title: "The New Deal", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e2", title: "Know Your Onions", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e3", title: "Alien Commies from the Future!", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e4", title: "Out of the Past", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e5", title: "A Trout in the Milk", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e6", title: "Adapt or Die", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e7", title: "The Totally Excellent Adventures of Mack and The D", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e8", title: "After, Before", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e9", title: "As I Have Always Been", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e10", title: "Stolen", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e11", title: "Brand New Day", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e12", title: "The End Is at Hand", runtimeMinutes: 42 },
+      { id: "agents-of-shield-season-7-e13", title: "What We're Fighting For", runtimeMinutes: 43 },
+    ],
+  },
+  {
     id: "agatha-all-along", title: "Agatha All Along", type: "show", releaseOrder: 46, timelineOrder: 64,
     notes: "WandaVision spinoff following Agatha Harkness.",
     episodes: [
@@ -389,7 +698,7 @@ export const items = [
     ],
   },
   {
-    id: "daredevil-born-again", title: "Daredevil: Born Again (Season 1)", type: "show", releaseOrder: 48, timelineOrder: 71,
+    id: "daredevil-born-again", title: "Daredevil: Born Again (Season 1)", type: "show", releaseOrder: 48, timelineOrder: 85,
     notes: "Wilson Fisk's rise sets up the political thread running through Thunderbolts*.",
     episodes: [
       { id: "daredevil-born-again-e1", title: "Heaven's Half Hour", runtimeMinutes: 52 },
@@ -404,7 +713,7 @@ export const items = [
     ],
   },
   {
-    id: "daredevil-born-again-season-2", title: "Daredevil: Born Again (Season 2)", type: "show", releaseOrder: 53, timelineOrder: 72,
+    id: "daredevil-born-again-season-2", title: "Daredevil: Born Again (Season 2)", type: "show", releaseOrder: 53, timelineOrder: 86,
     notes: "Direct continuation of Season 1's cliffhanger.",
     episodes: [
       { id: "daredevil-born-again-season-2-e1", title: "The Northern Star", runtimeMinutes: 50 },
@@ -417,11 +726,11 @@ export const items = [
       { id: "daredevil-born-again-season-2-e8", title: "The Southern Cross", runtimeMinutes: 54, spoiler: "The season closes with Fisk's grip on New York shaken but not broken, and Frank Castle drawn back into the fight — picked up directly by The Punisher: One Last Kill." },
     ],
   },
-  { id: "punisher-one-last-kill", title: "The Punisher: One Last Kill", type: "movie", releaseOrder: 54, timelineOrder: 73, runtimeMinutes: 51, notes: "A one-off special, not a full series — Frank Castle's last word on the Born Again Season 2 fallout." },
-  { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 47, timelineOrder: 74, runtimeMinutes: 118 },
-  { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 49, timelineOrder: 75, runtimeMinutes: 126 },
+  { id: "punisher-one-last-kill", title: "The Punisher: One Last Kill", type: "movie", releaseOrder: 54, timelineOrder: 87, runtimeMinutes: 51, notes: "A one-off special, not a full series — Frank Castle's last word on the Born Again Season 2 fallout." },
+  { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 47, timelineOrder: 88, runtimeMinutes: 118 },
+  { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 49, timelineOrder: 89, runtimeMinutes: 126 },
   {
-    id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 50, timelineOrder: 76,
+    id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 50, timelineOrder: 90,
     notes: "Introduces Riri Williams ahead of her expected role in the wider saga.",
     episodes: [
       { id: "ironheart-e1", title: "Take Me Home", runtimeMinutes: 38 },
@@ -433,7 +742,7 @@ export const items = [
     ],
   },
   {
-    id: "wonder-man", title: "Wonder Man", type: "show", releaseOrder: 52, timelineOrder: 77,
+    id: "wonder-man", title: "Wonder Man", type: "show", releaseOrder: 52, timelineOrder: 91,
     notes: "Mostly self-contained Hollywood satire about a stuntman chasing the role of a retired superhero.",
     episodes: [
       { id: "wonder-man-e1", title: "Matinee", runtimeMinutes: 36 },
@@ -446,10 +755,10 @@ export const items = [
       { id: "wonder-man-e8", title: "Yucca Valley", runtimeMinutes: 40 },
     ],
   },
-  { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 51, timelineOrder: 78, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline." },
-  { id: "spider-man-brand-new-day", title: "Spider-Man: Brand New Day", type: "movie", releaseOrder: 55, timelineOrder: 79, runtimeMinutes: 145 },
+  { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 51, timelineOrder: 92, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline." },
+  { id: "spider-man-brand-new-day", title: "Spider-Man: Brand New Day", type: "movie", releaseOrder: 55, timelineOrder: 93, runtimeMinutes: 145 },
   {
-    id: "visionquest", title: "VisionQuest", type: "show", releaseOrder: 56, timelineOrder: 80,
+    id: "visionquest", title: "VisionQuest", type: "show", releaseOrder: 56, timelineOrder: 94,
     notes: "White Vision's search for his lost memories and humanity after WandaVision. Episode titles hadn't been announced as of this list's last update — shown as placeholders.",
     episodes: [
       { id: "visionquest-e1", title: "Episode 1", runtimeMinutes: 45 },
@@ -462,5 +771,5 @@ export const items = [
       { id: "visionquest-e8", title: "Episode 8", runtimeMinutes: 45 },
     ],
   },
-  { id: "avengers-doomsday", title: "Avengers: Doomsday", type: "movie", releaseOrder: 57, timelineOrder: 81, runtimeMinutes: 180, notes: "In theaters December 18, 2026. Runtime is an estimate — not yet officially confirmed." },
+  { id: "avengers-doomsday", title: "Avengers: Doomsday", type: "movie", releaseOrder: 57, timelineOrder: 95, runtimeMinutes: 180, notes: "In theaters December 18, 2026. Runtime is an estimate — not yet officially confirmed." },
 ];

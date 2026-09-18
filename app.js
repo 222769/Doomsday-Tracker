@@ -49,13 +49,41 @@ let watchedIds = loadWatchedIds();
 let activeSyncCode = null;
 
 // ---------------------------------------------------------------------
-// View state (not persisted — resets each visit)
+// Optional side quests (persisted)
+// ---------------------------------------------------------------------
+// Unlike the view-only filters below, this one is persisted: turning it
+// on adds real items to the checklist (Agents of S.H.I.E.L.D., Luke Cage,
+// etc.), and if it silently reset to off on every visit, any progress
+// checked off in that content would appear to have vanished — the same
+// complaint that turned out to be a real bug elsewhere in this app.
+
+const OPTIONAL_STORAGE_KEY = "watchTracker.includeOptional.v1";
+
+function loadIncludeOptional() {
+  try {
+    return localStorage.getItem(OPTIONAL_STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function saveIncludeOptional(value) {
+  try {
+    localStorage.setItem(OPTIONAL_STORAGE_KEY, String(value));
+  } catch {
+    // Storage may be unavailable — the switch just won't stick between visits.
+  }
+}
+
+// ---------------------------------------------------------------------
+// View state (mostly not persisted — resets each visit)
 // ---------------------------------------------------------------------
 
 const state = {
   sortBy: "release", // "release" | "timeline"
   hideWatched: false,
   moviesOnly: false,
+  includeOptional: loadIncludeOptional(),
 };
 
 // ---------------------------------------------------------------------
@@ -67,6 +95,7 @@ const sortReleaseBtn = document.getElementById("sortRelease");
 const sortTimelineBtn = document.getElementById("sortTimeline");
 const hideWatchedInput = document.getElementById("hideWatched");
 const moviesOnlyInput = document.getElementById("moviesOnly");
+const includeOptionalInput = document.getElementById("includeOptional");
 const resetBtn = document.getElementById("resetBtn");
 
 const statPercent = document.getElementById("statPercent");
@@ -97,10 +126,18 @@ const stopSyncBtn = document.getElementById("stopSyncBtn");
 // Sorting + filtering
 // ---------------------------------------------------------------------
 
+// Optional items (Agents of S.H.I.E.L.D., Luke Cage, etc.) are excluded
+// everywhere — the list and the stats bar alike — unless the switch is
+// on. This helper is the single source of truth for that so the two
+// never drift out of sync with each other.
+function getIncludedItems() {
+  return items.filter((item) => !item.optional || state.includeOptional);
+}
+
 function getVisibleItems() {
   const sortKey = state.sortBy === "timeline" ? "timelineOrder" : "releaseOrder";
 
-  return items
+  return getIncludedItems()
     .filter((item) => !(state.hideWatched && isItemWatched(item)))
     .filter((item) => !(state.moviesOnly && item.type !== "movie"))
     .sort((a, b) => a[sortKey] - b[sortKey]);
@@ -342,14 +379,15 @@ function renderList() {
 }
 
 function renderStats() {
-  const total = items.length;
-  const watchedCount = items.filter((item) => isItemWatched(item)).length;
+  const includedItems = getIncludedItems();
+  const total = includedItems.length;
+  const watchedCount = includedItems.filter((item) => isItemWatched(item)).length;
   const percent = total === 0 ? 0 : Math.round((watchedCount / total) * 100);
 
   // A show counts toward "watched/total" only once fully watched, but
   // contributes partial credit here — only its still-unwatched episodes
   // count toward hours left.
-  const unwatchedMinutes = items.reduce((sum, item) => sum + getUnwatchedMinutes(item), 0);
+  const unwatchedMinutes = includedItems.reduce((sum, item) => sum + getUnwatchedMinutes(item), 0);
   const hoursLeft = unwatchedMinutes / 60;
 
   const msLeft = TARGET_DATE.getTime() - Date.now();
@@ -448,6 +486,13 @@ hideWatchedInput.addEventListener("change", (e) => {
 moviesOnlyInput.addEventListener("change", (e) => {
   state.moviesOnly = e.target.checked;
   renderList();
+});
+
+includeOptionalInput.checked = state.includeOptional;
+includeOptionalInput.addEventListener("change", (e) => {
+  state.includeOptional = e.target.checked;
+  saveIncludeOptional(state.includeOptional);
+  renderAll();
 });
 
 // Reset requires two clicks: the first arms a confirm state, the second
