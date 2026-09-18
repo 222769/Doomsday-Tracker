@@ -2,6 +2,7 @@
 // Vanilla JS, no build step. Loaded as a module from index.html only.
 
 import { items } from "./data.js";
+import { sync } from "./sync.js";
 
 // ---------------------------------------------------------------------
 // Config
@@ -43,6 +44,10 @@ function saveWatchedIds(watchedIds) {
 
 let watchedIds = loadWatchedIds();
 
+// The sync code currently active on this device, or null if not syncing.
+// Kept in memory only — sync.js is the source of truth for what's stored.
+let activeSyncCode = null;
+
 // ---------------------------------------------------------------------
 // View state (not persisted — resets each visit)
 // ---------------------------------------------------------------------
@@ -69,6 +74,17 @@ const statCount = document.getElementById("statCount");
 const statHoursLeft = document.getElementById("statHoursLeft");
 const statPace = document.getElementById("statPace");
 const progressFill = document.getElementById("progressFill");
+
+const syncUnconfigured = document.getElementById("syncUnconfigured");
+const syncOffPanel = document.getElementById("syncOffPanel");
+const syncOnPanel = document.getElementById("syncOnPanel");
+const getCodeBtn = document.getElementById("getCodeBtn");
+const joinCodeInput = document.getElementById("joinCodeInput");
+const joinCodeBtn = document.getElementById("joinCodeBtn");
+const joinCodeError = document.getElementById("joinCodeError");
+const syncCodeDisplay = document.getElementById("syncCodeDisplay");
+const copyCodeBtn = document.getElementById("copyCodeBtn");
+const stopSyncBtn = document.getElementById("stopSyncBtn");
 
 // ---------------------------------------------------------------------
 // Sorting + filtering
@@ -230,6 +246,12 @@ function toggleWatched(id) {
   }
   saveWatchedIds(watchedIds);
   renderAll();
+
+  if (activeSyncCode) {
+    sync.push(activeSyncCode, watchedIds).catch((err) => {
+      console.warn("Sync push failed:", err);
+    });
+  }
 }
 
 function setSort(sortBy) {
@@ -280,6 +302,125 @@ resetBtn.addEventListener("click", () => {
   saveWatchedIds(watchedIds);
   renderAll();
 });
+
+// ---------------------------------------------------------------------
+// Cross-device sync
+// ---------------------------------------------------------------------
+// Optional, code-based, no accounts. Disabled entirely (UI hidden) unless
+// firebase-config.js has been filled in — see SYNC_SETUP.md.
+
+function applyRemoteWatchedIds(remoteIds) {
+  watchedIds = new Set(remoteIds);
+  saveWatchedIds(watchedIds);
+  renderAll();
+}
+
+function showSyncedState(code) {
+  activeSyncCode = code;
+  syncCodeDisplay.textContent = code;
+  syncOffPanel.hidden = true;
+  syncOnPanel.hidden = false;
+}
+
+function showUnsyncedState() {
+  activeSyncCode = null;
+  syncOffPanel.hidden = false;
+  syncOnPanel.hidden = true;
+  joinCodeInput.value = "";
+  joinCodeError.hidden = true;
+}
+
+if (sync.isConfigured()) {
+  syncUnconfigured.hidden = true;
+
+  getCodeBtn.addEventListener("click", async () => {
+    getCodeBtn.disabled = true;
+    getCodeBtn.textContent = "Getting code…";
+    try {
+      const code = await sync.createCode(watchedIds);
+      await sync.listen(code, applyRemoteWatchedIds);
+      showSyncedState(code);
+    } catch (err) {
+      console.warn("Could not create sync code:", err);
+      joinCodeError.textContent = "Couldn't create a code — check your connection and try again.";
+      joinCodeError.hidden = false;
+    } finally {
+      getCodeBtn.disabled = false;
+      getCodeBtn.textContent = "Get a sync code";
+    }
+  });
+
+  // Joining an existing code replaces local progress, so this uses the
+  // same arm-then-confirm pattern as Reset when there's anything to lose.
+  let joinArmed = false;
+  let joinArmTimer = null;
+
+  joinCodeBtn.addEventListener("click", async () => {
+    const code = sync.normalizeCode(joinCodeInput.value);
+    joinCodeError.hidden = true;
+
+    if (!code) {
+      joinCodeError.textContent = "Enter the 8-character code exactly as you received it.";
+      joinCodeError.hidden = false;
+      return;
+    }
+
+    if (watchedIds.size > 0 && !joinArmed) {
+      joinArmed = true;
+      joinCodeBtn.textContent = "Tap again to replace progress";
+      joinArmTimer = setTimeout(() => {
+        joinArmed = false;
+        joinCodeBtn.textContent = "Sync";
+      }, 4000);
+      return;
+    }
+
+    clearTimeout(joinArmTimer);
+    joinArmed = false;
+    joinCodeBtn.disabled = true;
+    joinCodeBtn.textContent = "Syncing…";
+
+    try {
+      const remoteIds = await sync.joinCode(code);
+      applyRemoteWatchedIds(remoteIds);
+      await sync.listen(code, applyRemoteWatchedIds);
+      showSyncedState(code);
+    } catch (err) {
+      console.warn("Could not join sync code:", err);
+      joinCodeError.textContent = err.message || "Couldn't sync with that code.";
+      joinCodeError.hidden = false;
+    } finally {
+      joinCodeBtn.disabled = false;
+      joinCodeBtn.textContent = "Sync";
+    }
+  });
+
+  copyCodeBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(activeSyncCode);
+      copyCodeBtn.textContent = "Copied!";
+      setTimeout(() => {
+        copyCodeBtn.textContent = "Copy";
+      }, 1500);
+    } catch {
+      // Clipboard API may be unavailable — the code is already shown on screen.
+    }
+  });
+
+  stopSyncBtn.addEventListener("click", () => {
+    sync.stop();
+    showUnsyncedState();
+  });
+
+  // Resume syncing automatically if this device was mid-session.
+  const storedCode = sync.getStoredCode();
+  if (storedCode) {
+    sync.listen(storedCode, applyRemoteWatchedIds).then(() => showSyncedState(storedCode));
+  }
+} else {
+  syncUnconfigured.hidden = false;
+  syncOffPanel.hidden = true;
+}
 
 // ---------------------------------------------------------------------
 // Countdown timer

@@ -4,7 +4,7 @@
 // network fallback that also updates the cache. Bump CACHE_NAME whenever
 // shell files change so old clients pick up the new version.
 
-const CACHE_NAME = "watch-tracker-v1";
+const CACHE_NAME = "watch-tracker-v2";
 
 const APP_SHELL = [
   "./",
@@ -15,6 +15,8 @@ const APP_SHELL = [
   "app.js",
   "data.js",
   "pwa.js",
+  "sync.js",
+  "firebase-config.js",
   "manifest.json",
   "icons/icon-192.png",
   "icons/icon-512.png",
