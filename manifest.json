@@ -1,6 +1,6 @@
 {
-  "name": "Watch Tracker",
-  "short_name": "Watch Tracker",
+  "name": "Doomsday Tracker",
+  "short_name": "Doomsday",
   "description": "Every movie and show to watch before Doomsday, in the right order.",
   "start_url": "index.html",
   "scope": ".",

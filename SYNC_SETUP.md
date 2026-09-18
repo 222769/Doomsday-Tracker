@@ -18,7 +18,7 @@ exactly as it did before (local-only, no network calls).
 ## 1. Create a Firebase project
 
 1. Go to [console.firebase.google.com](https://console.firebase.google.com/) and sign in with a Google account.
-2. Click **Add project**, give it any name (e.g. "watch-tracker"), and finish the wizard. You can decline Google Analytics — it isn't needed.
+2. Click **Add project**, give it any name (e.g. "doomsday-tracker"), and finish the wizard. You can decline Google Analytics — it isn't needed.
 
 ## 2. Create a Firestore database
 

@@ -1,4 +1,4 @@
-// app.js — Watch Tracker checklist logic.
+// app.js — Doomsday Tracker checklist logic.
 // Vanilla JS, no build step. Loaded as a module from index.html only.
 
 import { items } from "./data.js";
