@@ -426,6 +426,69 @@ li.item input[type="checkbox"] {
   cursor: pointer;
 }
 
+/* ---------- expandable episode list (shows only) ---------- */
+
+button.expand-toggle {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  padding: 0.55rem 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.expand-toggle.expanded {
+  color: var(--accent);
+}
+
+ul.episode-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0.5rem 0.6rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+li.episode-item label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+li.episode-item label:hover {
+  background: var(--bg);
+}
+
+li.episode-item input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  accent-color: var(--good);
+  cursor: pointer;
+}
+
+.episode-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.85rem;
+}
+
+.episode-runtime {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
 .item-thumb {
   width: 2.5rem;
   height: 2.5rem;

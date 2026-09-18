@@ -94,10 +94,54 @@ function getVisibleItems() {
   const sortKey = state.sortBy === "timeline" ? "timelineOrder" : "releaseOrder";
 
   return items
-    .filter((item) => !(state.hideWatched && watchedIds.has(item.id)))
+    .filter((item) => !(state.hideWatched && isItemWatched(item)))
     .filter((item) => !(state.moviesOnly && item.type !== "movie"))
     .sort((a, b) => a[sortKey] - b[sortKey]);
 }
+
+// ---------------------------------------------------------------------
+// Watched-state helpers (movies vs. shows)
+// ---------------------------------------------------------------------
+// A movie's own id lives directly in watchedIds. A show has no id of its
+// own in watchedIds — instead each of its episodes does, so a show's
+// progress is however many of its episode ids are currently in the set.
+
+function getItemRuntimeMinutes(item) {
+  if (item.type === "show") {
+    return item.episodes.reduce((sum, ep) => sum + ep.runtimeMinutes, 0);
+  }
+  return item.runtimeMinutes;
+}
+
+function getWatchedEpisodeCount(item) {
+  return item.episodes.filter((ep) => watchedIds.has(ep.id)).length;
+}
+
+function isItemWatched(item) {
+  if (item.type === "show") {
+    return item.episodes.every((ep) => watchedIds.has(ep.id));
+  }
+  return watchedIds.has(item.id);
+}
+
+function isItemPartiallyWatched(item) {
+  if (item.type !== "show") return false;
+  const watchedCount = getWatchedEpisodeCount(item);
+  return watchedCount > 0 && watchedCount < item.episodes.length;
+}
+
+function getUnwatchedMinutes(item) {
+  if (item.type === "show") {
+    return item.episodes
+      .filter((ep) => !watchedIds.has(ep.id))
+      .reduce((sum, ep) => sum + ep.runtimeMinutes, 0);
+  }
+  return watchedIds.has(item.id) ? 0 : item.runtimeMinutes;
+}
+
+// Show ids currently expanded to reveal their episode list. View state
+// only — not persisted, resets on reload.
+const expandedShowIds = new Set();
 
 // ---------------------------------------------------------------------
 // Thumbnail tiles
@@ -147,7 +191,9 @@ function renderList() {
   }
 
   for (const item of visible) {
-    const isWatched = watchedIds.has(item.id);
+    const isShow = item.type === "show";
+    const isWatched = isItemWatched(item);
+    const isExpanded = isShow && expandedShowIds.has(item.id);
 
     const li = document.createElement("li");
     li.className = "item" + (isWatched ? " watched" : "");
@@ -161,8 +207,16 @@ function renderList() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = isWatched;
-    checkbox.setAttribute("aria-label", `Mark "${item.title}" as watched`);
-    checkbox.addEventListener("change", () => toggleWatched(item.id));
+    checkbox.setAttribute(
+      "aria-label",
+      isShow ? `Mark all of "${item.title}" as watched` : `Mark "${item.title}" as watched`
+    );
+    if (isShow) {
+      checkbox.indeterminate = isItemPartiallyWatched(item);
+      checkbox.addEventListener("change", () => toggleShowBulk(item));
+    } else {
+      checkbox.addEventListener("change", () => toggleWatched(item.id));
+    }
 
     const thumb = document.createElement("div");
     thumb.className = "item-thumb";
@@ -188,8 +242,10 @@ function renderList() {
 
     const meta = document.createElement("div");
     meta.className = "item-meta";
-    const hours = (item.runtimeMinutes / 60).toFixed(1);
-    meta.textContent = `${item.runtimeMinutes} min (~${hours} hr)` + (item.notes ? ` · ${item.notes}` : "");
+    const totalMinutes = getItemRuntimeMinutes(item);
+    const hours = (totalMinutes / 60).toFixed(1);
+    const progressText = isShow ? `${getWatchedEpisodeCount(item)}/${item.episodes.length} episodes · ` : "";
+    meta.textContent = `${progressText}${totalMinutes} min (~${hours} hr)` + (item.notes ? ` · ${item.notes}` : "");
 
     body.append(titleRow, meta);
 
@@ -200,20 +256,69 @@ function renderList() {
       body.appendChild(stop);
     }
 
+    // The expand button and episode list are siblings of <label>, not
+    // nested inside it — a <label> may only contain the one control it
+    // labels, so a nested button/checkbox there would be invalid HTML
+    // and can't reliably be told apart from clicks meant for the show's
+    // own checkbox.
     label.append(orderBadge, checkbox, thumb, body);
     li.appendChild(label);
+
+    if (isShow) {
+      const expandBtn = document.createElement("button");
+      expandBtn.type = "button";
+      expandBtn.className = "expand-toggle" + (isExpanded ? " expanded" : "");
+      expandBtn.textContent = "▾ " + (isExpanded ? "Hide episodes" : "Show episodes");
+      expandBtn.setAttribute("aria-expanded", String(isExpanded));
+      expandBtn.addEventListener("click", () => toggleExpand(item.id));
+      li.appendChild(expandBtn);
+
+      if (isExpanded) {
+        const episodeList = document.createElement("ul");
+        episodeList.className = "episode-list";
+
+        for (const ep of item.episodes) {
+          const epLi = document.createElement("li");
+          epLi.className = "episode-item";
+
+          const epLabel = document.createElement("label");
+
+          const epCheckbox = document.createElement("input");
+          epCheckbox.type = "checkbox";
+          epCheckbox.checked = watchedIds.has(ep.id);
+          epCheckbox.setAttribute("aria-label", `Mark "${ep.title}" as watched`);
+          epCheckbox.addEventListener("change", () => toggleWatched(ep.id));
+
+          const epTitle = document.createElement("span");
+          epTitle.className = "episode-title";
+          epTitle.textContent = ep.title;
+
+          const epRuntime = document.createElement("span");
+          epRuntime.className = "episode-runtime";
+          epRuntime.textContent = `${ep.runtimeMinutes} min`;
+
+          epLabel.append(epCheckbox, epTitle, epRuntime);
+          epLi.appendChild(epLabel);
+          episodeList.appendChild(epLi);
+        }
+
+        li.appendChild(episodeList);
+      }
+    }
+
     listEl.appendChild(li);
   }
 }
 
 function renderStats() {
   const total = items.length;
-  const watchedCount = items.filter((item) => watchedIds.has(item.id)).length;
+  const watchedCount = items.filter((item) => isItemWatched(item)).length;
   const percent = total === 0 ? 0 : Math.round((watchedCount / total) * 100);
 
-  const unwatchedMinutes = items
-    .filter((item) => !watchedIds.has(item.id))
-    .reduce((sum, item) => sum + item.runtimeMinutes, 0);
+  // A show counts toward "watched/total" only once fully watched, but
+  // contributes partial credit here — only its still-unwatched episodes
+  // count toward hours left.
+  const unwatchedMinutes = items.reduce((sum, item) => sum + getUnwatchedMinutes(item), 0);
   const hoursLeft = unwatchedMinutes / 60;
 
   const msLeft = TARGET_DATE.getTime() - Date.now();
@@ -238,6 +343,14 @@ function renderAll() {
 // Event handlers
 // ---------------------------------------------------------------------
 
+function pushToSyncIfActive() {
+  if (activeSyncCode) {
+    sync.push(activeSyncCode, watchedIds).catch((err) => {
+      console.warn("Sync push failed:", err);
+    });
+  }
+}
+
 function toggleWatched(id) {
   if (watchedIds.has(id)) {
     watchedIds.delete(id);
@@ -246,12 +359,33 @@ function toggleWatched(id) {
   }
   saveWatchedIds(watchedIds);
   renderAll();
+  pushToSyncIfActive();
+}
 
-  if (activeSyncCode) {
-    sync.push(activeSyncCode, watchedIds).catch((err) => {
-      console.warn("Sync push failed:", err);
-    });
+// The show's own checkbox is a bulk action: check it to mark every
+// episode watched, uncheck to clear them all. Individual episodes still
+// toggle independently via toggleWatched.
+function toggleShowBulk(item) {
+  const shouldWatchAll = !isItemWatched(item);
+  for (const ep of item.episodes) {
+    if (shouldWatchAll) {
+      watchedIds.add(ep.id);
+    } else {
+      watchedIds.delete(ep.id);
+    }
   }
+  saveWatchedIds(watchedIds);
+  renderAll();
+  pushToSyncIfActive();
+}
+
+function toggleExpand(itemId) {
+  if (expandedShowIds.has(itemId)) {
+    expandedShowIds.delete(itemId);
+  } else {
+    expandedShowIds.add(itemId);
+  }
+  renderList();
 }
 
 function setSort(sortBy) {
