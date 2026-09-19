@@ -28,7 +28,19 @@ if ("serviceWorker" in navigator) {
     btn.addEventListener("click", () => location.reload());
   }
 
-  navigator.serviceWorker.addEventListener("controllerchange", showUpdateBanner);
+  // controllerchange also fires the very first time a service worker ever
+  // takes control of a page (clients.claim() during a brand-new install),
+  // not just on genuine updates — a first-time visitor would otherwise see
+  // "a new version is ready" with nothing to actually update from. Only
+  // treat it as a real update if a controller already existed before now.
+  let hasSeenController = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!hasSeenController) {
+      hasSeenController = true;
+      return;
+    }
+    showUpdateBanner();
+  });
 }
 
 // ---------------------------------------------------------------------

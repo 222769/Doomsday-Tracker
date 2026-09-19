@@ -754,16 +754,57 @@ li.item.watched .item-title {
   color: var(--text-dim);
 }
 
+.core-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--good);
+  color: var(--good);
+}
+
 .item-meta {
   font-size: 0.78rem;
   color: var(--text-dim);
   margin-top: 0.2rem;
 }
 
-.item-stop-point {
-  font-size: 0.78rem;
+.stop-point-callout {
+  margin-top: 0.6rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--hazard);
+  background: rgba(255, 176, 32, 0.08);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--hazard),
+    var(--hazard) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  background-size: 4px 100%;
+  background-repeat: no-repeat;
+}
+
+.stop-point-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--hazard);
-  margin-top: 0.25rem;
+}
+
+.stop-point-callout p {
+  margin: 0.35rem 0 0 0.4rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text);
 }
 
 .item-order {
@@ -780,6 +821,90 @@ li.item.watched .item-title {
   padding: 2rem 1rem;
   border: 1px dashed var(--border);
   border-radius: var(--radius);
+}
+
+/* ---------- section grouping (release-order view only) ---------- */
+
+li.section-header {
+  background: var(--bg-elevated);
+  border: 1px solid var(--good);
+  border-radius: var(--radius);
+  margin-top: 0.4rem;
+  overflow: hidden;
+}
+
+.section-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.9rem 0.85rem;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text);
+}
+
+.section-numeral {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--good);
+  min-width: 1.6rem;
+}
+
+.section-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.section-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.section-desc {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.section-progress {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.section-arrow {
+  transition: transform 0.15s ease;
+}
+
+.section-arrow.collapsed {
+  transform: rotate(-90deg);
+}
+
+.mark-section-btn {
+  display: block;
+  width: calc(100% - 1.6rem);
+  margin: 0 0.8rem 0.8rem;
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.mark-section-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
 }
 
 /* ---------- generic content pages ---------- */

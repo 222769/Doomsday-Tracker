@@ -4,7 +4,7 @@
 // network fallback that also updates the cache. Bump CACHE_NAME whenever
 // shell files change so old clients pick up the new version.
 
-const CACHE_NAME = "doomsday-tracker-v10";
+const CACHE_NAME = "doomsday-tracker-v11";
 
 const APP_SHELL = [
   "./",
