@@ -4,7 +4,7 @@
 // network fallback that also updates the cache. Bump CACHE_NAME whenever
 // shell files change so old clients pick up the new version.
 
-const CACHE_NAME = "doomsday-tracker-v12";
+const CACHE_NAME = "doomsday-tracker-v13";
 
 const APP_SHELL = [
   "./",
@@ -12,6 +12,7 @@ const APP_SHELL = [
   "styles.css",
   "app.js",
   "data.js",
+  "themes.js",
   "pwa.js",
   "sync.js",
   "firebase-config.js",

@@ -3,6 +3,7 @@
 
 import { items, sections } from "./data.js";
 import { sync } from "./sync.js";
+import { themes, DEFAULT_THEME_ID } from "./themes.js";
 
 // ---------------------------------------------------------------------
 // Config
@@ -121,6 +122,12 @@ const authModalError = document.getElementById("authModalError");
 const syncCodeDisplay = document.getElementById("syncCodeDisplay");
 const copyCodeBtn = document.getElementById("copyCodeBtn");
 const stopSyncBtn = document.getElementById("stopSyncBtn");
+
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsModalOverlay = document.getElementById("settingsModalOverlay");
+const settingsModalClose = document.getElementById("settingsModalClose");
+const themeList = document.getElementById("themeList");
+const bgMotionToggle = document.getElementById("bgMotionToggle");
 
 // ---------------------------------------------------------------------
 // Sorting + filtering
@@ -854,6 +861,121 @@ if (sync.isConfigured()) {
     }
   }
 }
+
+// ---------------------------------------------------------------------
+// Settings (color theme + animated background)
+// ---------------------------------------------------------------------
+
+const THEME_STORAGE_KEY = "watchTracker.colorTheme.v1";
+const BG_MOTION_STORAGE_KEY = "watchTracker.bgMotion.v1";
+
+function loadColorTheme() {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    return themes.some((t) => t.id === stored) ? stored : DEFAULT_THEME_ID;
+  } catch {
+    return DEFAULT_THEME_ID;
+  }
+}
+
+function saveColorTheme(themeId) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, themeId);
+  } catch {
+    // Storage may be unavailable — the choice just won't stick between visits.
+  }
+}
+
+function loadBgMotion() {
+  try {
+    return localStorage.getItem(BG_MOTION_STORAGE_KEY) !== "false";
+  } catch {
+    return true;
+  }
+}
+
+function saveBgMotion(enabled) {
+  try {
+    localStorage.setItem(BG_MOTION_STORAGE_KEY, String(enabled));
+  } catch {
+    // Storage may be unavailable — the choice just won't stick between visits.
+  }
+}
+
+function applyColorTheme(themeId) {
+  document.documentElement.setAttribute("data-color-theme", themeId);
+}
+
+function applyBgMotion(enabled) {
+  document.documentElement.setAttribute("data-bg-motion", enabled ? "on" : "off");
+}
+
+function renderThemeList(activeThemeId) {
+  themeList.textContent = "";
+  for (const theme of themes) {
+    const li = document.createElement("li");
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "theme-option" + (theme.id === activeThemeId ? " active" : "");
+    btn.setAttribute("aria-pressed", String(theme.id === activeThemeId));
+
+    const swatch = document.createElement("span");
+    swatch.className = "theme-swatch";
+    swatch.style.setProperty("--swatch-a", theme.swatch[0]);
+    swatch.style.setProperty("--swatch-b", theme.swatch[1]);
+    swatch.setAttribute("aria-hidden", "true");
+
+    const name = document.createElement("span");
+    name.className = "theme-name";
+    name.textContent = theme.name;
+
+    const check = document.createElement("span");
+    check.className = "theme-check";
+    check.setAttribute("aria-hidden", "true");
+    check.textContent = "✓";
+
+    btn.append(swatch, name, check);
+    btn.addEventListener("click", () => {
+      activeThemeId = theme.id;
+      applyColorTheme(theme.id);
+      saveColorTheme(theme.id);
+      renderThemeList(theme.id);
+    });
+
+    li.appendChild(btn);
+    themeList.appendChild(li);
+  }
+}
+
+// Applied once more here (in addition to the inline <head> script) so the
+// swatch list and toggle reflect the actual current state, not just so
+// the colors are right before paint.
+const initialThemeId = loadColorTheme();
+applyColorTheme(initialThemeId);
+renderThemeList(initialThemeId);
+
+const initialBgMotion = loadBgMotion();
+applyBgMotion(initialBgMotion);
+bgMotionToggle.checked = initialBgMotion;
+bgMotionToggle.addEventListener("change", (e) => {
+  applyBgMotion(e.target.checked);
+  saveBgMotion(e.target.checked);
+});
+
+function openSettingsModal() {
+  settingsModalOverlay.hidden = false;
+}
+
+function closeSettingsModal() {
+  settingsModalOverlay.hidden = true;
+}
+
+settingsBtn.addEventListener("click", openSettingsModal);
+settingsModalClose.addEventListener("click", closeSettingsModal);
+settingsModalOverlay.addEventListener("click", (e) => {
+  if (e.target === settingsModalOverlay) closeSettingsModal();
+});
 
 // ---------------------------------------------------------------------
 // Countdown timer
