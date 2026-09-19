@@ -9,8 +9,11 @@
   <link rel="icon" href="icons/favicon-32.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <meta name="theme-color" content="#0b0714" />
-  <!-- Applied before first paint so a returning visitor's saved theme and
-       animated-background preference don't flash the defaults first. -->
+  <!-- Applied before first paint so a returning visitor's saved theme,
+       custom colors, and animated-background preference don't flash the
+       defaults first. Duplicates a little of app.js's custom-color math
+       (see applyCustomColors there) because this has to run synchronously
+       before that module loads. -->
   <script>
     (function () {
       try {
@@ -18,6 +21,30 @@
         if (theme) document.documentElement.setAttribute("data-color-theme", theme);
         if (localStorage.getItem("watchTracker.bgMotion.v1") === "false") {
           document.documentElement.setAttribute("data-bg-motion", "off");
+        }
+        if (theme === "custom") {
+          var accent = localStorage.getItem("watchTracker.customAccent.v1") || "#b565f5";
+          var hazard = localStorage.getItem("watchTracker.customHazard.v1") || "#f2b705";
+          var toRgb = function (hex) {
+            var n = parseInt(hex.slice(1), 16);
+            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+          };
+          var luminance = function (hex) {
+            var rgb = toRgb(hex).map(function (c) {
+              c /= 255;
+              return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+          };
+          var ar = toRgb(accent).join(", ");
+          var hr = toRgb(hazard).join(", ");
+          var root = document.documentElement.style;
+          root.setProperty("--accent", accent);
+          root.setProperty("--hazard", hazard);
+          root.setProperty("--accent-glow", "rgba(" + ar + ", 0.4)");
+          root.setProperty("--accent-wash", "rgba(" + ar + ", 0.16)");
+          root.setProperty("--hazard-glow", "rgba(" + hr + ", 0.08)");
+          root.setProperty("--on-accent", luminance(accent) > 0.45 ? "#140f22" : "#f5f0ff");
         }
       } catch (e) {}
     })();
@@ -29,6 +56,7 @@
     <span class="blob blob-a"></span>
     <span class="blob blob-b"></span>
     <span class="blob blob-c"></span>
+    <span class="blob blob-d"></span>
   </div>
   <div class="ptr-indicator" id="ptrIndicator" aria-hidden="true">
     <span class="ptr-spinner" id="ptrSpinner">↓</span>
@@ -188,6 +216,17 @@
       <p class="modal-subtitle">Pick a color theme for the whole app</p>
 
       <ul class="theme-list" id="themeList"></ul>
+
+      <div class="custom-color-picker" id="customColorPicker" hidden>
+        <label class="custom-color-row">
+          <span>Accent color</span>
+          <input type="color" id="customAccentInput" />
+        </label>
+        <label class="custom-color-row">
+          <span>Highlight color</span>
+          <input type="color" id="customHazardInput" />
+        </label>
+      </div>
 
       <label class="settings-row">
         <span>

@@ -3,7 +3,7 @@
 
 import { items, sections } from "./data.js";
 import { sync } from "./sync.js";
-import { themes, DEFAULT_THEME_ID } from "./themes.js";
+import { themes, DEFAULT_THEME_ID, CUSTOM_THEME_ID, DEFAULT_CUSTOM_ACCENT, DEFAULT_CUSTOM_HAZARD } from "./themes.js";
 
 // ---------------------------------------------------------------------
 // Config
@@ -128,6 +128,9 @@ const settingsModalOverlay = document.getElementById("settingsModalOverlay");
 const settingsModalClose = document.getElementById("settingsModalClose");
 const themeList = document.getElementById("themeList");
 const bgMotionToggle = document.getElementById("bgMotionToggle");
+const customColorPicker = document.getElementById("customColorPicker");
+const customAccentInput = document.getElementById("customAccentInput");
+const customHazardInput = document.getElementById("customHazardInput");
 
 // ---------------------------------------------------------------------
 // Sorting + filtering
@@ -868,6 +871,8 @@ if (sync.isConfigured()) {
 
 const THEME_STORAGE_KEY = "watchTracker.colorTheme.v1";
 const BG_MOTION_STORAGE_KEY = "watchTracker.bgMotion.v1";
+const CUSTOM_ACCENT_KEY = "watchTracker.customAccent.v1";
+const CUSTOM_HAZARD_KEY = "watchTracker.customHazard.v1";
 
 function loadColorTheme() {
   try {
@@ -902,16 +907,86 @@ function saveBgMotion(enabled) {
   }
 }
 
+function loadCustomColors() {
+  try {
+    return {
+      accent: localStorage.getItem(CUSTOM_ACCENT_KEY) || DEFAULT_CUSTOM_ACCENT,
+      hazard: localStorage.getItem(CUSTOM_HAZARD_KEY) || DEFAULT_CUSTOM_HAZARD,
+    };
+  } catch {
+    return { accent: DEFAULT_CUSTOM_ACCENT, hazard: DEFAULT_CUSTOM_HAZARD };
+  }
+}
+
+function saveCustomColors(accent, hazard) {
+  try {
+    localStorage.setItem(CUSTOM_ACCENT_KEY, accent);
+    localStorage.setItem(CUSTOM_HAZARD_KEY, hazard);
+  } catch {
+    // Storage may be unavailable — the choice just won't stick between visits.
+  }
+}
+
+function hexToRgbString(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
+}
+
+// Relative luminance (WCAG formula) decides whether accent-colored
+// buttons need dark or light text — a person can pick any hue, including
+// ones darker than our usual accent colors, so this can't be a fixed
+// on-accent value the way each preset theme's own is.
+function relativeLuminance(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) => {
+    c /= 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+function applyCustomColors(accent, hazard) {
+  const root = document.documentElement.style;
+  root.setProperty("--accent", accent);
+  root.setProperty("--hazard", hazard);
+  root.setProperty("--accent-glow", `rgba(${hexToRgbString(accent)}, 0.4)`);
+  root.setProperty("--accent-wash", `rgba(${hexToRgbString(accent)}, 0.16)`);
+  root.setProperty("--hazard-glow", `rgba(${hexToRgbString(hazard)}, 0.08)`);
+  root.setProperty("--on-accent", relativeLuminance(accent) > 0.45 ? "#140f22" : "#f5f0ff");
+}
+
+// Inline custom-color overrides win over any stylesheet rule regardless
+// of data-color-theme, so switching to a preset has to explicitly clear
+// them — otherwise a preset's own --accent etc. would be silently
+// shadowed by whatever custom colors were set earlier in the session.
+function clearCustomColorOverrides() {
+  const root = document.documentElement.style;
+  for (const prop of ["--accent", "--hazard", "--accent-glow", "--accent-wash", "--hazard-glow", "--on-accent"]) {
+    root.removeProperty(prop);
+  }
+}
+
 function applyColorTheme(themeId) {
   document.documentElement.setAttribute("data-color-theme", themeId);
+  if (themeId === CUSTOM_THEME_ID) {
+    const { accent, hazard } = loadCustomColors();
+    applyCustomColors(accent, hazard);
+  } else {
+    clearCustomColorOverrides();
+  }
 }
 
 function applyBgMotion(enabled) {
   document.documentElement.setAttribute("data-bg-motion", enabled ? "on" : "off");
 }
 
+let customSwatchEl = null;
+
 function renderThemeList(activeThemeId) {
   themeList.textContent = "";
+  customSwatchEl = null;
+  const customColors = loadCustomColors();
+
   for (const theme of themes) {
     const li = document.createElement("li");
 
@@ -922,9 +997,11 @@ function renderThemeList(activeThemeId) {
 
     const swatch = document.createElement("span");
     swatch.className = "theme-swatch";
-    swatch.style.setProperty("--swatch-a", theme.swatch[0]);
-    swatch.style.setProperty("--swatch-b", theme.swatch[1]);
+    const [swatchA, swatchB] = theme.swatch || [customColors.accent, customColors.hazard];
+    swatch.style.setProperty("--swatch-a", swatchA);
+    swatch.style.setProperty("--swatch-b", swatchB);
     swatch.setAttribute("aria-hidden", "true");
+    if (theme.id === CUSTOM_THEME_ID) customSwatchEl = swatch;
 
     const name = document.createElement("span");
     name.className = "theme-name";
@@ -941,11 +1018,16 @@ function renderThemeList(activeThemeId) {
       applyColorTheme(theme.id);
       saveColorTheme(theme.id);
       renderThemeList(theme.id);
+      updateCustomPickerVisibility(theme.id);
     });
 
     li.appendChild(btn);
     themeList.appendChild(li);
   }
+}
+
+function updateCustomPickerVisibility(activeThemeId) {
+  customColorPicker.hidden = activeThemeId !== CUSTOM_THEME_ID;
 }
 
 // Applied once more here (in addition to the inline <head> script) so the
@@ -954,6 +1036,25 @@ function renderThemeList(activeThemeId) {
 const initialThemeId = loadColorTheme();
 applyColorTheme(initialThemeId);
 renderThemeList(initialThemeId);
+updateCustomPickerVisibility(initialThemeId);
+
+const initialCustomColors = loadCustomColors();
+customAccentInput.value = initialCustomColors.accent;
+customHazardInput.value = initialCustomColors.hazard;
+
+function handleCustomColorInput() {
+  const accent = customAccentInput.value;
+  const hazard = customHazardInput.value;
+  applyCustomColors(accent, hazard);
+  saveCustomColors(accent, hazard);
+  if (customSwatchEl) {
+    customSwatchEl.style.setProperty("--swatch-a", accent);
+    customSwatchEl.style.setProperty("--swatch-b", hazard);
+  }
+}
+
+customAccentInput.addEventListener("input", handleCustomColorInput);
+customHazardInput.addEventListener("input", handleCustomColorInput);
 
 const initialBgMotion = loadBgMotion();
 applyBgMotion(initialBgMotion);

@@ -95,6 +95,25 @@
   --hazard-glow: rgba(224, 195, 77, 0.08);
 }
 
+/* Custom theme: a neutral base that works with any accent/hazard hue.
+   --accent/--hazard/--accent-glow/--accent-wash/--hazard-glow/--on-accent
+   are set inline on :root by app.js from the person's own color picks
+   (inline style wins over this block, so the values below are only the
+   fallback shown for one frame before that JS runs). */
+:root[data-color-theme="custom"] {
+  --bg: #0a0a0f;
+  --bg-elevated: #16161f;
+  --border: #33333f;
+  --text: #f2f2f5;
+  --text-dim: #a0a0ac;
+  --accent: #b565f5;
+  --accent-glow: rgba(181, 101, 245, 0.4);
+  --accent-wash: rgba(181, 101, 245, 0.16);
+  --on-accent: #140f22;
+  --hazard: #f2b705;
+  --hazard-glow: rgba(242, 183, 5, 0.08);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .pulse {
     animation: pulse 2.4s ease-in-out infinite;
@@ -683,6 +702,55 @@ nav.site-nav a[aria-current="page"] {
   visibility: visible;
 }
 
+.custom-color-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: -0.1rem 0 1rem;
+  padding: 0.75rem 0.85rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* a class selector otherwise ties the UA [hidden] rule's specificity and
+   can lose to it depending on stylesheet order — force the override */
+.custom-color-picker[hidden] {
+  display: none;
+}
+
+.custom-color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.custom-color-row span {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.custom-color-row input[type="color"] {
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+}
+
+/* Native color-input internals vary by browser; strip their default
+   padding/border so the swatch fills the rounded box above cleanly. */
+.custom-color-row input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.custom-color-row input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+}
+
 .settings-row {
   display: flex;
   align-items: center;
@@ -714,11 +782,14 @@ nav.site-nav a[aria-current="page"] {
 }
 
 /* ---------- animated background ---------- */
-/* Three large, softly-blurred blobs in the theme's own colors, drifting
-   slowly behind the page. Fixed and behind everything (z-index below the
-   content, which all sits on opaque cards) so it reads as ambient motion
-   without affecting legibility. Off by default for anyone who set
-   prefers-reduced-motion, and toggleable regardless via Settings. */
+/* Four large glows in the theme's own colors, drifting and pulsing
+   slowly behind the page. Each is a radial gradient (bright core fading
+   to nothing) rather than a flat blurred disc, so it reads as luminous
+   light rather than a soft-edged shape. Fixed and behind everything
+   (z-index below the content, which all sits on opaque cards) so it
+   reads as ambient light without affecting legibility. Off by default
+   for anyone who set prefers-reduced-motion, and toggleable regardless
+   via Settings. */
 
 .bg-aurora {
   position: fixed;
@@ -730,58 +801,102 @@ nav.site-nav a[aria-current="page"] {
 
 .bg-aurora .blob {
   position: absolute;
-  width: 60vmax;
-  height: 60vmax;
+  width: 65vmax;
+  height: 65vmax;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.28;
+  filter: blur(50px);
+  will-change: transform, opacity;
 }
 
 .blob-a {
-  background: var(--accent);
-  top: -20vmax;
-  left: -15vmax;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 68%);
+  top: -22vmax;
+  left: -18vmax;
+  opacity: 0.55;
 }
 
 .blob-b {
-  background: var(--good);
-  bottom: -25vmax;
-  right: -20vmax;
+  background: radial-gradient(circle, var(--good) 0%, transparent 68%);
+  bottom: -28vmax;
+  right: -22vmax;
+  opacity: 0.42;
 }
 
 .blob-c {
-  background: var(--hazard);
-  top: 30vh;
+  width: 55vmax;
+  height: 55vmax;
+  background: radial-gradient(circle, var(--hazard) 0%, transparent 68%);
+  top: 28vh;
   left: 50vw;
   transform: translateX(-50%);
-  opacity: 0.16;
+  opacity: 0.3;
+}
+
+.blob-d {
+  width: 50vmax;
+  height: 50vmax;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 68%);
+  bottom: 5vh;
+  left: -10vmax;
+  opacity: 0.32;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   :root:not([data-bg-motion="off"]) .blob-a {
-    animation: drift-a 26s ease-in-out infinite;
+    animation: drift-a 22s ease-in-out infinite, glow-pulse-a 7s ease-in-out infinite;
   }
   :root:not([data-bg-motion="off"]) .blob-b {
-    animation: drift-b 32s ease-in-out infinite;
+    animation: drift-b 27s ease-in-out infinite, glow-pulse-b 9s ease-in-out infinite 1.5s;
   }
   :root:not([data-bg-motion="off"]) .blob-c {
-    animation: drift-c 22s ease-in-out infinite;
+    animation: drift-c 19s ease-in-out infinite, glow-pulse-c 8s ease-in-out infinite 0.7s;
+  }
+  :root:not([data-bg-motion="off"]) .blob-d {
+    animation: drift-d 24s ease-in-out infinite, glow-pulse-d 10s ease-in-out infinite 3s;
   }
 }
 
 @keyframes drift-a {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(8vmax, 10vmax) scale(1.12); }
+  50% { transform: translate(10vmax, 12vmax) scale(1.18); }
 }
 
 @keyframes drift-b {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-10vmax, -6vmax) scale(1.08); }
+  50% { transform: translate(-12vmax, -8vmax) scale(1.15); }
 }
 
 @keyframes drift-c {
   0%, 100% { transform: translate(-50%, 0) scale(1); }
-  50% { transform: translate(-50%, 6vmax) scale(1.15); }
+  50% { transform: translate(-50%, 8vmax) scale(1.22); }
+}
+
+@keyframes drift-d {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(9vmax, -7vmax) scale(1.1); }
+}
+
+/* Each blob pulses around its own resting opacity (set on .blob-X above)
+   rather than a shared range, so the relative brightness balance between
+   blobs holds throughout the animation, not just at rest. */
+@keyframes glow-pulse-a {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+}
+
+@keyframes glow-pulse-b {
+  0%, 100% { opacity: 0.42; }
+  50% { opacity: 0.68; }
+}
+
+@keyframes glow-pulse-c {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.52; }
+}
+
+@keyframes glow-pulse-d {
+  0%, 100% { opacity: 0.32; }
+  50% { opacity: 0.54; }
 }
 
 /* ---------- controls ---------- */
@@ -868,6 +983,12 @@ li.item {
   background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+li.item.watched {
+  opacity: 0.5;
 }
 
 li.item label {
