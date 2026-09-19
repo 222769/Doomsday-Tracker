@@ -52,6 +52,9 @@ html,
 body {
   margin: 0;
   padding: 0;
+  /* Custom pull-to-refresh (pwa.js) takes over the drag-down-from-top
+     gesture itself; this stops the browser's own version fighting it. */
+  overscroll-behavior-y: contain;
 }
 
 body {
@@ -426,6 +429,54 @@ nav.site-nav a[aria-current="page"] {
   font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+/* Pull-to-refresh indicator. Fixed at the top of the viewport, translated
+   fully out of view by default; app.js drives --ptr-progress (0-1) and
+   the .pulling/.ready/.refreshing classes as a touch drag proceeds. This
+   exists because standalone (installed) PWAs don't get the browser's own
+   pull-to-refresh gesture — only a normal browser tab does. */
+.ptr-indicator {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 30;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: -1.125rem;
+  margin-top: -2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  font-size: 1.1rem;
+  transform: translateY(calc(var(--ptr-progress, 0) * 3.5rem)) rotate(calc(var(--ptr-progress, 0) * 180deg));
+}
+
+.ptr-indicator.pulling {
+  transition: none;
+}
+
+.ptr-indicator.ready {
+  color: var(--good);
+}
+
+.ptr-indicator.settling {
+  transition: transform 0.2s ease-out;
+}
+
+.ptr-indicator.refreshing {
+  transition: transform 0.2s ease-out;
+  transform: translateY(3.5rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ptr-indicator.refreshing .ptr-spinner {
+    animation: pulse 1s ease-in-out infinite;
+  }
 }
 
 .modal-code-display {

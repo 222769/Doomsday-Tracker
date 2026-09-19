@@ -672,10 +672,33 @@ if (sync.isConfigured()) {
     setAuthTab("register");
   });
 
-  // Resume syncing automatically if this device was mid-session.
+  // Resume syncing automatically if this device was mid-session. The
+  // Firestore SDK is fetched fresh from gstatic.com on every load — it's
+  // cross-origin, so the service worker never caches it — and on a cold
+  // PWA launch that fetch is competing with everything else for
+  // bandwidth. A single failed attempt used to leave the account looking
+  // signed out (the code was still safely in localStorage; the reconnect
+  // just silently gave up), so retry a few times before actually giving
+  // up, with a label that says what's happening instead of looking broken.
   const storedCode = sync.getStoredCode();
   if (storedCode) {
-    sync.listen(storedCode, applyRemoteWatchedIds).then(() => showSyncedState(storedCode));
+    accountBtnLabel.textContent = "Reconnecting…";
+    resumeSync(storedCode);
+  }
+
+  async function resumeSync(code, attempt = 1) {
+    const MAX_ATTEMPTS = 4;
+    try {
+      await sync.listen(code, applyRemoteWatchedIds);
+      showSyncedState(code);
+    } catch (err) {
+      console.warn(`Sync resume attempt ${attempt} failed:`, err);
+      if (attempt < MAX_ATTEMPTS) {
+        setTimeout(() => resumeSync(code, attempt + 1), attempt * 2000);
+      } else if (!activeSyncCode) {
+        accountBtnLabel.textContent = "Account";
+      }
+    }
   }
 }
 
