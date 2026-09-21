@@ -105,6 +105,9 @@ const statHoursLeft = document.getElementById("statHoursLeft");
 const statPace = document.getElementById("statPace");
 const progressFill = document.getElementById("progressFill");
 
+const footerStatsEl = document.getElementById("footerStats");
+const footerJumpLinksEl = document.getElementById("footerJumpLinks");
+
 const accountBtn = document.getElementById("accountBtn");
 const accountBtnLabel = document.getElementById("accountBtnLabel");
 const authModalOverlay = document.getElementById("authModalOverlay");
@@ -431,6 +434,7 @@ function buildSectionHeaderLi(section, index, sectionItems) {
 
   const li = document.createElement("li");
   li.className = "section-header";
+  li.id = `section-header-${section.id}`;
 
   const toggleBtn = document.createElement("button");
   toggleBtn.type = "button";
@@ -552,6 +556,91 @@ function renderStats() {
 function renderAll() {
   renderList();
   renderStats();
+}
+
+// ---------------------------------------------------------------------
+// Footer: whole-list stats + "jump to a part" nav
+// ---------------------------------------------------------------------
+// Stats here describe the full curated list (every required title plus
+// every optional side quest), not the currently filtered/visible view
+// above — this is "what this tracker covers," not "your progress."
+
+function renderFooterStats() {
+  const movieCount = items.filter((item) => item.type === "movie").length;
+  const showCount = items.filter((item) => item.type === "show").length;
+  const requiredCount = items.filter((item) => !item.optional).length;
+  const optionalCount = items.filter((item) => item.optional).length;
+  const coreCount = items.filter((item) => item.core).length;
+  const connectsCount = items.filter((item) => item.connectsTo).length;
+  const totalMinutes = items.reduce((sum, item) => sum + getItemRuntimeMinutes(item), 0);
+  const totalHours = Math.round(totalMinutes / 60);
+
+  const stats = [
+    { value: String(items.length), label: "Titles tracked" },
+    { value: `${movieCount} / ${showCount}`, label: "Movies / Shows" },
+    { value: `${totalHours} hr`, label: "Total watch time" },
+    { value: String(requiredCount), label: "Required" },
+    { value: String(optionalCount), label: "Optional" },
+    { value: String(coreCount), label: "Core essentials" },
+  ];
+
+  footerStatsEl.textContent = "";
+  for (const stat of stats) {
+    const div = document.createElement("div");
+    const dd = document.createElement("dd");
+    dd.textContent = stat.value;
+    const dt = document.createElement("dt");
+    dt.textContent = stat.label;
+    div.append(dd, dt);
+    footerStatsEl.appendChild(div);
+  }
+
+  // A quiet nod to the new "leads into" feature — only shown once there's
+  // something to point at.
+  if (connectsCount > 0) {
+    const div = document.createElement("div");
+    const dd = document.createElement("dd");
+    dd.textContent = String(connectsCount);
+    const dt = document.createElement("dt");
+    dt.textContent = "Connections mapped";
+    div.append(dd, dt);
+    footerStatsEl.appendChild(div);
+  }
+}
+
+function renderFooterJumpLinks() {
+  footerJumpLinksEl.textContent = "";
+  sections.forEach((section) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "footer-jump-link";
+    btn.textContent = section.title;
+    btn.addEventListener("click", () => jumpToSection(section.id));
+    footerJumpLinksEl.appendChild(btn);
+  });
+}
+
+// Brings a section into view no matter what state the list is currently
+// in: switches to release-order view (sections only render there),
+// expands the section if it was collapsed, and — for Optional Side
+// Quests specifically — turns the "include optional" switch on, since
+// jumping to a part you can't see would otherwise look broken.
+function jumpToSection(sectionId) {
+  if (sectionId === "side-quests" && !state.includeOptional) {
+    state.includeOptional = true;
+    includeOptionalInput.checked = true;
+    saveIncludeOptional(true);
+  }
+  if (state.sortBy !== "release") {
+    setSort("release");
+  }
+  collapsedSectionIds.delete(sectionId);
+  renderAll();
+
+  const headerEl = document.getElementById(`section-header-${sectionId}`);
+  if (headerEl) {
+    headerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 // ---------------------------------------------------------------------
@@ -1127,3 +1216,5 @@ setInterval(renderStats, 1000);
 // ---------------------------------------------------------------------
 
 renderAll();
+renderFooterStats();
+renderFooterJumpLinks();

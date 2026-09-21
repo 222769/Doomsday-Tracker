@@ -1333,10 +1333,143 @@ main.content p {
 }
 
 footer.site-footer {
-  text-align: center;
   color: var(--text-dim);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   margin-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.footer-brand-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.01em;
+}
+
+.footer-tagline {
+  margin: 0.1rem 0 0;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.footer-about {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.footer-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin: 0;
+  padding: 1rem;
+  background: radial-gradient(ellipse 120% 100% at 50% 0%, var(--accent-wash), transparent 65%), var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--accent);
+  border-radius: var(--radius);
+}
+
+.footer-stats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-stats dt {
+  order: 2;
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer-stats dd {
+  order: 1;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-shadow: 0 0 14px var(--accent-glow);
+  font-variant-numeric: tabular-nums;
+}
+
+.footer-jump-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.footer-jump-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.footer-jump-link {
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.footer-jump-link:hover,
+.footer-jump-link:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.footer-bottom {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.footer-bottom p {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.footer-bottom p:last-child {
+  margin-bottom: 0;
+}
+
+.footer-meta {
+  color: var(--text-dim);
+}
+
+@media (min-width: 480px) {
+  .footer-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* ---------- small screens get a touch more breathing room ---------- */
