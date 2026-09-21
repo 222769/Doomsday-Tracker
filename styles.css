@@ -17,56 +17,60 @@
   --accent-glow: rgba(181, 101, 245, 0.4);
   --accent-wash: rgba(181, 101, 245, 0.16);
   --on-accent: #180a26;
-  --hazard: #f2b705;
-  --hazard-glow: rgba(242, 183, 5, 0.08);
+  --hazard: #29d3c0;
+  --hazard-glow: rgba(41, 211, 192, 0.08);
   --good: #2bd4a0;
   --danger: #ff5c7a;
   --radius: 12px;
   --max-width: 640px;
 }
 
+/* "Doomsday Green" — Doctor Doom's identity color is green, not red. */
 :root[data-color-theme="doomsday-red"] {
-  --bg: #0d0705;
-  --bg-elevated: #1c1210;
-  --border: #4a231d;
-  --text: #fff5f0;
-  --text-dim: #b8a59d;
-  --accent: #ff3b2f;
-  --accent-glow: rgba(255, 59, 47, 0.4);
-  --accent-wash: rgba(255, 59, 47, 0.16);
-  --on-accent: #1a0503;
-  --hazard: #ffc233;
-  --hazard-glow: rgba(255, 194, 51, 0.08);
-}
-
-:root[data-color-theme="apocalypse-green"] {
-  --bg: #070a08;
-  --bg-elevated: #101c14;
-  --border: #20402c;
+  --bg: #050c08;
+  --bg-elevated: #0e1c12;
+  --border: #1f4a2e;
   --text: #eafff0;
-  --text-dim: #94bda3;
-  --accent: #33e07a;
-  --accent-glow: rgba(51, 224, 122, 0.4);
-  --accent-wash: rgba(51, 224, 122, 0.16);
-  --on-accent: #051208;
-  --hazard: #ffb020;
-  --hazard-glow: rgba(255, 176, 32, 0.08);
+  --text-dim: #9fc2ab;
+  --accent: #2fbf6e;
+  --accent-glow: rgba(47, 191, 110, 0.4);
+  --accent-wash: rgba(47, 191, 110, 0.16);
+  --on-accent: #05170c;
+  --hazard: #c9a038;
+  --hazard-glow: rgba(201, 160, 56, 0.08);
 }
 
+/* "Apocalypse Blue" — En Sabah Nur's armor reads blue with purple energy. */
+:root[data-color-theme="apocalypse-green"] {
+  --bg: #07071a;
+  --bg-elevated: #121233;
+  --border: #2a2a5c;
+  --text: #eef0ff;
+  --text-dim: #a3a8d1;
+  --accent: #4d79ff;
+  --accent-glow: rgba(77, 121, 255, 0.4);
+  --accent-wash: rgba(77, 121, 255, 0.16);
+  --on-accent: #f5f8ff;
+  --hazard: #9b30ff;
+  --hazard-glow: rgba(155, 48, 255, 0.08);
+}
+
+/* "Quantum Purple" — the Quantum Realm's own purple-pink haze. */
 :root[data-color-theme="quantum-blue"] {
-  --bg: #060a14;
-  --bg-elevated: #101a2e;
-  --border: #203a5c;
-  --text: #eef4ff;
-  --text-dim: #9fb3d1;
-  --accent: #4da6ff;
-  --accent-glow: rgba(77, 166, 255, 0.4);
-  --accent-wash: rgba(77, 166, 255, 0.16);
-  --on-accent: #04101f;
-  --hazard: #ffce54;
-  --hazard-glow: rgba(255, 206, 84, 0.08);
+  --bg: #0a0614;
+  --bg-elevated: #1c1030;
+  --border: #3a1f5c;
+  --text: #f7eeff;
+  --text-dim: #c2a8dd;
+  --accent: #a259ff;
+  --accent-glow: rgba(162, 89, 255, 0.4);
+  --accent-wash: rgba(162, 89, 255, 0.16);
+  --on-accent: #1c0f2e;
+  --hazard: #ff5da2;
+  --hazard-glow: rgba(255, 93, 162, 0.08);
 }
 
+/* "Infinity Gold" — the Infinity Gauntlet's gold against a fiery glow. */
 :root[data-color-theme="infinity-gold"] {
   --bg: #100a03;
   --bg-elevated: #241708;
@@ -77,8 +81,8 @@
   --accent-glow: rgba(242, 193, 78, 0.4);
   --accent-wash: rgba(242, 193, 78, 0.16);
   --on-accent: #1f1305;
-  --hazard: #ff8a3d;
-  --hazard-glow: rgba(255, 138, 61, 0.08);
+  --hazard: #e2472d;
+  --hazard-glow: rgba(226, 71, 45, 0.08);
 }
 
 :root[data-color-theme="blackout"] {
