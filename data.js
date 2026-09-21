@@ -61,6 +61,12 @@
 //                    a genuine connection (a reveal, a setup for another
 //                    title) carry one — this isn't a full recap.
 //   notes          - optional short blurb shown under the title
+//   connectsTo     - optional string naming the next title this one leads
+//                    into — shown as a small "leads into" line on the card,
+//                    always visible (not a spoiler, since it's just a
+//                    title). Only set where there's a genuine, specific
+//                    forward link; left off self-contained entries rather
+//                    than forcing one on everything.
 //   stopPoint      - optional string shown as a prominent warning callout,
 //                    e.g. "Stop before the post-credits scene — it's a
 //                    flash-forward that only makes sense once you reach
@@ -86,33 +92,34 @@ export const sections = [
 ];
 
 export const items = [
-  { id: "iron-man", title: "Iron Man", type: "movie", releaseOrder: 1, timelineOrder: 3, section: "infinity-saga", runtimeMinutes: 126, spoiler: "The post-credits scene is the birth of the MCU: Nick Fury reveals S.H.I.E.L.D. and the first mention of the Avenger Initiative." },
+  { id: "iron-man", title: "Iron Man", type: "movie", releaseOrder: 1, timelineOrder: 3, section: "infinity-saga", runtimeMinutes: 126, connectsTo: "The Avengers", spoiler: "The post-credits scene is the birth of the MCU: Nick Fury reveals S.H.I.E.L.D. and the first mention of the Avenger Initiative." },
   { id: "incredible-hulk", title: "The Incredible Hulk", type: "movie", releaseOrder: 2, timelineOrder: 5, section: "infinity-saga", runtimeMinutes: 112, notes: "Often skipped today — Mark Ruffalo replaces Edward Norton as Banner from here on." },
   { id: "iron-man-2", title: "Iron Man 2", type: "movie", releaseOrder: 3, timelineOrder: 4, section: "infinity-saga", runtimeMinutes: 124 },
   { id: "thor", title: "Thor", type: "movie", releaseOrder: 4, timelineOrder: 6, section: "infinity-saga", runtimeMinutes: 115 },
   { id: "captain-america-first-avenger", title: "Captain America: The First Avenger", type: "movie", releaseOrder: 5, timelineOrder: 1, section: "infinity-saga", runtimeMinutes: 124 },
-  { id: "the-avengers", title: "The Avengers", type: "movie", releaseOrder: 6, timelineOrder: 7, section: "infinity-saga", runtimeMinutes: 143, spoiler: "The post-credits scene reveals Thanos smiling at the thought of claiming the Infinity Stones himself — the whole Infinity Saga's endgame, foreshadowed here first." },
+  { id: "the-avengers", title: "The Avengers", type: "movie", releaseOrder: 6, timelineOrder: 7, section: "infinity-saga", runtimeMinutes: 143, connectsTo: "Avengers: Infinity War", spoiler: "The post-credits scene reveals Thanos smiling at the thought of claiming the Infinity Stones himself — the whole Infinity Saga's endgame, foreshadowed here first." },
   { id: "iron-man-3", title: "Iron Man 3", type: "movie", releaseOrder: 7, timelineOrder: 8, section: "infinity-saga", runtimeMinutes: 130 },
-  { id: "thor-dark-world", title: "Thor: The Dark World", type: "movie", releaseOrder: 8, timelineOrder: 9, section: "infinity-saga", runtimeMinutes: 112 },
-  { id: "captain-america-winter-soldier", title: "Captain America: The Winter Soldier", type: "movie", releaseOrder: 9, timelineOrder: 10, section: "infinity-saga", runtimeMinutes: 136, spoiler: "S.H.I.E.L.D. is revealed to have been infiltrated by Hydra from the start and collapses entirely — and Bucky Barnes, Steve's best friend, is the brainwashed assassin the Winter Soldier." },
+  { id: "thor-dark-world", title: "Thor: The Dark World", type: "movie", releaseOrder: 8, timelineOrder: 9, section: "infinity-saga", runtimeMinutes: 112, connectsTo: "Guardians of the Galaxy Vol. 2", spoiler: "A mid-credits scene has Sif and Volstagg deliver the Aether to the Collector for safekeeping — the reason he's holding an Infinity Stone when Guardians of the Galaxy Vol. 2 catches up with him." },
+  { id: "captain-america-winter-soldier", title: "Captain America: The Winter Soldier", type: "movie", releaseOrder: 9, timelineOrder: 10, section: "infinity-saga", runtimeMinutes: 136, connectsTo: "Captain America: Civil War", spoiler: "S.H.I.E.L.D. is revealed to have been infiltrated by Hydra from the start and collapses entirely — and Bucky Barnes, Steve's best friend, is the brainwashed assassin the Winter Soldier." },
   { id: "guardians-of-the-galaxy", title: "Guardians of the Galaxy", type: "movie", releaseOrder: 10, timelineOrder: 11, section: "infinity-saga", runtimeMinutes: 121 },
   { id: "guardians-of-the-galaxy-vol-2", title: "Guardians of the Galaxy Vol. 2", type: "movie", releaseOrder: 11, timelineOrder: 12, section: "infinity-saga", runtimeMinutes: 136 },
-  { id: "avengers-age-of-ultron", title: "Avengers: Age of Ultron", type: "movie", releaseOrder: 12, timelineOrder: 15, section: "infinity-saga", core: true, runtimeMinutes: 141, spoiler: "Ultron is destroyed, a new Avengers roster forms around Cap and War Machine, and Thanos finally moves to collect the Infinity Stones himself." },
-  { id: "ant-man", title: "Ant-Man", type: "movie", releaseOrder: 13, timelineOrder: 16, section: "infinity-saga", runtimeMinutes: 117 },
-  { id: "captain-america-civil-war", title: "Captain America: Civil War", type: "movie", releaseOrder: 14, timelineOrder: 18, section: "infinity-saga", runtimeMinutes: 147, spoiler: "The Avengers fracture into two camps over accountability and Bucky's innocence — Cap and Tony's friendship breaks, and the team stays split all the way to Infinity War." },
-  { id: "black-widow", title: "Black Widow", type: "movie", releaseOrder: 15, timelineOrder: 19, section: "infinity-saga", core: true, runtimeMinutes: 134, notes: "Moved here in release order even though it came out in 2021 — the story happens right after Civil War, and that's where it lands best.", spoiler: "A post-credits scene has Valentina de Fontaine approach Yelena Belova at Natasha's grave and give her a new target — the setup that eventually leads into Thunderbolts*." },
+  { id: "avengers-age-of-ultron", title: "Avengers: Age of Ultron", type: "movie", releaseOrder: 12, timelineOrder: 15, section: "infinity-saga", core: true, runtimeMinutes: 141, connectsTo: "Avengers: Infinity War", spoiler: "Ultron is destroyed, a new Avengers roster forms around Cap and War Machine, and Thanos finally moves to collect the Infinity Stones himself." },
+  { id: "ant-man", title: "Ant-Man", type: "movie", releaseOrder: 13, timelineOrder: 16, section: "infinity-saga", runtimeMinutes: 117, connectsTo: "Avengers: Endgame", spoiler: "A post-credits scene has Hank Pym reveal the Quantum Realm to Scott Lang for the first time — the mechanism the Avengers use to reverse the Snap in Endgame." },
+  { id: "captain-america-civil-war", title: "Captain America: Civil War", type: "movie", releaseOrder: 14, timelineOrder: 18, section: "infinity-saga", runtimeMinutes: 147, connectsTo: "Avengers: Infinity War", spoiler: "The Avengers fracture into two camps over accountability and Bucky's innocence — Cap and Tony's friendship breaks, and the team stays split all the way to Infinity War." },
+  { id: "black-widow", title: "Black Widow", type: "movie", releaseOrder: 15, timelineOrder: 19, section: "infinity-saga", core: true, runtimeMinutes: 134, notes: "Moved here in release order even though it came out in 2021 — the story happens right after Civil War, and that's where it lands best.", connectsTo: "Thunderbolts*", spoiler: "A post-credits scene has Valentina de Fontaine approach Yelena Belova at Natasha's grave and give her a new target — the setup that eventually leads into Thunderbolts*." },
   { id: "doctor-strange", title: "Doctor Strange", type: "movie", releaseOrder: 16, timelineOrder: 22, section: "infinity-saga", runtimeMinutes: 115 },
   { id: "spider-man-homecoming", title: "Spider-Man: Homecoming", type: "movie", releaseOrder: 17, timelineOrder: 21, section: "infinity-saga", runtimeMinutes: 133 },
-  { id: "thor-ragnarok", title: "Thor: Ragnarok", type: "movie", releaseOrder: 18, timelineOrder: 23, section: "infinity-saga", runtimeMinutes: 130 },
+  { id: "thor-ragnarok", title: "Thor: Ragnarok", type: "movie", releaseOrder: 18, timelineOrder: 23, section: "infinity-saga", runtimeMinutes: 130, connectsTo: "Avengers: Infinity War", spoiler: "A post-credits scene has the Asgardian refugee ship ambushed by a massive alien vessel — the opening beat of Avengers: Infinity War." },
   { id: "black-panther", title: "Black Panther", type: "movie", releaseOrder: 19, timelineOrder: 20, section: "infinity-saga", core: true, runtimeMinutes: 134 },
-  { id: "avengers-infinity-war", title: "Avengers: Infinity War", type: "movie", releaseOrder: 20, timelineOrder: 28, section: "infinity-saga", runtimeMinutes: 149, spoiler: "Thanos collects all six Infinity Stones and snaps away half of all life in the universe, including most of the Avengers themselves." },
-  { id: "ant-man-and-the-wasp", title: "Ant-Man and the Wasp", type: "movie", releaseOrder: 21, timelineOrder: 27, section: "infinity-saga", runtimeMinutes: 118 },
-  { id: "captain-marvel", title: "Captain Marvel", type: "movie", releaseOrder: 22, timelineOrder: 2, section: "infinity-saga", runtimeMinutes: 123, notes: "Set in 1995 — chronologically early despite its release date." },
-  { id: "avengers-endgame", title: "Avengers: Endgame", type: "movie", releaseOrder: 23, timelineOrder: 29, section: "infinity-saga", runtimeMinutes: 181, notes: "The Infinity Saga payoff. Essential.", spoiler: "Time travel undoes the Snap, Tony Stark sacrifices himself to defeat Thanos for good, and Steve Rogers hands the shield to Sam Wilson — setting up The Falcon and the Winter Soldier." },
-  { id: "spider-man-far-from-home", title: "Spider-Man: Far From Home", type: "movie", releaseOrder: 24, timelineOrder: 44, section: "infinity-saga", runtimeMinutes: 129 },
+  { id: "avengers-infinity-war", title: "Avengers: Infinity War", type: "movie", releaseOrder: 20, timelineOrder: 28, section: "infinity-saga", runtimeMinutes: 149, connectsTo: "Avengers: Endgame", spoiler: "Thanos collects all six Infinity Stones and snaps away half of all life in the universe, including most of the Avengers themselves." },
+  { id: "ant-man-and-the-wasp", title: "Ant-Man and the Wasp", type: "movie", releaseOrder: 21, timelineOrder: 27, section: "infinity-saga", runtimeMinutes: 118, connectsTo: "Avengers: Endgame", spoiler: "A post-credits scene strands Scott Lang in the Quantum Realm the instant the Snap happens outside — leaving him trapped there for the five years before Avengers: Endgame picks the thread back up." },
+  { id: "captain-marvel", title: "Captain Marvel", type: "movie", releaseOrder: 22, timelineOrder: 2, section: "infinity-saga", runtimeMinutes: 123, notes: "Set in 1995 — chronologically early despite its release date.", connectsTo: "Avengers: Endgame", spoiler: "A mid-credits scene has Carol Danvers arrive at the Avengers compound to find the team scattered after the Snap — picked up directly at the start of Avengers: Endgame." },
+  { id: "avengers-endgame", title: "Avengers: Endgame", type: "movie", releaseOrder: 23, timelineOrder: 29, section: "infinity-saga", runtimeMinutes: 181, notes: "The Infinity Saga payoff. Essential.", connectsTo: "The Falcon and the Winter Soldier", spoiler: "Time travel undoes the Snap, Tony Stark sacrifices himself to defeat Thanos for good, and Steve Rogers hands the shield to Sam Wilson — setting up The Falcon and the Winter Soldier." },
+  { id: "spider-man-far-from-home", title: "Spider-Man: Far From Home", type: "movie", releaseOrder: 24, timelineOrder: 44, section: "infinity-saga", runtimeMinutes: 129, connectsTo: "Spider-Man: No Way Home", spoiler: "A post-credits scene has Mysterio frame Peter Parker for his own death and J. Jonah Jameson publicly reveal Spider-Man's identity to the world — the crisis Spider-Man: No Way Home opens on." },
   {
     id: "daredevil-season-1", title: "Daredevil (Season 1)", type: "show", releaseOrder: 25, timelineOrder: 13, section: "street-level",
     notes: "The Netflix corner: Matt Murdock's origin as Daredevil, and Wilson Fisk's rise as Kingpin. Placed here as backstory for Daredevil: Born Again, though it originally aired in 2015.",
+    connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
       { id: "daredevil-season-1-e1", title: "Into the Ring", runtimeMinutes: 54 },
       { id: "daredevil-season-1-e2", title: "Cut Man", runtimeMinutes: 54 },
@@ -132,6 +139,7 @@ export const items = [
   {
     id: "jessica-jones-season-1", title: "Jessica Jones (Season 1)", type: "show", releaseOrder: 26, timelineOrder: 14, section: "street-level",
     notes: "Netflix corner. Jessica Jones' origin and her fight against Kilgrave — set in the same Hell's Kitchen as Daredevil.",
+    connectsTo: "Luke Cage (Season 1)",
     episodes: [
       { id: "jessica-jones-season-1-e1", title: "AKA Ladies Night", runtimeMinutes: 48 },
       { id: "jessica-jones-season-1-e2", title: "AKA Crush Syndrome", runtimeMinutes: 48 },
@@ -151,6 +159,7 @@ export const items = [
   {
     id: "daredevil-season-2", title: "Daredevil (Season 2)", type: "show", releaseOrder: 27, timelineOrder: 17, section: "street-level",
     notes: "Netflix corner. Introduces Frank Castle (the Punisher) and Elektra.",
+    connectsTo: "The Punisher (Season 1)",
     episodes: [
       { id: "daredevil-season-2-e1", title: "Bang", runtimeMinutes: 54 },
       { id: "daredevil-season-2-e2", title: "Dogs to a Gunfight", runtimeMinutes: 50 },
@@ -189,6 +198,7 @@ export const items = [
   {
     id: "daredevil-season-3", title: "Daredevil (Season 3)", type: "show", releaseOrder: 29, timelineOrder: 25, section: "street-level",
     notes: "Netflix corner. Wilson Fisk works his way back to power from behind bars.",
+    connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
       { id: "daredevil-season-3-e1", title: "Resurrection", runtimeMinutes: 50 },
       { id: "daredevil-season-3-e2", title: "Please", runtimeMinutes: 50 },
@@ -208,6 +218,7 @@ export const items = [
   {
     id: "punisher-season-2", title: "The Punisher (Season 2)", type: "show", releaseOrder: 30, timelineOrder: 26, section: "street-level",
     notes: "Netflix corner. The last of this era before the story jumps to Daredevil: Born Again.",
+    connectsTo: "The Punisher: One Last Kill",
     episodes: [
       { id: "punisher-season-2-e1", title: "Roadhouse Blues", runtimeMinutes: 52 },
       { id: "punisher-season-2-e2", title: "Fight or Flight", runtimeMinutes: 52 },
@@ -227,6 +238,7 @@ export const items = [
   {
     id: "wandavision", title: "WandaVision", type: "show", releaseOrder: 31, timelineOrder: 32, section: "multiverse-saga", core: true,
     notes: "Sets up Wanda's arc for Doctor Strange in the Multiverse of Madness.",
+    connectsTo: "Doctor Strange in the Multiverse of Madness",
     episodes: [
       { id: "wandavision-e1", title: "Filmed Before a Live Studio Audience", runtimeMinutes: 30 },
       { id: "wandavision-e2", title: "Don't Touch That Dial", runtimeMinutes: 37 },
@@ -242,6 +254,7 @@ export const items = [
   {
     id: "falcon-and-winter-soldier", title: "The Falcon and the Winter Soldier", type: "show", releaseOrder: 32, timelineOrder: 33, section: "multiverse-saga", core: true,
     notes: "Sam Wilson takes up the Captain America shield.",
+    connectsTo: "Captain America: Brave New World",
     episodes: [
       { id: "falcon-and-winter-soldier-e1", title: "New World Order", runtimeMinutes: 49 },
       { id: "falcon-and-winter-soldier-e2", title: "The Star-Spangled Man", runtimeMinutes: 50 },
@@ -255,6 +268,7 @@ export const items = [
     id: "loki-season-1", title: "Loki (Season 1)", type: "show", releaseOrder: 33, timelineOrder: 30, section: "multiverse-saga", core: true,
     notes: "Branches the multiverse — required viewing for everything that follows.",
     stopPoint: "Season 1 only, for now — do not continue into Loki Season 2 yet. It comes much later, after Ant-Man and the Wasp: Quantumania.",
+    connectsTo: "Loki (Season 2)",
     episodes: [
       { id: "loki-season-1-e1", title: "Glorious Purpose", runtimeMinutes: 52 },
       { id: "loki-season-1-e2", title: "The Variant", runtimeMinutes: 54 },
@@ -285,6 +299,7 @@ export const items = [
     id: "hawkeye", title: "Hawkeye", type: "show", releaseOrder: 37, timelineOrder: 47, section: "multiverse-saga",
     notes: "Introduces Kate Bishop.",
     stopPoint: "The most accurate split actually breaks this show in two: episodes 1-5 belong right here, before No Way Home, and the finale (episode 6) plays best saved for right after it. Watching all six now instead still works fine — the timing is just slightly less ideal.",
+    connectsTo: "Echo",
     episodes: [
       { id: "hawkeye-e1", title: "Never Meet Your Heroes", runtimeMinutes: 47 },
       { id: "hawkeye-e2", title: "Hide and Seek", runtimeMinutes: 51 },
@@ -294,7 +309,7 @@ export const items = [
       { id: "hawkeye-e6", title: "So This Is Christmas?", runtimeMinutes: 55, spoiler: "A post-credits scene reveals Wilson Fisk (Kingpin) survived being shot — setting up Echo and Daredevil: Born Again." },
     ],
   },
-  { id: "spider-man-no-way-home", title: "Spider-Man: No Way Home", type: "movie", releaseOrder: 38, timelineOrder: 46, section: "multiverse-saga", core: true, runtimeMinutes: 148, notes: "The multiverse crossover that pulls in the Raimi and Webb-era Spider-Men.", spoiler: "Doctor Strange's spell erases the world's memory of Peter Parker — he starts over with no one, not even MJ or Ned, remembering he's Spider-Man." },
+  { id: "spider-man-no-way-home", title: "Spider-Man: No Way Home", type: "movie", releaseOrder: 38, timelineOrder: 46, section: "multiverse-saga", core: true, runtimeMinutes: 148, notes: "The multiverse crossover that pulls in the Raimi and Webb-era Spider-Men.", connectsTo: "Spider-Man: Brand New Day", spoiler: "Doctor Strange's spell erases the world's memory of Peter Parker — he starts over with no one, not even MJ or Ned, remembering he's Spider-Man." },
   {
     id: "moon-knight", title: "Moon Knight", type: "show", releaseOrder: 39, timelineOrder: 49, section: "multiverse-saga",
     notes: "Self-contained — minimal ties to the wider saga so far.",
@@ -311,6 +326,7 @@ export const items = [
   {
     id: "ms-marvel", title: "Ms. Marvel", type: "show", releaseOrder: 41, timelineOrder: 51, section: "multiverse-saga",
     notes: "Sets up Kamala Khan ahead of The Marvels.",
+    connectsTo: "The Marvels",
     episodes: [
       { id: "ms-marvel-e1", title: "Generation Why", runtimeMinutes: 38 },
       { id: "ms-marvel-e2", title: "Crushed", runtimeMinutes: 39 },
@@ -324,6 +340,7 @@ export const items = [
   {
     id: "she-hulk", title: "She-Hulk: Attorney at Law", type: "show", releaseOrder: 43, timelineOrder: 53, section: "multiverse-saga",
     notes: "Mostly self-contained; the finale breaks the fourth wall.",
+    connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
       { id: "she-hulk-e1", title: "A Normal Amount of Rage", runtimeMinutes: 33 },
       { id: "she-hulk-e2", title: "Superhuman Law", runtimeMinutes: 34 },
@@ -336,11 +353,12 @@ export const items = [
       { id: "she-hulk-e9", title: "Whose Show Is This?", runtimeMinutes: 38, spoiler: "Jennifer breaks the fourth wall to confront the show's writers directly, and Matt Murdock (Daredevil) appears as a legal favor — connecting to Daredevil: Born Again." },
     ],
   },
-  { id: "black-panther-wakanda-forever", title: "Black Panther: Wakanda Forever", type: "movie", releaseOrder: 44, timelineOrder: 54, section: "multiverse-saga", core: true, runtimeMinutes: 161 },
+  { id: "black-panther-wakanda-forever", title: "Black Panther: Wakanda Forever", type: "movie", releaseOrder: 44, timelineOrder: 54, section: "multiverse-saga", core: true, runtimeMinutes: 161, connectsTo: "Ironheart" },
   { id: "ant-man-quantumania", title: "Ant-Man and the Wasp: Quantumania", type: "movie", releaseOrder: 45, timelineOrder: 56, section: "multiverse-saga", core: true, runtimeMinutes: 125 },
   {
     id: "loki-season-2", title: "Loki (Season 2)", type: "show", releaseOrder: 46, timelineOrder: 57, section: "multiverse-saga", core: true,
     notes: "Resolves the TVA storyline and reshapes the multiverse's branches.",
+    connectsTo: "Avengers: Doomsday",
     episodes: [
       { id: "loki-season-2-e1", title: "Ouroboros", runtimeMinutes: 47 },
       { id: "loki-season-2-e2", title: "Breaking Brad", runtimeMinutes: 51 },
@@ -355,6 +373,7 @@ export const items = [
     id: "secret-invasion", title: "Secret Invasion", type: "show", releaseOrder: 48, timelineOrder: 59, section: "multiverse-saga",
     notes: "Establishes the Skrull infiltration thread.",
     stopPoint: "Short on time? The finale (S1E6) alone covers what matters — the Skrull policy shift that ripples into later political plotlines. The other five episodes are setup you can skip without losing the thread.",
+    connectsTo: "Captain America: Brave New World",
     episodes: [
       { id: "secret-invasion-e1", title: "Resurrection", runtimeMinutes: 43 },
       { id: "secret-invasion-e2", title: "Promises", runtimeMinutes: 45 },
@@ -368,6 +387,7 @@ export const items = [
   {
     id: "echo", title: "Echo", type: "show", releaseOrder: 50, timelineOrder: 48, section: "multiverse-saga",
     notes: "Follow-up to Hawkeye's Kingpin/Maya Lopez thread.",
+    connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
       { id: "echo-e1", title: "Chafa", runtimeMinutes: 49 },
       { id: "echo-e2", title: "Lowak", runtimeMinutes: 39 },
@@ -383,7 +403,7 @@ export const items = [
   { id: "deadpool", title: "Deadpool", type: "movie", releaseOrder: 55, timelineOrder: 40, section: "x-men-pack", runtimeMinutes: 108 },
   { id: "logan", title: "Logan", type: "movie", releaseOrder: 56, timelineOrder: 42, section: "x-men-pack", runtimeMinutes: 137 },
   { id: "deadpool-2", title: "Deadpool 2", type: "movie", releaseOrder: 57, timelineOrder: 41, section: "x-men-pack", runtimeMinutes: 119 },
-  { id: "deadpool-and-wolverine", title: "Deadpool & Wolverine", type: "movie", releaseOrder: 58, timelineOrder: 43, section: "x-men-pack", core: true, runtimeMinutes: 128, notes: "Folds in Fox's X-Men-era multiverse — directly relevant to Doomsday's cast.", spoiler: "The Sacred Timeline is fractured wide open by the Time Variance Authority's collapse, and a wave of Fox-era X-Men and Deadpool variants get pulled into the main multiverse — exactly the door Avengers: Doomsday reportedly walks through." },
+  { id: "deadpool-and-wolverine", title: "Deadpool & Wolverine", type: "movie", releaseOrder: 58, timelineOrder: 43, section: "x-men-pack", core: true, runtimeMinutes: 128, notes: "Folds in Fox's X-Men-era multiverse — directly relevant to Doomsday's cast.", connectsTo: "Avengers: Doomsday", spoiler: "The Sacred Timeline is fractured wide open by the Time Variance Authority's collapse, and a wave of Fox-era X-Men and Deadpool variants get pulled into the main multiverse — exactly the door Avengers: Doomsday reportedly walks through." },
   {
     id: "agatha-all-along", title: "Agatha All Along", type: "show", releaseOrder: 59, timelineOrder: 61, section: "final-run",
     notes: "WandaVision spinoff following Agatha Harkness.",
@@ -399,10 +419,11 @@ export const items = [
       { id: "agatha-all-along-e9", title: "Maiden Mother Crone", runtimeMinutes: 50, spoiler: "Agatha sacrifices herself for Billy Maximoff and returns as a ghost; Billy sets off to find his twin brother Tommy, last seen erased from reality in WandaVision." },
     ],
   },
-  { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 60, timelineOrder: 62, section: "final-run", core: true, runtimeMinutes: 118 },
+  { id: "captain-america-brave-new-world", title: "Captain America: Brave New World", type: "movie", releaseOrder: 60, timelineOrder: 62, section: "final-run", core: true, runtimeMinutes: 118, connectsTo: "Thunderbolts*" },
   {
     id: "daredevil-born-again", title: "Daredevil: Born Again (Season 1)", type: "show", releaseOrder: 61, timelineOrder: 63, section: "final-run",
     notes: "Wilson Fisk's rise sets up the political thread running through Thunderbolts*.",
+    connectsTo: "Daredevil: Born Again (Season 2)",
     episodes: [
       { id: "daredevil-born-again-e1", title: "Heaven's Half Hour", runtimeMinutes: 52 },
       { id: "daredevil-born-again-e2", title: "Optics", runtimeMinutes: 48 },
@@ -415,7 +436,7 @@ export const items = [
       { id: "daredevil-born-again-e9", title: "Straight to Hell", runtimeMinutes: 54, spoiler: "Wilson Fisk uses his position as mayor to outlaw vigilantes and orders Matt Murdock killed on sight — the authoritarian backdrop that carries into Season 2 and Thunderbolts*." },
     ],
   },
-  { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 62, timelineOrder: 64, section: "final-run", core: true, runtimeMinutes: 126 },
+  { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 62, timelineOrder: 64, section: "final-run", core: true, runtimeMinutes: 126, connectsTo: "Avengers: Doomsday" },
   {
     id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 63, timelineOrder: 55, section: "final-run",
     notes: "Introduces Riri Williams ahead of her expected role in the wider saga.",
@@ -428,7 +449,7 @@ export const items = [
       { id: "ironheart-e6", title: "The Past Is the Past", runtimeMinutes: 42, spoiler: "Riri makes a literal deal with Mephisto — the MCU's first on-screen appearance of the demon — trading something of her own to bring Natalie back to life." },
     ],
   },
-  { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 64, timelineOrder: 65, section: "final-run", core: true, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline." },
+  { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 64, timelineOrder: 65, section: "final-run", core: true, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline.", connectsTo: "Avengers: Doomsday" },
   {
     id: "wonder-man", title: "Wonder Man", type: "show", releaseOrder: 65, timelineOrder: 66, section: "final-run",
     notes: "Mostly self-contained Hollywood satire about a stuntman chasing the role of a retired superhero.",
@@ -446,6 +467,7 @@ export const items = [
   {
     id: "daredevil-born-again-season-2", title: "Daredevil: Born Again (Season 2)", type: "show", releaseOrder: 66, timelineOrder: 67, section: "final-run",
     notes: "Direct continuation of Season 1's cliffhanger.",
+    connectsTo: "The Punisher: One Last Kill",
     episodes: [
       { id: "daredevil-born-again-season-2-e1", title: "The Northern Star", runtimeMinutes: 50 },
       { id: "daredevil-born-again-season-2-e2", title: "Shoot the Moon", runtimeMinutes: 50 },
@@ -474,17 +496,17 @@ export const items = [
     ],
   },
   { id: "avengers-doomsday", title: "Avengers: Doomsday", type: "movie", releaseOrder: 70, timelineOrder: 70, section: "final-run", core: true, runtimeMinutes: 180, notes: "In theaters December 18, 2026. Runtime is an estimate — not yet officially confirmed." },
-  { id: "spider-man-2002", title: "Spider-Man", type: "movie", releaseOrder: 71, timelineOrder: 71, section: "side-quests", optional: true, runtimeMinutes: 121, notes: "Optional side quest. Opens Sam Raimi's Spider-Man trilogy — this era resurfaces briefly in No Way Home's multiverse crossover, but isn't required to get there." },
-  { id: "spider-man-2-2004", title: "Spider-Man 2", type: "movie", releaseOrder: 72, timelineOrder: 72, section: "side-quests", optional: true, runtimeMinutes: 127, notes: "Optional side quest. The second entry in Raimi's trilogy." },
-  { id: "spider-man-3-2007", title: "Spider-Man 3", type: "movie", releaseOrder: 73, timelineOrder: 73, section: "side-quests", optional: true, runtimeMinutes: 139, notes: "Optional side quest. Closes out Raimi's trilogy." },
-  { id: "amazing-spider-man", title: "The Amazing Spider-Man", type: "movie", releaseOrder: 74, timelineOrder: 74, section: "side-quests", optional: true, runtimeMinutes: 136, notes: "Optional side quest. Opens the Garfield-era duology, also touched on by No Way Home's crossover." },
-  { id: "amazing-spider-man-2", title: "The Amazing Spider-Man 2", type: "movie", releaseOrder: 75, timelineOrder: 75, section: "side-quests", optional: true, runtimeMinutes: 142, notes: "Optional side quest. Closes out the Garfield-era duology." },
-  { id: "x-men-origins-wolverine", title: "X-Men Origins: Wolverine", type: "movie", releaseOrder: 76, timelineOrder: 76, section: "side-quests", optional: true, runtimeMinutes: 107, notes: "Optional side quest. A Wolverine solo prequel set within Fox's original X-Men continuity." },
-  { id: "x-men-first-class", title: "X-Men: First Class", type: "movie", releaseOrder: 77, timelineOrder: 77, section: "side-quests", optional: true, runtimeMinutes: 131, notes: "Optional side quest. A prequel reboot of the X-Men series — not required to follow the main line." },
-  { id: "the-wolverine", title: "The Wolverine", type: "movie", releaseOrder: 78, timelineOrder: 78, section: "side-quests", optional: true, runtimeMinutes: 126, notes: "Optional side quest. Wolverine's second solo outing." },
-  { id: "x-men-apocalypse", title: "X-Men: Apocalypse", type: "movie", releaseOrder: 79, timelineOrder: 79, section: "side-quests", optional: true, runtimeMinutes: 144, notes: "Optional side quest. Closes out the First Class prequel trilogy." },
-  { id: "dark-phoenix", title: "Dark Phoenix", type: "movie", releaseOrder: 80, timelineOrder: 80, section: "side-quests", optional: true, runtimeMinutes: 113, notes: "Optional side quest. The final film of the pre-reboot X-Men series." },
-  { id: "the-new-mutants", title: "The New Mutants", type: "movie", releaseOrder: 81, timelineOrder: 81, section: "side-quests", optional: true, runtimeMinutes: 94, notes: "Optional side quest. A standalone, horror-tinged spinoff only loosely tied to the wider X-Men series." },
+  { id: "spider-man-2002", title: "Spider-Man", type: "movie", releaseOrder: 71, timelineOrder: 71, section: "side-quests", optional: true, runtimeMinutes: 121, notes: "Optional side quest. Opens Sam Raimi's Spider-Man trilogy — this era resurfaces briefly in No Way Home's multiverse crossover, but isn't required to get there.", connectsTo: "Spider-Man: No Way Home" },
+  { id: "spider-man-2-2004", title: "Spider-Man 2", type: "movie", releaseOrder: 72, timelineOrder: 72, section: "side-quests", optional: true, runtimeMinutes: 127, notes: "Optional side quest. The second entry in Raimi's trilogy.", connectsTo: "Spider-Man: No Way Home" },
+  { id: "spider-man-3-2007", title: "Spider-Man 3", type: "movie", releaseOrder: 73, timelineOrder: 73, section: "side-quests", optional: true, runtimeMinutes: 139, notes: "Optional side quest. Closes out Raimi's trilogy.", connectsTo: "Spider-Man: No Way Home" },
+  { id: "amazing-spider-man", title: "The Amazing Spider-Man", type: "movie", releaseOrder: 74, timelineOrder: 74, section: "side-quests", optional: true, runtimeMinutes: 136, notes: "Optional side quest. Opens the Garfield-era duology, also touched on by No Way Home's crossover.", connectsTo: "Spider-Man: No Way Home" },
+  { id: "amazing-spider-man-2", title: "The Amazing Spider-Man 2", type: "movie", releaseOrder: 75, timelineOrder: 75, section: "side-quests", optional: true, runtimeMinutes: 142, notes: "Optional side quest. Closes out the Garfield-era duology.", connectsTo: "Spider-Man: No Way Home" },
+  { id: "x-men-origins-wolverine", title: "X-Men Origins: Wolverine", type: "movie", releaseOrder: 76, timelineOrder: 76, section: "side-quests", optional: true, runtimeMinutes: 107, notes: "Optional side quest. A Wolverine solo prequel set within Fox's original X-Men continuity.", connectsTo: "Deadpool & Wolverine" },
+  { id: "x-men-first-class", title: "X-Men: First Class", type: "movie", releaseOrder: 77, timelineOrder: 77, section: "side-quests", optional: true, runtimeMinutes: 131, notes: "Optional side quest. A prequel reboot of the X-Men series — not required to follow the main line.", connectsTo: "Deadpool & Wolverine" },
+  { id: "the-wolverine", title: "The Wolverine", type: "movie", releaseOrder: 78, timelineOrder: 78, section: "side-quests", optional: true, runtimeMinutes: 126, notes: "Optional side quest. Wolverine's second solo outing.", connectsTo: "Deadpool & Wolverine" },
+  { id: "x-men-apocalypse", title: "X-Men: Apocalypse", type: "movie", releaseOrder: 79, timelineOrder: 79, section: "side-quests", optional: true, runtimeMinutes: 144, notes: "Optional side quest. Closes out the First Class prequel trilogy.", connectsTo: "Deadpool & Wolverine" },
+  { id: "dark-phoenix", title: "Dark Phoenix", type: "movie", releaseOrder: 80, timelineOrder: 80, section: "side-quests", optional: true, runtimeMinutes: 113, notes: "Optional side quest. The final film of the pre-reboot X-Men series.", connectsTo: "Deadpool & Wolverine" },
+  { id: "the-new-mutants", title: "The New Mutants", type: "movie", releaseOrder: 81, timelineOrder: 81, section: "side-quests", optional: true, runtimeMinutes: 94, notes: "Optional side quest. A standalone, horror-tinged spinoff only loosely tied to the wider X-Men series.", connectsTo: "Deadpool & Wolverine" },
   {
     id: "what-if-seasons-2-3", title: "What If...? (Seasons 2-3)", type: "show", releaseOrder: 82, timelineOrder: 82, section: "side-quests", optional: true,
     notes: "Optional side quest. Seasons 2 and 3 of the animated multiverse anthology — not required, and not directly referenced by anything later in the main sequence.",
@@ -623,6 +645,7 @@ export const items = [
   {
     id: "luke-cage-season-1", title: "Luke Cage (Season 1)", type: "show", releaseOrder: 87, timelineOrder: 87, section: "side-quests", optional: true,
     notes: "Optional side quest. Spins out of Jessica Jones Season 1.",
+    connectsTo: "The Defenders",
     episodes: [
       { id: "luke-cage-season-1-e1", title: "Moment of Truth", runtimeMinutes: 50 },
       { id: "luke-cage-season-1-e2", title: "Code of the Streets", runtimeMinutes: 50 },
@@ -642,6 +665,7 @@ export const items = [
   {
     id: "iron-fist-season-1", title: "Iron Fist (Season 1)", type: "show", releaseOrder: 88, timelineOrder: 88, section: "side-quests", optional: true,
     notes: "Optional side quest. Introduces Danny Rand ahead of The Defenders.",
+    connectsTo: "The Defenders",
     episodes: [
       { id: "iron-fist-season-1-e1", title: "Snow Gives Way", runtimeMinutes: 50 },
       { id: "iron-fist-season-1-e2", title: "Shadow Hawk Takes Flight", runtimeMinutes: 50 },
@@ -795,6 +819,7 @@ export const items = [
   {
     id: "agents-of-shield-season-7", title: "Agents of S.H.I.E.L.D. (Season 7)", type: "show", releaseOrder: 96, timelineOrder: 96, section: "side-quests", optional: true,
     notes: "Optional side quest. The last of this era before the story jumps to Daredevil: Born Again.",
+    connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
       { id: "agents-of-shield-season-7-e1", title: "The New Deal", runtimeMinutes: 42 },
       { id: "agents-of-shield-season-7-e2", title: "Know Your Onions", runtimeMinutes: 42 },

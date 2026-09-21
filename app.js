@@ -311,6 +311,18 @@ function buildItemLi(item, sortKey) {
 
   body.append(titleRow, meta);
 
+  if (item.connectsTo) {
+    const connects = document.createElement("div");
+    connects.className = "connects-to";
+    const connectsIcon = document.createElement("span");
+    connectsIcon.setAttribute("aria-hidden", "true");
+    connectsIcon.textContent = "🔗";
+    const connectsText = document.createElement("span");
+    connectsText.textContent = `Leads into ${item.connectsTo}`;
+    connects.append(connectsIcon, connectsText);
+    body.appendChild(connects);
+  }
+
   if (item.stopPoint) {
     const stop = document.createElement("div");
     stop.className = "stop-point-callout";

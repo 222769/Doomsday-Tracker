@@ -1168,6 +1168,19 @@ li.item.watched .item-title {
   margin-top: 0.2rem;
 }
 
+.connects-to {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  font-size: 0.76rem;
+  color: var(--accent);
+}
+
+.connects-to span:first-child {
+  font-size: 0.7rem;
+}
+
 .stop-point-callout {
   margin-top: 0.6rem;
   padding: 0.65rem 0.75rem;
