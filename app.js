@@ -105,6 +105,7 @@ const statHoursLeft = document.getElementById("statHoursLeft");
 const statPace = document.getElementById("statPace");
 const progressFill = document.getElementById("progressFill");
 
+const upNextCardEl = document.getElementById("upNextCard");
 const footerStatsEl = document.getElementById("footerStats");
 const footerJumpLinksEl = document.getElementById("footerJumpLinks");
 
@@ -255,6 +256,7 @@ function buildItemLi(item, sortKey) {
 
   const li = document.createElement("li");
   li.className = "item" + (isWatched ? " watched" : "");
+  li.id = `item-${item.id}`;
 
   const label = document.createElement("label");
 
@@ -553,9 +555,151 @@ function renderStats() {
   progressFill.style.width = `${percent}%`;
 }
 
+// ---------------------------------------------------------------------
+// "Up next" — the single next unwatched thing, in release order
+// ---------------------------------------------------------------------
+// Independent of whatever the list below is currently sorted/filtered
+// to show — this always points at the true next step in the curated
+// path, so it stays useful even mid-scroll or with "hide watched" off.
+
+function getNextUpEntry() {
+  const sorted = [...getIncludedItems()].sort((a, b) => a.releaseOrder - b.releaseOrder);
+  for (const item of sorted) {
+    if (item.type === "movie") {
+      if (!watchedIds.has(item.id)) return { item, episode: null };
+    } else {
+      const episode = item.episodes.find((ep) => !watchedIds.has(ep.id));
+      if (episode) return { item, episode };
+    }
+  }
+  return null;
+}
+
+function renderUpNext() {
+  upNextCardEl.textContent = "";
+  const entry = getNextUpEntry();
+
+  if (!entry) {
+    const card = document.createElement("div");
+    card.className = "up-next-card up-next-complete";
+    const eyebrow = document.createElement("p");
+    eyebrow.className = "up-next-eyebrow";
+    eyebrow.textContent = "Up Next";
+    const text = document.createElement("p");
+    text.className = "up-next-complete-text";
+    text.textContent = "🎉 You're all caught up — nothing left in your current list.";
+    card.append(eyebrow, text);
+    upNextCardEl.appendChild(card);
+    return;
+  }
+
+  const { item, episode } = entry;
+  const section = sections.find((s) => s.id === item.section);
+
+  const card = document.createElement("div");
+  card.className = "up-next-card";
+
+  const eyebrow = document.createElement("p");
+  eyebrow.className = "up-next-eyebrow";
+  const dot = document.createElement("span");
+  dot.className = "status-dot pulse";
+  dot.setAttribute("aria-hidden", "true");
+  dot.style.marginRight = "0.4rem";
+  eyebrow.append(dot, document.createTextNode("Up Next"));
+
+  const main = document.createElement("div");
+  main.className = "up-next-main";
+
+  const thumb = document.createElement("div");
+  thumb.className = "up-next-thumb";
+  thumb.style.setProperty("--hue", String(hashHue(item.id)));
+  thumb.textContent = getInitials(item.title);
+  thumb.setAttribute("aria-hidden", "true");
+
+  const info = document.createElement("div");
+  info.className = "up-next-info";
+
+  const titleEl = document.createElement("p");
+  titleEl.className = "up-next-title";
+  const titleText = document.createElement("span");
+  titleText.textContent = item.title;
+  const typeBadge = document.createElement("span");
+  typeBadge.className = "item-type";
+  typeBadge.textContent = item.type;
+  titleEl.append(titleText, typeBadge);
+  if (item.core) {
+    const coreBadge = document.createElement("span");
+    coreBadge.className = "core-badge";
+    coreBadge.textContent = "CORE";
+    titleEl.appendChild(coreBadge);
+  }
+
+  info.appendChild(titleEl);
+
+  if (episode) {
+    const epNum = item.episodes.indexOf(episode) + 1;
+    const sub = document.createElement("p");
+    sub.className = "up-next-sub";
+    sub.textContent = `Episode ${epNum}: ${episode.title}`;
+    info.appendChild(sub);
+  }
+
+  const meta = document.createElement("p");
+  meta.className = "up-next-meta";
+  const runtimeMinutes = episode ? episode.runtimeMinutes : item.runtimeMinutes;
+  meta.textContent = `${runtimeMinutes} min` + (section ? ` · ${section.title}` : "");
+  info.appendChild(meta);
+
+  main.append(thumb, info);
+
+  const actions = document.createElement("div");
+  actions.className = "up-next-actions";
+
+  const watchBtn = document.createElement("button");
+  watchBtn.type = "button";
+  watchBtn.className = "up-next-watch-btn";
+  watchBtn.textContent = "✓ Mark as watched";
+  watchBtn.addEventListener("click", () => {
+    const watchId = episode ? episode.id : item.id;
+    toggleWatched(watchId);
+  });
+
+  const jumpBtn = document.createElement("button");
+  jumpBtn.type = "button";
+  jumpBtn.className = "up-next-jump-btn";
+  jumpBtn.textContent = "Show me ↓";
+  jumpBtn.addEventListener("click", () => jumpToItem(item));
+
+  actions.append(watchBtn, jumpBtn);
+
+  card.append(eyebrow, main, actions);
+  upNextCardEl.appendChild(card);
+}
+
+// Brings a specific item into view in the list: switches to release-order
+// view (releaseOrder is the only order "up next" reasons about), expands
+// its section and, if it's a show, expands its episode list, then
+// smooth-scrolls the item's own card into view.
+function jumpToItem(item) {
+  if (state.sortBy !== "release") {
+    setSort("release");
+  }
+  collapsedSectionIds.delete(item.section);
+  if (item.type === "show") {
+    expandedShowIds.add(item.id);
+  }
+  renderAll();
+
+  const target = document.getElementById(`item-${item.id}`);
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
 function renderAll() {
   renderList();
   renderStats();
+  renderUpNext();
 }
 
 // ---------------------------------------------------------------------
