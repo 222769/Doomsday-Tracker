@@ -92,6 +92,17 @@
 
     <section class="up-next" id="upNextCard" aria-label="What to watch next"></section>
 
+    <section class="time-budget" aria-label="What fits your time">
+      <p class="time-budget-label">Got time for...</p>
+      <div class="segmented time-budget-segmented" id="timeBudgetSegmented" role="group" aria-label="Time budget">
+        <button type="button" data-minutes="30">30 min</button>
+        <button type="button" data-minutes="60">1 hr</button>
+        <button type="button" data-minutes="90">1.5 hr</button>
+        <button type="button" data-minutes="180">Movie night</button>
+      </div>
+      <div class="time-budget-results" id="timeBudgetResults"></div>
+    </section>
+
     <section class="countdown" aria-label="Countdown to Doomsday">
       <h2><span class="status-dot pulse" aria-hidden="true"></span>Countdown to Doomsday</h2>
       <div class="countdown-grid">
@@ -125,6 +136,12 @@
         </div>
       </dl>
     </section>
+
+    <div class="search-bar">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="searchInput" class="search-input" placeholder="Search titles or episodes…" aria-label="Search titles or episodes" autocomplete="off" />
+      <button type="button" id="searchClearBtn" class="search-clear-btn" hidden aria-label="Clear search">✕</button>
+    </div>
 
     <div class="controls">
       <div class="segmented" role="group" aria-label="Sort order">
@@ -263,6 +280,19 @@
         </span>
         <input type="checkbox" id="bgMotionToggle" />
       </label>
+
+      <div class="settings-row settings-row-stack">
+        <span>
+          <span class="settings-row-title">Backup progress</span>
+          <span class="settings-row-desc">Save your checklist to a file, or restore it on another device — no account needed.</span>
+        </span>
+        <div class="settings-backup-actions">
+          <button type="button" class="settings-btn" id="exportProgressBtn">Export to file</button>
+          <button type="button" class="settings-btn" id="importProgressBtn">Import from file</button>
+          <input type="file" id="importProgressInput" accept="application/json,.json" hidden />
+        </div>
+        <p class="settings-backup-status" id="backupStatus" aria-live="polite"></p>
+      </div>
     </div>
   </div>
 

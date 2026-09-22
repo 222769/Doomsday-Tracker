@@ -85,6 +85,8 @@ const state = {
   hideWatched: false,
   moviesOnly: false,
   includeOptional: loadIncludeOptional(),
+  searchQuery: "", // lowercase, trimmed — not persisted, resets each visit
+  timeBudgetMinutes: null, // null | 30 | 60 | 90 | 180 — not persisted
 };
 
 // ---------------------------------------------------------------------
@@ -98,6 +100,10 @@ const hideWatchedInput = document.getElementById("hideWatched");
 const moviesOnlyInput = document.getElementById("moviesOnly");
 const includeOptionalInput = document.getElementById("includeOptional");
 const resetBtn = document.getElementById("resetBtn");
+const searchInput = document.getElementById("searchInput");
+const searchClearBtn = document.getElementById("searchClearBtn");
+const timeBudgetSegmented = document.getElementById("timeBudgetSegmented");
+const timeBudgetResultsEl = document.getElementById("timeBudgetResults");
 
 const statPercent = document.getElementById("statPercent");
 const statCount = document.getElementById("statCount");
@@ -135,6 +141,10 @@ const bgMotionToggle = document.getElementById("bgMotionToggle");
 const customColorPicker = document.getElementById("customColorPicker");
 const customAccentInput = document.getElementById("customAccentInput");
 const customHazardInput = document.getElementById("customHazardInput");
+const exportProgressBtn = document.getElementById("exportProgressBtn");
+const importProgressBtn = document.getElementById("importProgressBtn");
+const importProgressInput = document.getElementById("importProgressInput");
+const backupStatusEl = document.getElementById("backupStatus");
 
 // ---------------------------------------------------------------------
 // Sorting + filtering
@@ -148,12 +158,32 @@ function getIncludedItems() {
   return items.filter((item) => !item.optional || state.includeOptional);
 }
 
+// A show matches on its own title or any single episode's title, so
+// searching for an episode-specific name (e.g. "Ronin") still surfaces
+// the show it lives in.
+function itemMatchesSearch(item, query) {
+  if (!query) return true;
+  if (item.title.toLowerCase().includes(query)) return true;
+  if (item.type === "show") {
+    return item.episodes.some((ep) => ep.title.toLowerCase().includes(query));
+  }
+  return false;
+}
+
+function itemMatchesSearchByEpisodeOnly(item, query) {
+  if (!query || item.type !== "show") return false;
+  if (item.title.toLowerCase().includes(query)) return false;
+  return item.episodes.some((ep) => ep.title.toLowerCase().includes(query));
+}
+
 function getVisibleItems() {
   const sortKey = state.sortBy === "timeline" ? "timelineOrder" : "releaseOrder";
+  const query = state.searchQuery;
 
   return getIncludedItems()
     .filter((item) => !(state.hideWatched && isItemWatched(item)))
     .filter((item) => !(state.moviesOnly && item.type !== "movie"))
+    .filter((item) => itemMatchesSearch(item, query))
     .sort((a, b) => a[sortKey] - b[sortKey]);
 }
 
@@ -252,7 +282,8 @@ function getWatchableIds(item) {
 function buildItemLi(item, sortKey) {
   const isShow = item.type === "show";
   const isWatched = isItemWatched(item);
-  const isExpanded = isShow && expandedShowIds.has(item.id);
+  const isExpanded =
+    isShow && (expandedShowIds.has(item.id) || itemMatchesSearchByEpisodeOnly(item, state.searchQuery));
 
   const li = document.createElement("li");
   li.className = "item" + (isWatched ? " watched" : "");
@@ -490,8 +521,10 @@ function renderList() {
 
   if (visible.length === 0) {
     const empty = document.createElement("li");
-    empty.className = "empty-state";
-    empty.textContent = "Nothing matches the current filters.";
+    empty.className = "empty-state" + (state.searchQuery ? " search-no-results" : "");
+    empty.textContent = state.searchQuery
+      ? `No titles or episodes match "${state.searchQuery}".`
+      : "Nothing matches the current filters.";
     listEl.appendChild(empty);
     return;
   }
@@ -700,7 +733,101 @@ function renderAll() {
   renderList();
   renderStats();
   renderUpNext();
+  renderTimeBudget();
 }
+
+// ---------------------------------------------------------------------
+// "Got time for..." — a short-list of unwatched things that individually
+// fit a chosen runtime budget, walked in curated release order. Skips
+// past anything too long rather than stopping at it, so a single long
+// movie early in the list doesn't block every quick suggestion after it.
+// ---------------------------------------------------------------------
+
+function getTimeBudgetSuggestions(minutes, limit = 3) {
+  const sorted = [...getIncludedItems()].sort((a, b) => a.releaseOrder - b.releaseOrder);
+  const results = [];
+
+  for (const item of sorted) {
+    if (results.length >= limit) break;
+    if (item.type === "movie") {
+      if (!watchedIds.has(item.id) && item.runtimeMinutes <= minutes) {
+        results.push({ item, episode: null });
+      }
+    } else {
+      for (const episode of item.episodes) {
+        if (results.length >= limit) break;
+        if (!watchedIds.has(episode.id) && episode.runtimeMinutes <= minutes) {
+          results.push({ item, episode });
+        }
+      }
+    }
+  }
+  return results;
+}
+
+function renderTimeBudget() {
+  timeBudgetResultsEl.textContent = "";
+
+  for (const btn of timeBudgetSegmented.querySelectorAll("button")) {
+    btn.classList.toggle("active", Number(btn.dataset.minutes) === state.timeBudgetMinutes);
+  }
+
+  if (state.timeBudgetMinutes === null) return;
+
+  const suggestions = getTimeBudgetSuggestions(state.timeBudgetMinutes);
+
+  if (suggestions.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "time-budget-empty";
+    empty.textContent = "Nothing unwatched fits in that window right now.";
+    timeBudgetResultsEl.appendChild(empty);
+    return;
+  }
+
+  for (const { item, episode } of suggestions) {
+    const row = document.createElement("div");
+    row.className = "time-budget-item";
+
+    const thumb = document.createElement("div");
+    thumb.className = "time-budget-item-thumb";
+    thumb.style.setProperty("--hue", String(hashHue(item.id)));
+    thumb.textContent = getInitials(item.title);
+    thumb.setAttribute("aria-hidden", "true");
+
+    const info = document.createElement("div");
+    info.className = "time-budget-item-info";
+
+    const titleEl = document.createElement("p");
+    titleEl.className = "time-budget-item-title";
+    titleEl.textContent = episode ? `${item.title} — ${episode.title}` : item.title;
+
+    const meta = document.createElement("p");
+    meta.className = "time-budget-item-meta";
+    const runtimeMinutes = episode ? episode.runtimeMinutes : item.runtimeMinutes;
+    meta.textContent = `${runtimeMinutes} min`;
+
+    info.append(titleEl, meta);
+
+    const watchBtn = document.createElement("button");
+    watchBtn.type = "button";
+    watchBtn.className = "time-budget-item-watch-btn";
+    watchBtn.textContent = "✓ Watched";
+    watchBtn.addEventListener("click", () => {
+      toggleWatched(episode ? episode.id : item.id);
+    });
+
+    row.append(thumb, info, watchBtn);
+    timeBudgetResultsEl.appendChild(row);
+  }
+}
+
+timeBudgetSegmented.addEventListener("click", (e) => {
+  const btn = e.target.closest("button");
+  if (!btn) return;
+  const minutes = Number(btn.dataset.minutes);
+  state.timeBudgetMinutes = state.timeBudgetMinutes === minutes ? null : minutes;
+  renderTimeBudget();
+});
 
 // ---------------------------------------------------------------------
 // Footer: whole-list stats + "jump to a part" nav
@@ -893,6 +1020,20 @@ hideWatchedInput.addEventListener("change", (e) => {
 
 moviesOnlyInput.addEventListener("change", (e) => {
   state.moviesOnly = e.target.checked;
+  renderList();
+});
+
+searchInput.addEventListener("input", (e) => {
+  state.searchQuery = e.target.value.trim().toLowerCase();
+  searchClearBtn.hidden = state.searchQuery === "";
+  renderList();
+});
+
+searchClearBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  state.searchQuery = "";
+  searchClearBtn.hidden = true;
+  searchInput.focus();
   renderList();
 });
 
@@ -1307,6 +1448,89 @@ bgMotionToggle.checked = initialBgMotion;
 bgMotionToggle.addEventListener("change", (e) => {
   applyBgMotion(e.target.checked);
   saveBgMotion(e.target.checked);
+});
+
+// ---------------------------------------------------------------------
+// Backup: export progress to a JSON file, import one back in
+// ---------------------------------------------------------------------
+// A lightweight alternative to full account sync — no code, no server,
+// just a file the person keeps themselves. Import merges (union) rather
+// than replaces, so restoring a backup can never erase progress made
+// since it was taken.
+
+function showBackupStatus(message, isError) {
+  backupStatusEl.textContent = message;
+  backupStatusEl.classList.toggle("is-error", Boolean(isError));
+}
+
+function exportProgress() {
+  const payload = {
+    app: "doomsday-tracker",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    watchedIds: [...watchedIds],
+    includeOptional: state.includeOptional,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const dateStamp = new Date().toISOString().slice(0, 10);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `doomsday-tracker-progress-${dateStamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showBackupStatus(`Exported ${watchedIds.size} watched items.`, false);
+}
+
+function importProgressFromFile(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try {
+      data = JSON.parse(reader.result);
+    } catch {
+      showBackupStatus("That file isn't valid JSON.", true);
+      return;
+    }
+    if (!data || !Array.isArray(data.watchedIds)) {
+      showBackupStatus("That doesn't look like a Doomsday Tracker backup.", true);
+      return;
+    }
+
+    let added = 0;
+    for (const id of data.watchedIds) {
+      if (typeof id === "string" && !watchedIds.has(id)) {
+        watchedIds.add(id);
+        added++;
+      }
+    }
+    saveWatchedIds(watchedIds);
+
+    if (data.includeOptional && !state.includeOptional) {
+      state.includeOptional = true;
+      includeOptionalInput.checked = true;
+      saveIncludeOptional(true);
+    }
+
+    renderAll();
+    renderFooterStats();
+    showBackupStatus(
+      added > 0 ? `Imported — added ${added} newly watched item${added === 1 ? "" : "s"}.` : "Imported — nothing new to add.",
+      false
+    );
+  };
+  reader.onerror = () => showBackupStatus("Couldn't read that file.", true);
+  reader.readAsText(file);
+}
+
+exportProgressBtn.addEventListener("click", exportProgress);
+importProgressBtn.addEventListener("click", () => importProgressInput.click());
+importProgressInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) importProgressFromFile(file);
+  importProgressInput.value = "";
 });
 
 function openSettingsModal() {
