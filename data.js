@@ -41,10 +41,20 @@
 //                    a release-order-only concept — timelineOrder view
 //                    renders as a flat list, since sections describe "the
 //                    recommended path," not chronology.
-//   core           - true for the subset flagged as essential, must-not-skip
-//                    viewing, shown with a CORE badge. Everything else in a
-//                    required section is still required — core just marks
-//                    the highlights within it.
+//   core           - true for the titles that directly carry the overarching
+//                    Avengers-level threat forward — the Infinity Stones
+//                    hunt (Phases 1-3), the TVA/branching-multiverse and
+//                    Kang thread (Phases 4-5), and the final runway into
+//                    Doomsday — shown with a CORE badge. This is a
+//                    curatorial call about plot centrality to that specific
+//                    throughline, not a quality or popularity judgment:
+//                    plenty of great, required films (Guardians Vol. 2,
+//                    Black Widow, Shang-Chi, most of the X-Men pack) are
+//                    character-focused or self-contained rather than
+//                    macro-plot-critical, so they're required but not
+//                    core. Everything else in a required section is still
+//                    required either way — core just marks the spine
+//                    you'd hit if you only had time for the highlights.
 //   runtimeMinutes - movies only; total watch time in minutes
 //   spoiler        - movies only; a short note on how this movie's ending
 //                    or post-credits scene connects to the wider story —
@@ -92,30 +102,30 @@ export const sections = [
 ];
 
 export const items = [
-  { id: "iron-man", title: "Iron Man", type: "movie", releaseOrder: 1, timelineOrder: 3, section: "infinity-saga", runtimeMinutes: 126, connectsTo: "The Avengers", spoiler: "The post-credits scene is the birth of the MCU: Nick Fury reveals S.H.I.E.L.D. and the first mention of the Avenger Initiative." },
+  { id: "iron-man", title: "Iron Man", type: "movie", releaseOrder: 1, timelineOrder: 3, section: "infinity-saga", core: true, runtimeMinutes: 126, connectsTo: "The Avengers", spoiler: "The post-credits scene is the birth of the MCU: Nick Fury reveals S.H.I.E.L.D. and the first mention of the Avenger Initiative." },
   { id: "incredible-hulk", title: "The Incredible Hulk", type: "movie", releaseOrder: 2, timelineOrder: 5, section: "infinity-saga", runtimeMinutes: 112, notes: "Often skipped today — Mark Ruffalo replaces Edward Norton as Banner from here on.", connectsTo: "Captain America: Brave New World", spoiler: "A mid-credits scene has Tony Stark meet with General Ross to discuss the Avenger Initiative — the first sign Ross's story continues far beyond this film, all the way to his own presidency in Captain America: Brave New World." },
   { id: "iron-man-2", title: "Iron Man 2", type: "movie", releaseOrder: 3, timelineOrder: 4, section: "infinity-saga", runtimeMinutes: 124, connectsTo: "Thor", spoiler: "A post-credits scene has Agent Coulson discover Mjolnir embedded in the New Mexico desert — the opening image of Thor." },
-  { id: "thor", title: "Thor", type: "movie", releaseOrder: 4, timelineOrder: 6, section: "infinity-saga", runtimeMinutes: 115, connectsTo: "The Avengers", spoiler: "A post-credits scene has Nick Fury and Dr. Selvig examine the Tesseract's power — the very object Loki uses to open a portal for his invasion in The Avengers." },
-  { id: "captain-america-first-avenger", title: "Captain America: The First Avenger", type: "movie", releaseOrder: 5, timelineOrder: 1, section: "infinity-saga", runtimeMinutes: 124, connectsTo: "The Avengers", spoiler: "A post-credits scene has Nick Fury wake Steve Rogers in present-day New York and recruit him — the start of the Avengers Initiative's first team-up." },
-  { id: "the-avengers", title: "The Avengers", type: "movie", releaseOrder: 6, timelineOrder: 7, section: "infinity-saga", runtimeMinutes: 143, connectsTo: "Avengers: Infinity War", spoiler: "The post-credits scene reveals Thanos smiling at the thought of claiming the Infinity Stones himself — the whole Infinity Saga's endgame, foreshadowed here first." },
+  { id: "thor", title: "Thor", type: "movie", releaseOrder: 4, timelineOrder: 6, section: "infinity-saga", core: true, runtimeMinutes: 115, connectsTo: "The Avengers", spoiler: "A post-credits scene has Nick Fury and Dr. Selvig examine the Tesseract's power — the very object Loki uses to open a portal for his invasion in The Avengers." },
+  { id: "captain-america-first-avenger", title: "Captain America: The First Avenger", type: "movie", releaseOrder: 5, timelineOrder: 1, section: "infinity-saga", core: true, runtimeMinutes: 124, connectsTo: "The Avengers", spoiler: "A post-credits scene has Nick Fury wake Steve Rogers in present-day New York and recruit him — the start of the Avengers Initiative's first team-up." },
+  { id: "the-avengers", title: "The Avengers", type: "movie", releaseOrder: 6, timelineOrder: 7, section: "infinity-saga", core: true, runtimeMinutes: 143, connectsTo: "Avengers: Infinity War", spoiler: "The post-credits scene reveals Thanos smiling at the thought of claiming the Infinity Stones himself — the whole Infinity Saga's endgame, foreshadowed here first." },
   { id: "iron-man-3", title: "Iron Man 3", type: "movie", releaseOrder: 7, timelineOrder: 8, section: "infinity-saga", runtimeMinutes: 130, connectsTo: "Marvel One-Shots", spoiler: "A mid-credits scene has Tony recount this whole story to Bruce Banner — and the short film \"All Hail the King,\" bundled with the Marvel One-Shots, picks up right after, revealing the real Mandarin is still out there." },
   { id: "thor-dark-world", title: "Thor: The Dark World", type: "movie", releaseOrder: 8, timelineOrder: 9, section: "infinity-saga", runtimeMinutes: 112, connectsTo: "Guardians of the Galaxy Vol. 2", spoiler: "A mid-credits scene has Sif and Volstagg deliver the Aether to the Collector for safekeeping — the reason he's holding an Infinity Stone when Guardians of the Galaxy Vol. 2 catches up with him." },
-  { id: "captain-america-winter-soldier", title: "Captain America: The Winter Soldier", type: "movie", releaseOrder: 9, timelineOrder: 10, section: "infinity-saga", runtimeMinutes: 136, connectsTo: "Captain America: Civil War", spoiler: "S.H.I.E.L.D. is revealed to have been infiltrated by Hydra from the start and collapses entirely — and Bucky Barnes, Steve's best friend, is the brainwashed assassin the Winter Soldier." },
-  { id: "guardians-of-the-galaxy", title: "Guardians of the Galaxy", type: "movie", releaseOrder: 10, timelineOrder: 11, section: "infinity-saga", runtimeMinutes: 121, connectsTo: "Guardians of the Galaxy Vol. 2" },
+  { id: "captain-america-winter-soldier", title: "Captain America: The Winter Soldier", type: "movie", releaseOrder: 9, timelineOrder: 10, section: "infinity-saga", core: true, runtimeMinutes: 136, connectsTo: "Captain America: Civil War", spoiler: "S.H.I.E.L.D. is revealed to have been infiltrated by Hydra from the start and collapses entirely — and Bucky Barnes, Steve's best friend, is the brainwashed assassin the Winter Soldier." },
+  { id: "guardians-of-the-galaxy", title: "Guardians of the Galaxy", type: "movie", releaseOrder: 10, timelineOrder: 11, section: "infinity-saga", core: true, runtimeMinutes: 121, connectsTo: "Guardians of the Galaxy Vol. 2" },
   { id: "guardians-of-the-galaxy-vol-2", title: "Guardians of the Galaxy Vol. 2", type: "movie", releaseOrder: 11, timelineOrder: 12, section: "infinity-saga", runtimeMinutes: 136, connectsTo: "Avengers: Infinity War" },
   { id: "avengers-age-of-ultron", title: "Avengers: Age of Ultron", type: "movie", releaseOrder: 12, timelineOrder: 15, section: "infinity-saga", core: true, runtimeMinutes: 141, connectsTo: "Avengers: Infinity War", spoiler: "Ultron is destroyed, a new Avengers roster forms around Cap and War Machine, and Thanos finally moves to collect the Infinity Stones himself." },
-  { id: "ant-man", title: "Ant-Man", type: "movie", releaseOrder: 13, timelineOrder: 16, section: "infinity-saga", runtimeMinutes: 117, connectsTo: "Avengers: Endgame", spoiler: "A post-credits scene has Hank Pym reveal the Quantum Realm to Scott Lang for the first time — the mechanism the Avengers use to reverse the Snap in Endgame." },
-  { id: "captain-america-civil-war", title: "Captain America: Civil War", type: "movie", releaseOrder: 14, timelineOrder: 18, section: "infinity-saga", runtimeMinutes: 147, connectsTo: "Avengers: Infinity War", spoiler: "The Avengers fracture into two camps over accountability and Bucky's innocence — Cap and Tony's friendship breaks, and the team stays split all the way to Infinity War." },
-  { id: "black-widow", title: "Black Widow", type: "movie", releaseOrder: 15, timelineOrder: 19, section: "infinity-saga", core: true, runtimeMinutes: 134, notes: "Moved here in release order even though it came out in 2021 — the story happens right after Civil War, and that's where it lands best.", connectsTo: "Thunderbolts*", spoiler: "A post-credits scene has Valentina de Fontaine approach Yelena Belova at Natasha's grave and give her a new target — the setup that eventually leads into Thunderbolts*." },
-  { id: "doctor-strange", title: "Doctor Strange", type: "movie", releaseOrder: 16, timelineOrder: 22, section: "infinity-saga", runtimeMinutes: 115, connectsTo: "Thor: Ragnarok", spoiler: "A post-credits scene has Strange visit Thor in New York and offer to help him find Odin — directly setting up the opening of Thor: Ragnarok." },
+  { id: "ant-man", title: "Ant-Man", type: "movie", releaseOrder: 13, timelineOrder: 16, section: "infinity-saga", core: true, runtimeMinutes: 117, connectsTo: "Avengers: Endgame", spoiler: "A post-credits scene has Hank Pym reveal the Quantum Realm to Scott Lang for the first time — the mechanism the Avengers use to reverse the Snap in Endgame." },
+  { id: "captain-america-civil-war", title: "Captain America: Civil War", type: "movie", releaseOrder: 14, timelineOrder: 18, section: "infinity-saga", core: true, runtimeMinutes: 147, connectsTo: "Avengers: Infinity War", spoiler: "The Avengers fracture into two camps over accountability and Bucky's innocence — Cap and Tony's friendship breaks, and the team stays split all the way to Infinity War." },
+  { id: "black-widow", title: "Black Widow", type: "movie", releaseOrder: 15, timelineOrder: 19, section: "infinity-saga", runtimeMinutes: 134, notes: "Moved here in release order even though it came out in 2021 — the story happens right after Civil War, and that's where it lands best.", connectsTo: "Thunderbolts*", spoiler: "A post-credits scene has Valentina de Fontaine approach Yelena Belova at Natasha's grave and give her a new target — the setup that eventually leads into Thunderbolts*." },
+  { id: "doctor-strange", title: "Doctor Strange", type: "movie", releaseOrder: 16, timelineOrder: 22, section: "infinity-saga", core: true, runtimeMinutes: 115, connectsTo: "Thor: Ragnarok", spoiler: "A post-credits scene has Strange visit Thor in New York and offer to help him find Odin — directly setting up the opening of Thor: Ragnarok." },
   { id: "spider-man-homecoming", title: "Spider-Man: Homecoming", type: "movie", releaseOrder: 17, timelineOrder: 21, section: "infinity-saga", runtimeMinutes: 133 },
-  { id: "thor-ragnarok", title: "Thor: Ragnarok", type: "movie", releaseOrder: 18, timelineOrder: 23, section: "infinity-saga", runtimeMinutes: 130, connectsTo: "Avengers: Infinity War", spoiler: "A post-credits scene has the Asgardian refugee ship ambushed by a massive alien vessel — the opening beat of Avengers: Infinity War." },
+  { id: "thor-ragnarok", title: "Thor: Ragnarok", type: "movie", releaseOrder: 18, timelineOrder: 23, section: "infinity-saga", core: true, runtimeMinutes: 130, connectsTo: "Avengers: Infinity War", spoiler: "A post-credits scene has the Asgardian refugee ship ambushed by a massive alien vessel — the opening beat of Avengers: Infinity War." },
   { id: "black-panther", title: "Black Panther", type: "movie", releaseOrder: 19, timelineOrder: 20, section: "infinity-saga", core: true, runtimeMinutes: 134, connectsTo: "Avengers: Infinity War", spoiler: "A post-credits scene has T'Challa reveal Wakanda's true nature to the world at the UN — ending its isolation right before Avengers: Infinity War brings the war to its doorstep." },
-  { id: "avengers-infinity-war", title: "Avengers: Infinity War", type: "movie", releaseOrder: 20, timelineOrder: 28, section: "infinity-saga", runtimeMinutes: 149, connectsTo: "Avengers: Endgame", spoiler: "Thanos collects all six Infinity Stones and snaps away half of all life in the universe, including most of the Avengers themselves." },
-  { id: "ant-man-and-the-wasp", title: "Ant-Man and the Wasp", type: "movie", releaseOrder: 21, timelineOrder: 27, section: "infinity-saga", runtimeMinutes: 118, connectsTo: "Avengers: Endgame", spoiler: "A post-credits scene strands Scott Lang in the Quantum Realm the instant the Snap happens outside — leaving him trapped there for the five years before Avengers: Endgame picks the thread back up." },
-  { id: "captain-marvel", title: "Captain Marvel", type: "movie", releaseOrder: 22, timelineOrder: 2, section: "infinity-saga", runtimeMinutes: 123, notes: "Set in 1995 — chronologically early despite its release date.", connectsTo: "Avengers: Endgame", spoiler: "A mid-credits scene has Carol Danvers arrive at the Avengers compound to find the team scattered after the Snap — picked up directly at the start of Avengers: Endgame." },
-  { id: "avengers-endgame", title: "Avengers: Endgame", type: "movie", releaseOrder: 23, timelineOrder: 29, section: "infinity-saga", runtimeMinutes: 181, notes: "The Infinity Saga payoff. Essential.", connectsTo: "The Falcon and the Winter Soldier", spoiler: "Time travel undoes the Snap, Tony Stark sacrifices himself to defeat Thanos for good, and Steve Rogers hands the shield to Sam Wilson — setting up The Falcon and the Winter Soldier." },
-  { id: "spider-man-far-from-home", title: "Spider-Man: Far From Home", type: "movie", releaseOrder: 24, timelineOrder: 44, section: "infinity-saga", runtimeMinutes: 129, connectsTo: "Spider-Man: No Way Home", spoiler: "A post-credits scene has Mysterio frame Peter Parker for his own death and J. Jonah Jameson publicly reveal Spider-Man's identity to the world — the crisis Spider-Man: No Way Home opens on." },
+  { id: "avengers-infinity-war", title: "Avengers: Infinity War", type: "movie", releaseOrder: 20, timelineOrder: 28, section: "infinity-saga", core: true, runtimeMinutes: 149, connectsTo: "Avengers: Endgame", spoiler: "Thanos collects all six Infinity Stones and snaps away half of all life in the universe, including most of the Avengers themselves." },
+  { id: "ant-man-and-the-wasp", title: "Ant-Man and the Wasp", type: "movie", releaseOrder: 21, timelineOrder: 27, section: "infinity-saga", core: true, runtimeMinutes: 118, connectsTo: "Avengers: Endgame", spoiler: "A post-credits scene strands Scott Lang in the Quantum Realm the instant the Snap happens outside — leaving him trapped there for the five years before Avengers: Endgame picks the thread back up." },
+  { id: "captain-marvel", title: "Captain Marvel", type: "movie", releaseOrder: 22, timelineOrder: 2, section: "infinity-saga", core: true, runtimeMinutes: 123, notes: "Set in 1995 — chronologically early despite its release date.", connectsTo: "Avengers: Endgame", spoiler: "A mid-credits scene has Carol Danvers arrive at the Avengers compound to find the team scattered after the Snap — picked up directly at the start of Avengers: Endgame." },
+  { id: "avengers-endgame", title: "Avengers: Endgame", type: "movie", releaseOrder: 23, timelineOrder: 29, section: "infinity-saga", core: true, runtimeMinutes: 181, notes: "The Infinity Saga payoff. Essential.", connectsTo: "The Falcon and the Winter Soldier", spoiler: "Time travel undoes the Snap, Tony Stark sacrifices himself to defeat Thanos for good, and Steve Rogers hands the shield to Sam Wilson — setting up The Falcon and the Winter Soldier." },
+  { id: "spider-man-far-from-home", title: "Spider-Man: Far From Home", type: "movie", releaseOrder: 24, timelineOrder: 44, section: "infinity-saga", core: true, runtimeMinutes: 129, connectsTo: "Spider-Man: No Way Home", spoiler: "A post-credits scene has Mysterio frame Peter Parker for his own death and J. Jonah Jameson publicly reveal Spider-Man's identity to the world — the crisis Spider-Man: No Way Home opens on." },
   {
     id: "daredevil-season-1", title: "Daredevil (Season 1)", type: "show", releaseOrder: 25, timelineOrder: 13, section: "street-level",
     notes: "The Netflix corner: Matt Murdock's origin as Daredevil, and Wilson Fisk's rise as Kingpin. Placed here as backstory for Daredevil: Born Again, though it originally aired in 2015.",
@@ -294,7 +304,7 @@ export const items = [
       { id: "what-if-s1e9", title: "S1: What If... the Watcher Broke His Oath?", runtimeMinutes: 34 },
     ],
   },
-  { id: "shang-chi", title: "Shang-Chi and the Legend of the Ten Rings", type: "movie", releaseOrder: 35, timelineOrder: 45, section: "multiverse-saga", core: true, runtimeMinutes: 132 },
+  { id: "shang-chi", title: "Shang-Chi and the Legend of the Ten Rings", type: "movie", releaseOrder: 35, timelineOrder: 45, section: "multiverse-saga", runtimeMinutes: 132 },
   { id: "eternals", title: "Eternals", type: "movie", releaseOrder: 36, timelineOrder: 34, section: "multiverse-saga", runtimeMinutes: 156 },
   {
     id: "hawkeye", title: "Hawkeye", type: "show", releaseOrder: 37, timelineOrder: 47, section: "multiverse-saga",
@@ -323,7 +333,7 @@ export const items = [
       { id: "moon-knight-e6", title: "Gods and Monsters", runtimeMinutes: 50 },
     ],
   },
-  { id: "doctor-strange-multiverse-of-madness", title: "Doctor Strange in the Multiverse of Madness", type: "movie", releaseOrder: 40, timelineOrder: 50, section: "multiverse-saga", runtimeMinutes: 126, notes: "Introduces key multiverse rules that carry through to Doomsday." },
+  { id: "doctor-strange-multiverse-of-madness", title: "Doctor Strange in the Multiverse of Madness", type: "movie", releaseOrder: 40, timelineOrder: 50, section: "multiverse-saga", core: true, runtimeMinutes: 126, notes: "Introduces key multiverse rules that carry through to Doomsday." },
   {
     id: "ms-marvel", title: "Ms. Marvel", type: "show", releaseOrder: 41, timelineOrder: 51, section: "multiverse-saga",
     notes: "Sets up Kamala Khan ahead of The Marvels.",
@@ -337,7 +347,7 @@ export const items = [
       { id: "ms-marvel-e6", title: "No Normal", runtimeMinutes: 40, spoiler: "A post-credits scene ties Kamala Khan's powers to mutant genetics, not just her bangle — connecting her to the X-Men thread Doomsday is expected to bring into the MCU." },
     ],
   },
-  { id: "thor-love-and-thunder", title: "Thor: Love and Thunder", type: "movie", releaseOrder: 42, timelineOrder: 52, section: "multiverse-saga", core: true, runtimeMinutes: 119 },
+  { id: "thor-love-and-thunder", title: "Thor: Love and Thunder", type: "movie", releaseOrder: 42, timelineOrder: 52, section: "multiverse-saga", runtimeMinutes: 119 },
   {
     id: "she-hulk", title: "She-Hulk: Attorney at Law", type: "show", releaseOrder: 43, timelineOrder: 53, section: "multiverse-saga",
     notes: "Mostly self-contained; the finale breaks the fourth wall.",
@@ -354,7 +364,7 @@ export const items = [
       { id: "she-hulk-e9", title: "Whose Show Is This?", runtimeMinutes: 38, spoiler: "Jennifer breaks the fourth wall to confront the show's writers directly, and Matt Murdock (Daredevil) appears as a legal favor — connecting to Daredevil: Born Again." },
     ],
   },
-  { id: "black-panther-wakanda-forever", title: "Black Panther: Wakanda Forever", type: "movie", releaseOrder: 44, timelineOrder: 54, section: "multiverse-saga", core: true, runtimeMinutes: 161, connectsTo: "Ironheart" },
+  { id: "black-panther-wakanda-forever", title: "Black Panther: Wakanda Forever", type: "movie", releaseOrder: 44, timelineOrder: 54, section: "multiverse-saga", runtimeMinutes: 161, connectsTo: "Ironheart" },
   { id: "ant-man-quantumania", title: "Ant-Man and the Wasp: Quantumania", type: "movie", releaseOrder: 45, timelineOrder: 56, section: "multiverse-saga", core: true, runtimeMinutes: 125 },
   {
     id: "loki-season-2", title: "Loki (Season 2)", type: "show", releaseOrder: 46, timelineOrder: 57, section: "multiverse-saga", core: true,
@@ -384,7 +394,7 @@ export const items = [
       { id: "secret-invasion-e6", title: "Home", runtimeMinutes: 34, spoiler: "After a Skrull impersonating Rhodey is exposed, President Ritson declares all Skrulls enemies of the state — a xenophobic policy shift that ripples into later political plotlines." },
     ],
   },
-  { id: "the-marvels", title: "The Marvels", type: "movie", releaseOrder: 49, timelineOrder: 60, section: "multiverse-saga", core: true, runtimeMinutes: 105 },
+  { id: "the-marvels", title: "The Marvels", type: "movie", releaseOrder: 49, timelineOrder: 60, section: "multiverse-saga", runtimeMinutes: 105 },
   {
     id: "echo", title: "Echo", type: "show", releaseOrder: 50, timelineOrder: 48, section: "multiverse-saga",
     notes: "Follow-up to Hawkeye's Kingpin/Maya Lopez thread.",
@@ -397,9 +407,9 @@ export const items = [
       { id: "echo-e5", title: "Maya", runtimeMinutes: 34, spoiler: "Wilson Fisk (Kingpin) survives Maya's attempt on his life and doubles down on his plans for New York — picked up directly in Daredevil: Born Again." },
     ],
   },
-  { id: "x-men", title: "X-Men", type: "movie", releaseOrder: 51, timelineOrder: 36, section: "x-men-pack", core: true, runtimeMinutes: 104, notes: "Opens Fox's original X-Men series — folded into the multiverse alongside Deadpool & Wolverine and, reportedly, Doomsday itself.", connectsTo: "X2: X-Men United" },
-  { id: "x2-x-men-united", title: "X2: X-Men United", type: "movie", releaseOrder: 52, timelineOrder: 37, section: "x-men-pack", core: true, runtimeMinutes: 134, connectsTo: "X-Men: The Last Stand" },
-  { id: "x-men-last-stand", title: "X-Men: The Last Stand", type: "movie", releaseOrder: 53, timelineOrder: 38, section: "x-men-pack", core: true, runtimeMinutes: 104, connectsTo: "X-Men: Days of Future Past", spoiler: "By the time Days of Future Past picks up, time travel has erased this film's tragic ending outright — the deaths here are undone, wiped from the corrected timeline." },
+  { id: "x-men", title: "X-Men", type: "movie", releaseOrder: 51, timelineOrder: 36, section: "x-men-pack", runtimeMinutes: 104, notes: "Opens Fox's original X-Men series — folded into the multiverse alongside Deadpool & Wolverine and, reportedly, Doomsday itself.", connectsTo: "X2: X-Men United" },
+  { id: "x2-x-men-united", title: "X2: X-Men United", type: "movie", releaseOrder: 52, timelineOrder: 37, section: "x-men-pack", runtimeMinutes: 134, connectsTo: "X-Men: The Last Stand" },
+  { id: "x-men-last-stand", title: "X-Men: The Last Stand", type: "movie", releaseOrder: 53, timelineOrder: 38, section: "x-men-pack", runtimeMinutes: 104, connectsTo: "X-Men: Days of Future Past", spoiler: "By the time Days of Future Past picks up, time travel has erased this film's tragic ending outright — the deaths here are undone, wiped from the corrected timeline." },
   { id: "x-men-days-of-future-past", title: "X-Men: Days of Future Past", type: "movie", releaseOrder: 54, timelineOrder: 39, section: "x-men-pack", runtimeMinutes: 132 },
   { id: "deadpool", title: "Deadpool", type: "movie", releaseOrder: 55, timelineOrder: 40, section: "x-men-pack", runtimeMinutes: 108, connectsTo: "Deadpool 2" },
   { id: "logan", title: "Logan", type: "movie", releaseOrder: 56, timelineOrder: 42, section: "x-men-pack", runtimeMinutes: 137 },
