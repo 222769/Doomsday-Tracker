@@ -1497,6 +1497,21 @@ li.item.watched .item-title {
   color: var(--good);
 }
 
+/* Distinct from .core-badge on purpose — CORE means "don't skip this,"
+   OPTIONAL here means the opposite (safe to skip), so it reuses the
+   hazard color instead of the good/teal one to avoid looking like a
+   variant of the same badge. */
+.skippable-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  border: 1px solid var(--hazard);
+  color: var(--hazard);
+}
+
 .item-meta {
   font-size: 0.78rem;
   color: var(--text-dim);

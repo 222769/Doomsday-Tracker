@@ -338,6 +338,14 @@ function buildItemLi(item, sortKey) {
     titleRow.appendChild(coreBadge);
   }
 
+  if (item.skippable) {
+    const skippableBadge = document.createElement("span");
+    skippableBadge.className = "skippable-badge";
+    skippableBadge.title = "Individually safe to skip — still part of the required sequence, just low-stakes to miss.";
+    skippableBadge.textContent = "OPTIONAL";
+    titleRow.appendChild(skippableBadge);
+  }
+
   const meta = document.createElement("div");
   meta.className = "item-meta";
   const totalMinutes = getItemRuntimeMinutes(item);
@@ -665,6 +673,12 @@ function renderUpNext() {
     coreBadge.className = "core-badge";
     coreBadge.textContent = "CORE";
     titleEl.appendChild(coreBadge);
+  }
+  if (item.skippable) {
+    const skippableBadge = document.createElement("span");
+    skippableBadge.className = "skippable-badge";
+    skippableBadge.textContent = "OPTIONAL";
+    titleEl.appendChild(skippableBadge);
   }
 
   info.appendChild(titleEl);

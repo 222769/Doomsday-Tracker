@@ -55,6 +55,15 @@
 //                    core. Everything else in a required section is still
 //                    required either way — core just marks the spine
 //                    you'd hit if you only had time for the highlights.
+//   skippable      - true for a title that's individually safe to skip
+//                    without losing the main throughline, shown with an
+//                    OPTIONAL badge — but it still occupies a real slot
+//                    in the required sequence and still counts toward
+//                    required progress. This is a different concept from
+//                    the `optional` side-quest tier below, which is a
+//                    whole separate section hidden behind its own
+//                    switch: a skippable title stays visible by default,
+//                    it's just flagged as low-stakes to miss.
 //   runtimeMinutes - movies only; total watch time in minutes
 //   spoiler        - movies only; a short note on how this movie's ending
 //                    or post-credits scene connects to the wider story —
@@ -305,7 +314,7 @@ export const items = [
     ],
   },
   { id: "shang-chi", title: "Shang-Chi and the Legend of the Ten Rings", type: "movie", releaseOrder: 35, timelineOrder: 45, section: "multiverse-saga", runtimeMinutes: 132 },
-  { id: "eternals", title: "Eternals", type: "movie", releaseOrder: 36, timelineOrder: 34, section: "multiverse-saga", runtimeMinutes: 156 },
+  { id: "eternals", title: "Eternals", type: "movie", releaseOrder: 36, timelineOrder: 34, section: "multiverse-saga", skippable: true, runtimeMinutes: 156 },
   {
     id: "hawkeye", title: "Hawkeye", type: "show", releaseOrder: 37, timelineOrder: 47, section: "multiverse-saga",
     notes: "Introduces Kate Bishop.",
@@ -322,7 +331,7 @@ export const items = [
   },
   { id: "spider-man-no-way-home", title: "Spider-Man: No Way Home", type: "movie", releaseOrder: 38, timelineOrder: 46, section: "multiverse-saga", core: true, runtimeMinutes: 148, notes: "The multiverse crossover that pulls in the Raimi and Webb-era Spider-Men.", connectsTo: "Spider-Man: Brand New Day", spoiler: "Doctor Strange's spell erases the world's memory of Peter Parker — he starts over with no one, not even MJ or Ned, remembering he's Spider-Man." },
   {
-    id: "moon-knight", title: "Moon Knight", type: "show", releaseOrder: 39, timelineOrder: 49, section: "multiverse-saga",
+    id: "moon-knight", title: "Moon Knight", type: "show", releaseOrder: 39, timelineOrder: 49, section: "multiverse-saga", skippable: true,
     notes: "Self-contained — minimal ties to the wider saga so far.",
     episodes: [
       { id: "moon-knight-e1", title: "The Goldfish Problem", runtimeMinutes: 47 },
@@ -349,7 +358,7 @@ export const items = [
   },
   { id: "thor-love-and-thunder", title: "Thor: Love and Thunder", type: "movie", releaseOrder: 42, timelineOrder: 52, section: "multiverse-saga", runtimeMinutes: 119 },
   {
-    id: "she-hulk", title: "She-Hulk: Attorney at Law", type: "show", releaseOrder: 43, timelineOrder: 53, section: "multiverse-saga",
+    id: "she-hulk", title: "She-Hulk: Attorney at Law", type: "show", releaseOrder: 43, timelineOrder: 53, section: "multiverse-saga", skippable: true,
     notes: "Mostly self-contained; the finale breaks the fourth wall.",
     connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
@@ -381,7 +390,7 @@ export const items = [
   },
   { id: "guardians-of-the-galaxy-vol-3", title: "Guardians of the Galaxy Vol. 3", type: "movie", releaseOrder: 47, timelineOrder: 58, section: "multiverse-saga", runtimeMinutes: 150 },
   {
-    id: "secret-invasion", title: "Secret Invasion", type: "show", releaseOrder: 48, timelineOrder: 59, section: "multiverse-saga",
+    id: "secret-invasion", title: "Secret Invasion", type: "show", releaseOrder: 48, timelineOrder: 59, section: "multiverse-saga", skippable: true,
     notes: "Establishes the Skrull infiltration thread.",
     stopPoint: "Short on time? The finale (S1E6) alone covers what matters — the Skrull policy shift that ripples into later political plotlines. The other five episodes are setup you can skip without losing the thread.",
     connectsTo: "Captain America: Brave New World",
@@ -396,7 +405,7 @@ export const items = [
   },
   { id: "the-marvels", title: "The Marvels", type: "movie", releaseOrder: 49, timelineOrder: 60, section: "multiverse-saga", runtimeMinutes: 105 },
   {
-    id: "echo", title: "Echo", type: "show", releaseOrder: 50, timelineOrder: 48, section: "multiverse-saga",
+    id: "echo", title: "Echo", type: "show", releaseOrder: 50, timelineOrder: 48, section: "multiverse-saga", skippable: true,
     notes: "Follow-up to Hawkeye's Kingpin/Maya Lopez thread.",
     connectsTo: "Daredevil: Born Again (Season 1)",
     episodes: [
@@ -449,7 +458,7 @@ export const items = [
   },
   { id: "thunderbolts", title: "Thunderbolts*", type: "movie", releaseOrder: 62, timelineOrder: 64, section: "final-run", core: true, runtimeMinutes: 126, connectsTo: "Avengers: Doomsday" },
   {
-    id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 63, timelineOrder: 55, section: "final-run",
+    id: "ironheart", title: "Ironheart", type: "show", releaseOrder: 63, timelineOrder: 55, section: "final-run", skippable: true,
     notes: "Introduces Riri Williams ahead of her expected role in the wider saga.",
     episodes: [
       { id: "ironheart-e1", title: "Take Me Home", runtimeMinutes: 38 },
@@ -462,7 +471,7 @@ export const items = [
   },
   { id: "fantastic-four-first-steps", title: "The Fantastic Four: First Steps", type: "movie", releaseOrder: 64, timelineOrder: 65, section: "final-run", core: true, runtimeMinutes: 115, notes: "Introduces Marvel's First Family ahead of their merge into the main timeline.", connectsTo: "Avengers: Doomsday" },
   {
-    id: "wonder-man", title: "Wonder Man", type: "show", releaseOrder: 65, timelineOrder: 66, section: "final-run",
+    id: "wonder-man", title: "Wonder Man", type: "show", releaseOrder: 65, timelineOrder: 66, section: "final-run", skippable: true,
     notes: "Mostly self-contained Hollywood satire about a stuntman chasing the role of a retired superhero.",
     episodes: [
       { id: "wonder-man-e1", title: "Matinee", runtimeMinutes: 30 },
