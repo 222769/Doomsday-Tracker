@@ -779,7 +779,13 @@ nav.site-nav a[aria-current="page"] {
 }
 
 .update-banner-btn {
-  background: var(--on-accent);
+  /* --bg/--text (not --on-accent) on purpose: that pair is always
+     guaranteed readable against each other in every theme, whereas
+     --on-accent is only guaranteed to contrast with --accent — reusing
+     it as this button's own background produced a near-invisible button
+     on any theme where it resolves light (e.g. Apocalypse Blue), since
+     the text color next to it was --text, itself often light too. */
+  background: var(--bg);
   color: var(--text);
   border: none;
   border-radius: 999px;
