@@ -147,7 +147,7 @@ const importProgressInput = document.getElementById("importProgressInput");
 const backupStatusEl = document.getElementById("backupStatus");
 
 const milestoneToastEl = document.getElementById("milestoneToast");
-const milestoneConfettiEl = document.getElementById("milestoneConfetti");
+const confettiOverlayEl = document.getElementById("confettiOverlay");
 const milestoneCloseBtn = document.getElementById("milestoneClose");
 const milestoneTitleEl = document.getElementById("milestoneTitle");
 const milestoneMessageEl = document.getElementById("milestoneMessage");
@@ -835,19 +835,43 @@ function processMilestoneQueue() {
 }
 
 const CONFETTI_COLORS = ["var(--accent)", "var(--good)", "var(--hazard)", "var(--text)"];
+let confettiClearTimer = null;
+
+// A full-viewport burst, not just a few pieces inside the toast card —
+// spread across the whole width, staggered starts so it reads as a
+// cascading rain rather than everything dropping in lockstep at once.
+function launchConfetti() {
+  clearTimeout(confettiClearTimer);
+  confettiOverlayEl.textContent = "";
+  confettiOverlayEl.classList.remove("shown");
+
+  const pieceCount = 130;
+  for (let i = 0; i < pieceCount; i++) {
+    const piece = document.createElement("span");
+    const size = 6 + Math.random() * 8;
+    piece.style.setProperty("--x", `${Math.random() * 100}%`);
+    piece.style.setProperty("--size", `${size}px`);
+    piece.style.setProperty("--piece-radius", Math.random() < 0.35 ? "50%" : "1px");
+    piece.style.setProperty("--confetti-color", CONFETTI_COLORS[i % CONFETTI_COLORS.length]);
+    piece.style.setProperty("--drift", `${Math.round((Math.random() - 0.5) * 160)}px`);
+    piece.style.setProperty("--spin", `${Math.round(360 + Math.random() * 540)}deg`);
+    piece.style.setProperty("--fall-duration", `${(2.4 + Math.random() * 1.6).toFixed(2)}s`);
+    piece.style.setProperty("--fall-delay", `${(Math.random() * 0.9).toFixed(2)}s`);
+    confettiOverlayEl.appendChild(piece);
+  }
+
+  // Reduced-motion fallback: pieces render statically, then this class
+  // fades them out per the CSS — no falling motion either way.
+  requestAnimationFrame(() => confettiOverlayEl.classList.add("shown"));
+
+  confettiClearTimer = setTimeout(() => { confettiOverlayEl.textContent = ""; }, 4600);
+}
 
 function showMilestoneToast(title, message) {
   milestoneTitleEl.textContent = title;
   milestoneMessageEl.textContent = message;
 
-  milestoneConfettiEl.textContent = "";
-  for (let i = 0; i < 18; i++) {
-    const piece = document.createElement("span");
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.setProperty("--confetti-color", CONFETTI_COLORS[i % CONFETTI_COLORS.length]);
-    piece.style.animationDelay = `${Math.random() * 0.3}s`;
-    milestoneConfettiEl.appendChild(piece);
-  }
+  launchConfetti();
 
   milestoneToastEl.hidden = false;
   // Force layout so the hidden -> shown transition actually animates

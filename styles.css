@@ -1902,36 +1902,58 @@ footer.site-footer {
   line-height: 1.4;
 }
 
-.milestone-confetti {
-  position: absolute;
+/* Full-viewport confetti burst (iMessage-style) — a separate fixed layer
+   above everything else, independent of the toast card so pieces rain
+   across the whole screen rather than being clipped to one small box. */
+.confetti-overlay {
+  position: fixed;
   inset: 0;
+  z-index: 55;
   overflow: hidden;
   pointer-events: none;
 }
 
-.milestone-confetti span {
+.confetti-overlay span {
   position: absolute;
-  top: -10%;
-  width: 7px;
-  height: 11px;
+  top: -5vh;
+  left: var(--x, 50%);
+  width: var(--size, 8px);
+  height: calc(var(--size, 8px) * 1.6);
   background: var(--confetti-color, var(--accent));
-  opacity: 0.9;
-  border-radius: 1px;
+  opacity: 0;
+  border-radius: var(--piece-radius, 1px);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .milestone-toast.shown .milestone-confetti span {
-    animation: confetti-fall 1.6s ease-in forwards;
+  .confetti-overlay span {
+    animation: confetti-fall var(--fall-duration, 3s) linear var(--fall-delay, 0s) forwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No fall animation, but still give a brief static sparkle of color
+     so the celebration reads on a reduced-motion device instead of
+     silently doing nothing. */
+  .confetti-overlay span {
+    top: 8vh;
+    opacity: 0.9;
+    transition: opacity 1.2s ease 1.4s;
+  }
+  .confetti-overlay.shown span {
+    opacity: 0;
   }
 }
 
 @keyframes confetti-fall {
   0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0.9;
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  12% {
+    opacity: 1;
   }
   100% {
-    transform: translateY(220px) rotate(340deg);
-    opacity: 0;
+    transform: translate(var(--drift, 0px), 112vh) rotate(var(--spin, 360deg));
+    opacity: 0.85;
   }
 }
