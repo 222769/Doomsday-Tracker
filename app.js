@@ -146,6 +146,12 @@ const importProgressBtn = document.getElementById("importProgressBtn");
 const importProgressInput = document.getElementById("importProgressInput");
 const backupStatusEl = document.getElementById("backupStatus");
 
+const milestoneToastEl = document.getElementById("milestoneToast");
+const milestoneConfettiEl = document.getElementById("milestoneConfetti");
+const milestoneCloseBtn = document.getElementById("milestoneClose");
+const milestoneTitleEl = document.getElementById("milestoneTitle");
+const milestoneMessageEl = document.getElementById("milestoneMessage");
+
 // ---------------------------------------------------------------------
 // Sorting + filtering
 // ---------------------------------------------------------------------
@@ -748,7 +754,118 @@ function renderAll() {
   renderStats();
   renderUpNext();
   renderTimeBudget();
+  checkMilestones();
 }
+
+// ---------------------------------------------------------------------
+// Milestone celebrations
+// ---------------------------------------------------------------------
+// Fires a toast the moment a section (or the whole required list) flips
+// from "not fully watched" to "fully watched." Completion state is
+// tracked in memory only, seeded from the real current state on the
+// very first check — so reloading an already-finished section never
+// re-triggers its toast, only a genuine transition during this visit
+// does.
+
+let milestonesReady = false;
+const sectionCompletionSeen = new Map();
+let wholeListCompletionSeen = false;
+const milestoneQueue = [];
+let milestoneTimer = null;
+
+function isSectionComplete(sectionId) {
+  const sectionItems = items.filter((item) => item.section === sectionId);
+  return sectionItems.length > 0 && sectionItems.every(isItemWatched);
+}
+
+function checkMilestones() {
+  const newlyCompletedSections = [];
+
+  for (const section of sections) {
+    const complete = isSectionComplete(section.id);
+    const wasComplete = sectionCompletionSeen.get(section.id);
+    if (milestonesReady && complete && !wasComplete) {
+      newlyCompletedSections.push(section);
+    }
+    sectionCompletionSeen.set(section.id, complete);
+  }
+
+  const requiredItems = items.filter((item) => !item.optional);
+  const wholeListComplete = requiredItems.length > 0 && requiredItems.every(isItemWatched);
+  const wholeListJustCompleted = milestonesReady && wholeListComplete && !wholeListCompletionSeen;
+  wholeListCompletionSeen = wholeListComplete;
+
+  if (!milestonesReady) {
+    milestonesReady = true;
+    return;
+  }
+
+  // If finishing a section also finished the entire required list, the
+  // "ready for Doomsday" moment is the bigger deal — show that instead
+  // of (not in addition to) the section-specific toast.
+  if (wholeListJustCompleted) {
+    queueMilestoneToast(
+      "You're ready for Doomsday! 🎬",
+      "Every required title, checked off. December 18, 2026 can't come soon enough."
+    );
+    return;
+  }
+
+  for (const section of newlyCompletedSections) {
+    queueMilestoneToast(`${section.title} complete! 🎉`, "On to the next part.");
+  }
+}
+
+function queueMilestoneToast(title, message) {
+  milestoneQueue.push({ title, message });
+  if (!milestoneTimer) processMilestoneQueue();
+}
+
+function processMilestoneQueue() {
+  const next = milestoneQueue.shift();
+  if (!next) {
+    milestoneTimer = null;
+    return;
+  }
+  showMilestoneToast(next.title, next.message);
+  milestoneTimer = setTimeout(() => {
+    hideMilestoneToast();
+    milestoneTimer = setTimeout(processMilestoneQueue, 400);
+  }, 4200);
+}
+
+const CONFETTI_COLORS = ["var(--accent)", "var(--good)", "var(--hazard)", "var(--text)"];
+
+function showMilestoneToast(title, message) {
+  milestoneTitleEl.textContent = title;
+  milestoneMessageEl.textContent = message;
+
+  milestoneConfettiEl.textContent = "";
+  for (let i = 0; i < 18; i++) {
+    const piece = document.createElement("span");
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.setProperty("--confetti-color", CONFETTI_COLORS[i % CONFETTI_COLORS.length]);
+    piece.style.animationDelay = `${Math.random() * 0.3}s`;
+    milestoneConfettiEl.appendChild(piece);
+  }
+
+  milestoneToastEl.hidden = false;
+  // Force layout so the hidden -> shown transition actually animates
+  // instead of jumping straight to the end state.
+  void milestoneToastEl.offsetHeight;
+  milestoneToastEl.classList.add("shown");
+}
+
+function hideMilestoneToast() {
+  milestoneToastEl.classList.remove("shown");
+  setTimeout(() => { milestoneToastEl.hidden = true; }, 300);
+}
+
+milestoneCloseBtn.addEventListener("click", () => {
+  clearTimeout(milestoneTimer);
+  hideMilestoneToast();
+  milestoneTimer = setTimeout(processMilestoneQueue, 400);
+});
 
 // ---------------------------------------------------------------------
 // "Got time for..." — a short-list of unwatched things that individually
