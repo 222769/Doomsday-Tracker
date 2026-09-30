@@ -233,6 +233,14 @@ function getUnwatchedMinutes(item) {
   return watchedIds.has(item.id) ? 0 : item.runtimeMinutes;
 }
 
+function formatDuration(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hours === 0) return `${mins}m`;
+  if (mins === 0) return `${hours}h`;
+  return `${hours}h ${mins}m`;
+}
+
 // Show ids currently expanded to reveal their episode list, and item ids
 // (movies or episodes — the two never collide, since episode ids always
 // carry a "-eN" suffix) whose spoiler note has been revealed. Both are
@@ -478,6 +486,7 @@ function appendSpoilerToggle(parentEl, id, spoilerText) {
 function buildSectionHeaderLi(section, index, sectionItems) {
   const isCollapsed = collapsedSectionIds.has(section.id);
   const watchedCount = sectionItems.filter(isItemWatched).length;
+  const remainingMinutes = sectionItems.reduce((sum, item) => sum + getUnwatchedMinutes(item), 0);
 
   const li = document.createElement("li");
   li.className = "section-header";
@@ -502,6 +511,13 @@ function buildSectionHeaderLi(section, index, sectionItems) {
   descEl.className = "section-desc";
   descEl.textContent = section.description;
   text.append(titleEl, descEl);
+
+  if (remainingMinutes > 0) {
+    const timeEl = document.createElement("span");
+    timeEl.className = "section-time-remaining";
+    timeEl.textContent = `⏱ ${formatDuration(remainingMinutes)} left`;
+    text.appendChild(timeEl);
+  }
 
   const progress = document.createElement("span");
   progress.className = "section-progress";

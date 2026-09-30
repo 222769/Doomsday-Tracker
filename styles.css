@@ -1641,6 +1641,12 @@ li.section-header {
   color: var(--text-dim);
 }
 
+.section-time-remaining {
+  font-size: 0.72rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
 .section-progress {
   font-size: 0.8rem;
   color: var(--text-dim);
